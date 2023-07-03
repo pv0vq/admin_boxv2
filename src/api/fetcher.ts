@@ -4,18 +4,21 @@ import { Cookies } from "react-cookie";
 
 const axiosInstance = () => {
   return axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
+    baseURL: import.meta.env.VITE_APP_API_URL,
     timeout: 5000,
     withCredentials: false,
   });
 };
 
-const navigate = useNavigate();
-
-const apiUrl = `${process.env.NEXT_PUBLIC_PROTOCAL}://${process.env.NEXT_PUBLIC_API_URL}`;
+const apiUrl = `${import.meta.env.VITE_APP_PROTOCOL}://${
+  import.meta.env.VITE_APP_API_URL
+}`;
 
 function AxiosAuthInterceptor<T>(response: AxiosResponse<T>): AxiosResponse {
+  console.log(response, "response");
   const status = response.status;
+
+  const navigate = useNavigate();
   if (status === 404) {
     // 404 에러시
     console.log(404, "에러");
