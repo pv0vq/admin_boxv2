@@ -1,9 +1,9 @@
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+
 const Main = () => {
-  return (
-    <div className="flex h-screen items-center justify-center bg-gray-800">
-      메인
-    </div>
-  );
+  return <div>내가 메인이다!</div>;
 };
 
 export default Main;

@@ -1,9 +1,12 @@
 import { Outlet } from "react-router-dom";
+import SideBar from "./layouts/SideBar";
 
 function App() {
   return (
     <div>
-      <Outlet />
+      <SideBar>
+        <Outlet />
+      </SideBar>
     </div>
   );
 }
