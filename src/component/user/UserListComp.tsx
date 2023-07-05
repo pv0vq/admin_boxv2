@@ -1,6 +1,8 @@
 import { useState } from "react";
 import SimpleList from "../common/list/SimpleListComp";
 import useUserList from "../../hooks/api/useUserList";
+import SimpleSearchComp from "../common/search/SimpleSearchComp";
+import { Spinner } from "@material-tailwind/react";
 
 interface IColumns {
   id: string;
@@ -50,10 +52,20 @@ const UserList = () => {
   //   },
   // ]);
 
+  console.log("data:", data);
+
   if (isLoading) {
-    <>잠시만</>;
+    return (
+      <div className="flex items-end justify-center gap-8">
+        <Spinner className="h-64 w-64" />
+      </div>
+    );
   } else {
-    return <SimpleList columns={columns} data={data.content} />;
+    return (
+      <SimpleSearchComp>
+        <SimpleList columns={columns} data={data.content} />
+      </SimpleSearchComp>
+    );
   }
 };
 

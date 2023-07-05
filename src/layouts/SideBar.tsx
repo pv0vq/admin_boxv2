@@ -75,7 +75,7 @@ const SideBar = ({ children }: Props) => {
   };
 
   return (
-    <div className="flex h-[100vh]">
+    <div className="static flex">
       <Card className="left-4 top-4 h-[calc(100vh-2rem)]  max-w-[20rem]  p-4  shadow-xl shadow-blue-gray-900/5">
         <div className="mb-2 p-4">
           <Typography variant="h5" color="blue-gray">
@@ -155,7 +155,7 @@ const SideBar = ({ children }: Props) => {
           })}
         </List>
       </Card>
-      <div className="h-full w-full p-4 sm:ml-64">{children}</div>
+      <div className="w-full p-4 sm:ml-64">{children}</div>
     </div>
   );
 };
