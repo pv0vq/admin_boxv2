@@ -1,4 +1,26 @@
 import { ReactNode, useState } from "react";
+import {
+  Card,
+  Typography,
+  List,
+  ListItem,
+  ListItemPrefix,
+  ListItemSuffix,
+  Chip,
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
+} from "@material-tailwind/react";
+import {
+  PresentationChartBarIcon,
+  ShoppingBagIcon,
+  UserCircleIcon,
+  Cog6ToothIcon,
+  InboxIcon,
+  PowerIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -43,7 +65,6 @@ const SideBar = ({ children }: Props) => {
   const [menuState, setMenuState] = useState<Array<number>>([]);
 
   const menuStateHandler = (item: any) => {
-    console.log(111);
     if (menuState.includes(item.id)) {
       setMenuState((menuState) => [
         ...menuState.filter((sub) => sub !== item.id),
@@ -54,99 +75,88 @@ const SideBar = ({ children }: Props) => {
   };
 
   return (
-    <>
-      <button
-        data-drawer-target="sidebar-multi-level-sidebar"
-        data-drawer-toggle="sidebar-multi-level-sidebar"
-        aria-controls="sidebar-multi-level-sidebar"
-        type="button"
-        className="ml-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 sm:hidden"
-      >
-        <span className="sr-only">Open sidebar</span>
-        <svg
-          className="h-6 w-6"
-          aria-hidden="true"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            clipRule="evenodd"
-            fillRule="evenodd"
-            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-          ></path>
-        </svg>
-      </button>
-
-      <aside
-        id="sidebar-multi-level-sidebar"
-        className="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full transition-transform sm:translate-x-0"
-        aria-label="Sidebar"
-      >
-        <div className="h-full overflow-y-auto bg-gray-50 px-3 py-4 dark:bg-gray-800">
-          <ul className="space-y-2 font-medium">
-            {manuList.map((manu, i) => {
-              if (manu.child.length < 1) {
-                return (
-                  <li key={i}>
-                    <Link
-                      to={manu.path}
-                      className="flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                    >
-                      <span className="ml-3">{manu.label}</span>
-                    </Link>
-                  </li>
-                );
-              } else {
-                return (
-                  <div key={i}>
-                    <button
-                      type="button"
-                      className="group flex w-full items-center rounded-lg p-2 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+    <div className="flex h-[100vh]">
+      <Card className="left-4 top-4 h-[calc(100vh-2rem)]  max-w-[20rem]  p-4  shadow-xl shadow-blue-gray-900/5">
+        <div className="mb-2 p-4">
+          <Typography variant="h5" color="blue-gray">
+            biite
+          </Typography>
+        </div>
+        <List>
+          {manuList.map((manu, i) => {
+            if (manu.child.length < 1) {
+              return (
+                <Link to={manu.path} key={i}>
+                  <ListItem>
+                    <ListItemPrefix>
+                      <Cog6ToothIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    {manu.label}
+                  </ListItem>
+                </Link>
+              );
+            } else {
+              return (
+                <Accordion
+                  key={i}
+                  open={menuState.includes(manu.id)}
+                  icon={
+                    <ChevronDownIcon
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        menuState.includes(manu.id) ? "rotate-180" : ""
+                      }`}
+                    />
+                  }
+                >
+                  <ListItem
+                    className="p-0"
+                    selected={menuState.includes(manu.id)}
+                  >
+                    <AccordionHeader
                       onClick={() => menuStateHandler(manu)}
+                      className="border-b-0 p-3"
                     >
-                      <span className="ml-3 flex-1 whitespace-nowrap text-left">
-                        {manu.label}
-                      </span>
-                      <svg
-                        className="h-6 w-6"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
+                      <ListItemPrefix>
+                        <Cog6ToothIcon className="h-5 w-5" />
+                      </ListItemPrefix>
+                      <Typography
+                        color="blue-gray"
+                        className="mr-auto font-normal"
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    </button>
-                    <ul className="space-y-2 font-medium">
+                        {manu.label}
+                      </Typography>
+                    </AccordionHeader>
+                  </ListItem>
+                  <AccordionBody className="py-1">
+                    <List className="p-0">
                       {manu.child.map((sub, ii) => {
                         if (menuState.includes(manu.id)) {
-                          console.log("나?");
                           return (
-                            <li key={ii}>
-                              <Link
-                                to={sub.path}
-                                className="group flex w-full items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                              >
+                            <Link to={sub.path} key={ii}>
+                              <ListItem>
+                                <ListItemPrefix>
+                                  <ChevronRightIcon
+                                    strokeWidth={3}
+                                    className="h-3 w-5"
+                                  />
+                                </ListItemPrefix>
                                 {sub.label}
-                              </Link>
-                            </li>
+                              </ListItem>
+                            </Link>
                           );
                         }
                       })}
-                    </ul>
-                  </div>
-                );
-              }
-            })}
-          </ul>
-        </div>
-      </aside>
-      <div className="p-4 sm:ml-64">{children}</div>
-    </>
+                    </List>
+                  </AccordionBody>
+                </Accordion>
+              );
+            }
+          })}
+        </List>
+      </Card>
+      <div className="h-full w-full p-4 sm:ml-64">{children}</div>
+    </div>
   );
 };
 

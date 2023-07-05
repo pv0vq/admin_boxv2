@@ -1,4 +1,4 @@
-import axios, { AxiosRequestHeaders, AxiosResponse } from "axios";
+import axios, { AxiosRequestHeaders, AxiosResponse, ResponseType } from "axios";
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
 
@@ -86,10 +86,14 @@ const fetcher = async function ({
         ...api,
         url: `${apiUrl}${api.url}`,
         params: options,
-        // responseType: 'basic',
-        headers,
+        headers: {
+          // 추가
+          "Access-Control-Allow-Origin": "*",
+        },
+        responseType: responseType,
       });
     } else {
+      // formData
       const formData = new FormData();
       if (type === "formData") {
         for (const key in options) {
