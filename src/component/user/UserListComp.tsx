@@ -29,30 +29,6 @@ const UserList = () => {
       label: "권한",
     },
   ]);
-  // const [data] = useState<any>([
-  //   {
-  //     createDate: null,
-  //     modifiedDate: null,
-  //     id: 1,
-  //     email: "user",
-  //     password: null,
-  //     name: "재후야",
-  //     role: "ADMIN",
-  //     roleKey: "ROLE_ADMIN",
-  //   },
-  //   {
-  //     createDate: null,
-  //     modifiedDate: null,
-  //     id: 2,
-  //     email: "admin",
-  //     password: null,
-  //     name: "관리자",
-  //     role: "ADMIN",
-  //     roleKey: "ROLE_ADMIN",
-  //   },
-  // ]);
-
-  console.log("data:", data);
 
   if (isLoading) {
     return (
@@ -61,11 +37,7 @@ const UserList = () => {
       </div>
     );
   } else {
-    return (
-      <SimpleSearchComp>
-        <SimpleList columns={columns} data={data.content} />
-      </SimpleSearchComp>
-    );
+    return <>대기</>;
   }
 };
 

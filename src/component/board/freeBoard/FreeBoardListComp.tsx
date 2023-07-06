@@ -10,7 +10,13 @@ const FreeBoardListComp = () => {
   const [paramsSubmit, setParamsSubmit] = useState<{ [key: string]: string }>(
     {}
   );
-  const { data, isLoading } = useFreeBoardList(paramsSubmit);
+  const [data, setData] = useState<any>({});
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+  const [searchState, setSearchState] = useState<boolean>(true);
+  const title = "자유게시판";
   const [columns] = useState<IColumns[]>([
     {
       id: "id",
@@ -104,25 +110,11 @@ const FreeBoardListComp = () => {
     },
   ]);
 
-  const title = "자유게시판";
-
-  if (isLoading) {
-    return (
-      <div className="flex items-end justify-center gap-8">
-        <Spinner className="h-64 w-64" />
-      </div>
-    );
-  } else {
-    return (
-      <SimpleSearchComp
-        searchItem={searchItem}
-        title={title}
-        setParamsSubmit={setParamsSubmit}
-      >
-        <SimpleList columns={columns} data={data.content} />
-      </SimpleSearchComp>
-    );
-  }
+  return (
+    <SideSearchComp searchItem={searchItem}>
+      <SimpleList columns={columns} title={title} />
+    </SideSearchComp>
+  );
 };
 
 export default FreeBoardListComp;
