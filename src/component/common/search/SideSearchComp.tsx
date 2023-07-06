@@ -13,6 +13,10 @@ import {
   Switch,
   Button,
   Tooltip,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  IconButton,
 } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { ISearchItem } from "../../../type/common";
@@ -22,9 +26,10 @@ import useFreeBoardList from "../../../hooks/api/board/freeBoard/useFreeBoardLis
 interface IProps {
   searchItem: ISearchItem[];
   children: any;
+  title: string;
 }
 
-const SideSearchComp = ({ searchItem, children }: IProps) => {
+const SideSearchComp = ({ searchItem, children, title }: IProps) => {
   const [params, setParams] = useState<any>({});
   const [submit, setSubmit] = useState<any>({});
   const { data, isLoading } = useFreeBoardList(submit);
@@ -47,10 +52,7 @@ const SideSearchComp = ({ searchItem, children }: IProps) => {
   };
 
   return (
-    <>
-      <Tooltip content="검색창">
-        <Button onClick={() => setSearchState(!searchState)}>검색하기</Button>
-      </Tooltip>
+    <div>
       <div className="flex">
         {searchState ? (
           <Card className="  p-4 shadow-xl shadow-blue-gray-900/5">
@@ -285,10 +287,65 @@ const SideSearchComp = ({ searchItem, children }: IProps) => {
         ) : (
           <></>
         )}
-
-        {React.cloneElement(children, { data })}
+        <Card className="h-full w-full">
+          <CardHeader
+            floated={false}
+            shadow={false}
+            className="flex-row rounded-none"
+          >
+            <div className="grid grid-cols-4 items-center text-blue-gray-900 py-2 p-4 ">
+              <div className="col-span-1">
+                <Tooltip content="검색창">
+                  <Button onClick={() => setSearchState(!searchState)}>
+                    검색하기
+                  </Button>
+                </Tooltip>
+              </div>
+              <Typography
+                variant="h2"
+                className="text-center col-start-2 col-span-2"
+              >
+                {title}
+              </Typography>
+            </div>
+          </CardHeader>
+          <CardBody className="px-0 ">
+            {React.cloneElement(children, { data })}
+          </CardBody>
+          <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+            <Button variant="outlined" color="blue-gray" size="sm">
+              Previous
+            </Button>
+            <div className="flex items-center gap-2">
+              <IconButton variant="outlined" color="blue-gray" size="sm">
+                1
+              </IconButton>
+              <IconButton variant="text" color="blue-gray" size="sm">
+                2
+              </IconButton>
+              <IconButton variant="text" color="blue-gray" size="sm">
+                3
+              </IconButton>
+              <IconButton variant="text" color="blue-gray" size="sm">
+                ...
+              </IconButton>
+              <IconButton variant="text" color="blue-gray" size="sm">
+                8
+              </IconButton>
+              <IconButton variant="text" color="blue-gray" size="sm">
+                9
+              </IconButton>
+              <IconButton variant="text" color="blue-gray" size="sm">
+                10
+              </IconButton>
+            </div>
+            <Button variant="outlined" color="blue-gray" size="sm">
+              Next
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
-    </>
+    </div>
   );
 };
 

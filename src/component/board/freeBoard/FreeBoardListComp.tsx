@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import useFreeBoardList from "../../../hooks/api/board/freeBoard/useFreeBoardList";
 import { Spinner } from "@material-tailwind/react";
-import SimpleSearchComp from "../../common/search/SimpleSearchComp";
 import SimpleList from "../../common/list/SimpleListComp";
 import { IColumns, ISearchItem } from "../../../type/common";
 import SideSearchComp from "../../common/search/SideSearchComp";
@@ -111,8 +110,8 @@ const FreeBoardListComp = () => {
   ]);
 
   return (
-    <SideSearchComp searchItem={searchItem}>
-      <SimpleList columns={columns} title={title} />
+    <SideSearchComp searchItem={searchItem} title={title}>
+      <SimpleList columns={columns} />
     </SideSearchComp>
   );
 };
