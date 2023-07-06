@@ -39,7 +39,6 @@ const SimpleSearchComp = ({ children, searchItem, title }: IProps) => {
                 검색하기
               </Button>
             </Tooltip>
-
             <Typography variant="h2" className="absolute left-1/2 ">
               {title}
             </Typography>

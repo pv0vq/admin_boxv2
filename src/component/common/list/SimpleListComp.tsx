@@ -52,7 +52,8 @@ const SimpleList = ({ columns, data }: IProps) => {
                         className="font-normal"
                       >
                         {(() => {
-                          return row[column.id];
+                          if (row[column.id] !== null) return row[column.id];
+                          else return "";
                         })()}
                       </Typography>
                     </td>

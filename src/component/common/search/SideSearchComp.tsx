@@ -14,6 +14,7 @@ import {
   Radio,
   Checkbox,
   Switch,
+  Button,
 } from "@material-tailwind/react";
 import {
   Cog6ToothIcon,
@@ -28,9 +29,44 @@ interface IProps {
 }
 
 const SideSearchComp = ({ searchItem }: IProps) => {
+  const [params, setParams] = useState<any>({});
+
+  const onSubimt = () => {
+    console.log(params, "params");
+  };
+
+  const paramsChangeHandler = (name: any, value: any) => {
+    setParams((prevParams: any) => {
+      return { ...prevParams, [name]: value };
+    });
+  };
+
+  const test = (item: any) => {
+    console.log(item, "item");
+  };
+
   return (
     <Card className="  p-4 shadow-xl shadow-blue-gray-900/5">
       <List>
+        <Button color="light-green" size="lg" onClick={onSubimt}>
+          <div className="flex p-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+            <div className="translate-x-1/2">조회하기</div>
+          </div>
+        </Button>
         {searchItem.map((item: ISearchItem, index: number) => {
           if (item.type === "TEXT") {
             return (
@@ -44,6 +80,9 @@ const SideSearchComp = ({ searchItem }: IProps) => {
                   <Input
                     icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                     label="Search"
+                    onChange={(event: any) =>
+                      paramsChangeHandler(item.value, event.target.value)
+                    }
                   />
                 </div>
               </div>
@@ -58,9 +97,18 @@ const SideSearchComp = ({ searchItem }: IProps) => {
                     </Typography>
                   </div>
                   <div className="p-2">
-                    <Select label={item.label}>
+                    <Select
+                      label={item.label}
+                      onChange={(event: any) => {
+                        paramsChangeHandler(item.value, event);
+                      }}
+                    >
                       {item.optin.map((sub, ii) => {
-                        return <Option key={ii}>{sub.label}</Option>;
+                        return (
+                          <Option key={ii} value={sub.value}>
+                            {sub.label}
+                          </Option>
+                        );
                       })}
                     </Select>
                   </div>
@@ -88,12 +136,20 @@ const SideSearchComp = ({ searchItem }: IProps) => {
                               >
                                 <ListItemPrefix className="mr-3">
                                   <Radio
-                                    name="vertical-list"
-                                    id="vertical-list-react"
+                                    name={item.value}
+                                    id={item.value}
                                     ripple={false}
                                     className="hover:before:opacity-0"
                                     containerProps={{
                                       className: "p-1",
+                                    }}
+                                    onChange={(event) => {
+                                      if (event.target.checked) {
+                                        paramsChangeHandler(
+                                          item.value,
+                                          sub.value
+                                        );
+                                      }
                                     }}
                                   />
                                 </ListItemPrefix>
@@ -134,11 +190,39 @@ const SideSearchComp = ({ searchItem }: IProps) => {
                               >
                                 <ListItemPrefix className="mr-3">
                                   <Checkbox
-                                    id="vertical-list-react"
+                                    id={sub.value}
                                     ripple={false}
                                     className="hover:before:opacity-0"
                                     containerProps={{
                                       className: "p-1",
+                                    }}
+                                    onChange={(event) => {
+                                      if (
+                                        Object.keys(params).includes(item.value)
+                                      ) {
+                                        const checkArr: Array<string> =
+                                          params[item.value];
+                                        if (checkArr.includes(sub.value)) {
+                                          paramsChangeHandler(
+                                            item.value,
+                                            checkArr.filter(
+                                              (arr: string) => arr !== sub.value
+                                            )
+                                          );
+                                        } else {
+                                          checkArr.push(sub.value);
+                                          paramsChangeHandler(
+                                            item.value,
+                                            checkArr
+                                          );
+                                        }
+                                      } else {
+                                        if (event.target.checked) {
+                                          paramsChangeHandler(item.value, [
+                                            sub.value,
+                                          ]);
+                                        }
+                                      }
                                     }}
                                   />
                                 </ListItemPrefix>
@@ -167,7 +251,17 @@ const SideSearchComp = ({ searchItem }: IProps) => {
                   </Typography>
                 </div>
                 <div className="p-3">
-                  <Switch id="auto-update" label={item.label} />
+                  <Switch
+                    id={item.value}
+                    label={item.label}
+                    onChange={(event: any) => {
+                      if (event.target.checked) {
+                        paramsChangeHandler(item.value, "Y");
+                      } else {
+                        paramsChangeHandler(item.value, "N");
+                      }
+                    }}
+                  />
                 </div>
               </div>
             );
