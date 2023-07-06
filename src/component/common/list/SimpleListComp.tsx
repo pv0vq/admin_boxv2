@@ -1,23 +1,14 @@
-import {
-  Typography,
-  Button,
-  CardBody,
-  CardFooter,
-  IconButton,
-  Card,
-  CardHeader,
-  Tooltip,
-} from "@material-tailwind/react";
-import { pageData } from "../../../type/common";
+import { Typography } from "@material-tailwind/react";
+import { IPageData } from "../../../type/common";
 interface IProps {
   columns: {
     id: string;
     label: string;
   }[];
-  data?: pageData;
+  data?: IPageData;
 }
 
-const SimpleList = ({ columns, data }: IProps) => {
+const SimpleListComp = ({ columns, data }: IProps): JSX.Element | null => {
   if (data && data.content.length > 0) {
     return (
       <table className="w-full min-w-max table-auto text-left">
@@ -70,7 +61,9 @@ const SimpleList = ({ columns, data }: IProps) => {
         </tbody>
       </table>
     );
+  } else {
+    return <div className="text-center">검색한 목록이 없어요!</div>;
   }
 };
 
-export default SimpleList;
+export default SimpleListComp;

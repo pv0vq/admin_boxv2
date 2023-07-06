@@ -25,7 +25,7 @@ export interface ISearchItem {
   optin?: IOptions[];
 }
 
-export interface pageData {
+export interface IPageData {
   content: { [key: string]: any }[];
   empty: boolean;
   first: boolean;

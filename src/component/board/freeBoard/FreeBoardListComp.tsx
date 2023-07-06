@@ -1,20 +1,10 @@
 import { useEffect, useState } from "react";
-import useFreeBoardList from "../../../hooks/api/board/freeBoard/useFreeBoardList";
-import { Spinner } from "@material-tailwind/react";
-import SimpleList from "../../common/list/SimpleListComp";
+import SimpleListComp from "../../common/list/SimpleListComp";
 import { IColumns, ISearchItem } from "../../../type/common";
 import SideSearchComp from "../../common/search/SideSearchComp";
+import API_BOARD from "../../../api/code/board";
 
 const FreeBoardListComp = () => {
-  const [paramsSubmit, setParamsSubmit] = useState<{ [key: string]: string }>(
-    {}
-  );
-  const [data, setData] = useState<any>({});
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-  const [searchState, setSearchState] = useState<boolean>(true);
   const title = "자유게시판";
   const [columns] = useState<IColumns[]>([
     {
@@ -54,7 +44,7 @@ const FreeBoardListComp = () => {
   const [searchItem] = useState<ISearchItem[]>([
     {
       type: "TEXT",
-      value: "userName",
+      value: "searchText",
       label: "검색",
     },
     {
@@ -110,8 +100,12 @@ const FreeBoardListComp = () => {
   ]);
 
   return (
-    <SideSearchComp searchItem={searchItem} title={title}>
-      <SimpleList columns={columns} />
+    <SideSearchComp
+      searchItem={searchItem}
+      title={title}
+      api={API_BOARD.FREE_BOARD_LIST}
+    >
+      <SimpleListComp columns={columns} />
     </SideSearchComp>
   );
 };

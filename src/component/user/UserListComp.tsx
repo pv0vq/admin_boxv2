@@ -1,6 +1,4 @@
 import { useState } from "react";
-import SimpleList from "../common/list/SimpleListComp";
-import SimpleSearchComp from "../common/search/SimpleSearchComp";
 import { Spinner } from "@material-tailwind/react";
 import useUserList from "../../hooks/api/user/useUserList";
 
