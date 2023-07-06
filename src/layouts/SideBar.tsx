@@ -40,7 +40,7 @@ const SideBar = ({ children }: Props) => {
       label: "게시판",
       path: "#",
       child: [
-        { id: 4, label: "자유게시판", path: "/board", upperId: 2 },
+        { id: 4, label: "자유게시판", path: "/freeBoard", upperId: 2 },
         { id: 5, label: "공지사항", path: "/notice", upperId: 2 },
         { id: 6, label: "1대1문의", path: "/qna", upperId: 2 },
       ],
@@ -155,7 +155,9 @@ const SideBar = ({ children }: Props) => {
           })}
         </List>
       </Card>
-      <div className="w-full p-4 sm:ml-64">{children}</div>
+      <div className="w-full p-4 sm:ml-64 h-52" >
+        {children}
+      </div>
     </div>
   );
 };

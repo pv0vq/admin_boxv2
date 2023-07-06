@@ -4,6 +4,7 @@ import Main from "./pages/main/Main";
 import NotFound from "./layouts/NotFound";
 import User from "./pages/user/User";
 import Login from "./pages/auth/Login";
+import FreeBoard from "./pages/board/freeBoard/FreeBoard";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "user",
         element: <User />,
+      },
+      {
+        path: "freeBoard",
+        element: <FreeBoard />,
       },
     ],
     errorElement: (

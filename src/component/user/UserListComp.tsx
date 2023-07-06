@@ -1,8 +1,8 @@
 import { useState } from "react";
 import SimpleList from "../common/list/SimpleListComp";
-import useUserList from "../../hooks/api/useUserList";
 import SimpleSearchComp from "../common/search/SimpleSearchComp";
 import { Spinner } from "@material-tailwind/react";
+import useUserList from "../../hooks/api/user/useUserList";
 
 interface IColumns {
   id: string;

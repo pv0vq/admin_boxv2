@@ -5,13 +5,12 @@ import {
   UseQueryResult,
   useQuery,
 } from "react-query";
-import fetcher from "../../api/fetcher";
-import API_USER from "../../api/code/user";
+import fetcher from "../../../api/fetcher";
+import API_USER from "../../../api/code/user";
 
 interface IUserInfo {
   id: number;
   email: string;
-  password: string;
   name: string;
   role: string;
 }
