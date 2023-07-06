@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useFreeBoardList from "../../../hooks/api/board/freeBoard/useFreeBoardList";
 import { Spinner } from "@material-tailwind/react";
 import SimpleSearchComp from "../../common/search/SimpleSearchComp";
@@ -7,7 +7,10 @@ import { IColumns, ISearchItem } from "../../../type/common";
 import SideSearchComp from "../../common/search/SideSearchComp";
 
 const FreeBoardListComp = () => {
-  const { data, isLoading } = useFreeBoardList();
+  const [paramsSubmit, setParamsSubmit] = useState<{ [key: string]: string }>(
+    {}
+  );
+  const { data, isLoading } = useFreeBoardList(paramsSubmit);
   const [columns] = useState<IColumns[]>([
     {
       id: "id",
@@ -111,7 +114,11 @@ const FreeBoardListComp = () => {
     );
   } else {
     return (
-      <SimpleSearchComp searchItem={searchItem} title={title}>
+      <SimpleSearchComp
+        searchItem={searchItem}
+        title={title}
+        setParamsSubmit={setParamsSubmit}
+      >
         <SimpleList columns={columns} data={data.content} />
       </SimpleSearchComp>
     );

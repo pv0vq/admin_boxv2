@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { memo, useState } from "react";
 import {
   Card,
   Typography,
@@ -6,9 +6,6 @@ import {
   ListItem,
   ListItemPrefix,
   Option,
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
   Input,
   Select,
   Radio,
@@ -16,33 +13,32 @@ import {
   Switch,
   Button,
 } from "@material-tailwind/react";
-import {
-  Cog6ToothIcon,
-  ChevronDownIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { ISearchItem } from "../../../type/common";
+import React from "react";
 
 interface IProps {
   searchItem: ISearchItem[];
+  setParamsSubmit: (params: any) => void;
 }
 
-const SideSearchComp = ({ searchItem }: IProps) => {
+const SideSearchComp = ({ searchItem, setParamsSubmit }: IProps) => {
   const [params, setParams] = useState<any>({});
 
-  const onSubimt = () => {
-    console.log(params, "params");
-  };
-
+  /**
+   * 검색 파라미터 업데이트
+   *
+   * @param name key
+   * @param value value
+   */
   const paramsChangeHandler = (name: any, value: any) => {
     setParams((prevParams: any) => {
       return { ...prevParams, [name]: value };
     });
   };
 
-  const test = (item: any) => {
-    console.log(item, "item");
+  const onSubimt = () => {
+    setParamsSubmit(params);
   };
 
   return (

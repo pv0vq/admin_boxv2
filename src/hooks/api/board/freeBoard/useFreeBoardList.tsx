@@ -39,5 +39,9 @@ export default function useFreeBoardList(
   params?: IBoardListParams,
   options?: UseQueryOptions<any, AxiosError>
 ): UseQueryResult<any, AxiosError> {
-  return useQuery(QUERY_KEYS.BOARD_LIST, () => getBoardList(params), options);
+  return useQuery(
+    [QUERY_KEYS.BOARD_LIST, params],
+    () => getBoardList(params),
+    options
+  );
 }

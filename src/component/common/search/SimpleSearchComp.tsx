@@ -1,32 +1,39 @@
 import {
-  ArrowDownTrayIcon,
-  Cog6ToothIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/solid";
-import {
   Button,
   Card,
   CardHeader,
-  Input,
-  Navbar,
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
-import { ReactNode, useState } from "react";
-import { IOptions, ISearchItem } from "../../../type/common";
+import { ReactNode, memo, useState } from "react";
+import { ISearchItem } from "../../../type/common";
 import SideSearchComp from "./SideSearchComp";
+import React from "react";
 interface IProps {
   children: ReactNode;
   searchItem: ISearchItem[];
   title: string;
+  setParamsSubmit: (params: any) => void;
 }
 
-const SimpleSearchComp = ({ children, searchItem, title }: IProps) => {
+const SimpleSearchComp = ({
+  children,
+  searchItem,
+  title,
+  setParamsSubmit,
+}: IProps) => {
   const [searchState, setSearchState] = useState<boolean>(false);
 
   return (
     <div className="flex">
-      {searchState ? <SideSearchComp searchItem={searchItem} /> : <></>}
+      {searchState ? (
+        <SideSearchComp
+          searchItem={searchItem}
+          setParamsSubmit={setParamsSubmit}
+        />
+      ) : (
+        <></>
+      )}
       <Card className="h-full w-full">
         <CardHeader
           floated={false}
