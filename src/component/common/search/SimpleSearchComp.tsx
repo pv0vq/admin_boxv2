@@ -13,88 +13,37 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { ReactNode, useState } from "react";
-import { IOptions } from "../../../type/common";
+import { IOptions, ISearchItem } from "../../../type/common";
 import SideSearchComp from "./SideSearchComp";
 interface IProps {
   children: ReactNode;
+  searchItem: ISearchItem[];
+  title: string;
 }
 
-interface ISearchItem {
-  type: string;
-  value: string;
-  label: string;
-  optin?: IOptions[];
-}
-
-const SimpleSearchComp = ({ children }: IProps) => {
-  const [searchItemLIst] = useState<ISearchItem[]>([
-    {
-      type: "TEXT",
-      value: "userName",
-      label: "검색",
-    },
-    {
-      type: "SELECT_BOX",
-      value: "role",
-      label: "권한",
-      optin: [
-        {
-          label: "사용자",
-          value: "USER",
-        },
-        {
-          label: "관리자",
-          value: "ADMIN",
-        },
-      ],
-    },
-    {
-      type: "RADIO",
-      value: "role",
-      label: "권한",
-      optin: [
-        {
-          label: "사용자",
-          value: "USER",
-        },
-        {
-          label: "관리자",
-          value: "ADMIN",
-        },
-      ],
-    },
-    {
-      type: "CHECK_BOX",
-      value: "role",
-      label: "권한",
-      optin: [
-        {
-          label: "사용자",
-          value: "USER",
-        },
-        {
-          label: "관리자",
-          value: "ADMIN",
-        },
-      ],
-    },
-    {
-      type: "SWITCH",
-      value: "useYn",
-      label: "사용여부",
-    },
-  ]);
-
+const SimpleSearchComp = ({ children, searchItem, title }: IProps) => {
   const [searchState, setSearchState] = useState<boolean>(false);
 
   return (
     <div className="flex">
-      {searchState ? <SideSearchComp /> : <></>}
-      <Card className="h-full w-full overflow-scroll">
-        <CardHeader floated={false} shadow={false} className="rounded-none">
-          <Tooltip content="검색창">
-            <Button onClick={() => setSearchState(!searchState)}>검색</Button>
-          </Tooltip>
+      {searchState ? <SideSearchComp searchItem={searchItem} /> : <></>}
+      <Card className="h-full w-full">
+        <CardHeader
+          floated={false}
+          shadow={false}
+          className="flex-row rounded-none"
+        >
+          <div className="flex flex-wrap items-center text-blue-gray-900 relative py-2 p-4">
+            <Tooltip content="검색창">
+              <Button onClick={() => setSearchState(!searchState)}>
+                검색하기
+              </Button>
+            </Tooltip>
+
+            <Typography variant="h2" className="absolute left-1/2 ">
+              {title}
+            </Typography>
+          </div>
         </CardHeader>
         {children}
       </Card>

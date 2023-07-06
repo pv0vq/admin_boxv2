@@ -12,3 +12,15 @@ export interface IIdOptions {
   id: number;
   label: string;
 }
+
+export interface IColumns {
+  id: string;
+  label: string;
+}
+
+export interface ISearchItem {
+  type: string;
+  value: string;
+  label: string;
+  optin?: IOptions[];
+}

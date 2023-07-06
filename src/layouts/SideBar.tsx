@@ -155,9 +155,7 @@ const SideBar = ({ children }: Props) => {
           })}
         </List>
       </Card>
-      <div className="w-full p-4 sm:ml-64 h-52" >
-        {children}
-      </div>
+      <div className="w-full p-4">{children}</div>
     </div>
   );
 };

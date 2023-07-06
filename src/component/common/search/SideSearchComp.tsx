@@ -21,78 +21,17 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { IOptions } from "../../../type/common";
+import { ISearchItem } from "../../../type/common";
 
-interface ISearchItem {
-  type: string;
-  value: string;
-  label: string;
-  optin?: IOptions[];
+interface IProps {
+  searchItem: ISearchItem[];
 }
 
-const SideSearchComp = () => {
-  const [searchItemLIst] = useState<ISearchItem[]>([
-    {
-      type: "TEXT",
-      value: "userName",
-      label: "검색",
-    },
-    {
-      type: "SELECT_BOX",
-      value: "role",
-      label: "권한",
-      optin: [
-        {
-          label: "사용자",
-          value: "USER",
-        },
-        {
-          label: "관리자",
-          value: "ADMIN",
-        },
-      ],
-    },
-    {
-      type: "RADIO",
-      value: "role",
-      label: "권한",
-      optin: [
-        {
-          label: "사용자",
-          value: "USER",
-        },
-        {
-          label: "관리자",
-          value: "ADMIN",
-        },
-      ],
-    },
-    {
-      type: "CHECK_BOX",
-      value: "role",
-      label: "권한",
-      optin: [
-        {
-          label: "사용자",
-          value: "USER",
-        },
-        {
-          label: "관리자",
-          value: "ADMIN",
-        },
-      ],
-    },
-    {
-      type: "SWITCH",
-      value: "useYn",
-      label: "사용여부",
-    },
-  ]);
-
+const SideSearchComp = ({ searchItem }: IProps) => {
   return (
     <Card className="  p-4 shadow-xl shadow-blue-gray-900/5">
       <List>
-        {searchItemLIst.map((item, index: number) => {
+        {searchItem.map((item: ISearchItem, index: number) => {
           if (item.type === "TEXT") {
             return (
               <div key={index}>

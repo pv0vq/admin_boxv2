@@ -3,10 +3,12 @@ import useFreeBoardList from "../../../hooks/api/board/freeBoard/useFreeBoardLis
 import { Spinner } from "@material-tailwind/react";
 import SimpleSearchComp from "../../common/search/SimpleSearchComp";
 import SimpleList from "../../common/list/SimpleListComp";
+import { IColumns, ISearchItem } from "../../../type/common";
+import SideSearchComp from "../../common/search/SideSearchComp";
 
 const FreeBoardListComp = () => {
   const { data, isLoading } = useFreeBoardList();
-  const [columns] = useState<any[]>([
+  const [columns] = useState<IColumns[]>([
     {
       id: "id",
       label: "번호",
@@ -41,7 +43,65 @@ const FreeBoardListComp = () => {
     },
   ]);
 
-  console.log("data:", data);
+  const [searchItem] = useState<ISearchItem[]>([
+    {
+      type: "TEXT",
+      value: "userName",
+      label: "검색",
+    },
+    {
+      type: "SELECT_BOX",
+      value: "role",
+      label: "권한",
+      optin: [
+        {
+          label: "사용자",
+          value: "USER",
+        },
+        {
+          label: "관리자",
+          value: "ADMIN",
+        },
+      ],
+    },
+    {
+      type: "RADIO",
+      value: "role",
+      label: "권한",
+      optin: [
+        {
+          label: "사용자",
+          value: "USER",
+        },
+        {
+          label: "관리자",
+          value: "ADMIN",
+        },
+      ],
+    },
+    {
+      type: "CHECK_BOX",
+      value: "role",
+      label: "권한",
+      optin: [
+        {
+          label: "사용자",
+          value: "USER",
+        },
+        {
+          label: "관리자",
+          value: "ADMIN",
+        },
+      ],
+    },
+    {
+      type: "SWITCH",
+      value: "useYn",
+      label: "사용여부",
+    },
+  ]);
+
+  const title = "자유게시판";
 
   if (isLoading) {
     return (
@@ -51,7 +111,7 @@ const FreeBoardListComp = () => {
     );
   } else {
     return (
-      <SimpleSearchComp>
+      <SimpleSearchComp searchItem={searchItem} title={title}>
         <SimpleList columns={columns} data={data.content} />
       </SimpleSearchComp>
     );
