@@ -47,6 +47,8 @@ export const QUERY_KEYS = Object.assign({
 const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
   const [params, setParams] = useState<ISearchParams>({});
   const [submit, setSubmit] = useState<ISearchParams>({});
+  const [totalPage, setTotalPag] = useState<number>(0);
+  const [page, setPage] = useState<number>(0);
 
   /**
    * react query 서치
@@ -108,9 +110,16 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
   };
 
   const setPageUpdateHandler = (page: number) => {
-    console.log("page:", page);
+    console.log(page, "page");
     setSubmit({ page });
   };
+
+  useEffect(() => {
+    if (data) {
+      setPage(data.pageable.pageNumber + 1);
+      setTotalPag(data.totalPages);
+    }
+  }, [data]);
 
   if (isLoading) {
     <div className="flex items-end justify-center gap-8">
@@ -382,7 +391,9 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
             <CardFooter>
               {data && data.content.length > 0 ? (
                 <SimplePaginationComp
-                  data={data}
+                  totalPage={totalPage}
+                  limit={5}
+                  page={page}
                   setPageUpdate={setPageUpdateHandler}
                 />
               ) : (
