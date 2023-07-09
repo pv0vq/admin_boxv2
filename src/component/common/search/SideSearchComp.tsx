@@ -46,9 +46,13 @@ export const QUERY_KEYS = Object.assign({
 
 const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
   const [params, setParams] = useState<ISearchParams>({});
-  const [submit, setSubmit] = useState<ISearchParams>({});
+  const [submit, setSubmit] = useState<ISearchParams>({
+    page: 0,
+    size: 10,
+  });
   const [totalPage, setTotalPag] = useState<number>(0);
   const [page, setPage] = useState<number>(0);
+  const [size, setSize] = useState(10);
 
   /**
    * react query 서치
@@ -109,9 +113,23 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
     setSearchState(!searchState);
   };
 
+  /**
+   * 페이지 이동
+   *
+   * @param page
+   */
   const setPageUpdateHandler = (page: number) => {
-    console.log(page, "page");
-    setSubmit({ page });
+    setSubmit({ ...submit, page });
+  };
+
+  /**
+   * 페이지 사이즈 업데이트
+   *
+   * @param size
+   */
+  const setPageSizeUpdate = (size: number) => {
+    setSize(size);
+    setSubmit({ size });
   };
 
   useEffect(() => {
@@ -371,29 +389,32 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
               shadow={false}
               className="flex-row rounded-none"
             >
-              <div className="grid grid-cols-4 items-center text-blue-gray-900 py-2 p-4 ">
-                <div className="col-span-1">
+              <div className="grid grid-cols-5 items-center text-blue-gray-900 py-2 p-4 ">
+                <div className="col-span-2">
                   <Tooltip content="검색창">
                     <Button onClick={searchStateHandelr}>검색하기</Button>
                   </Tooltip>
                 </div>
-                <Typography
-                  variant="h2"
-                  className="text-center col-start-2 col-span-2"
-                >
+                <Typography variant="h2" className="col-span-2">
                   {title}
                 </Typography>
+                <div className="col-span-1 text-right">
+                  <p className="font-bold">총 {data?.totalElements} 건</p>
+                </div>
               </div>
             </CardHeader>
             <CardBody className="px-0 ">
               {React.cloneElement(children, { data })}
             </CardBody>
             <CardFooter>
+              {/* 페이징 */}
               {data && data.content.length > 0 ? (
                 <SimplePaginationComp
                   totalPage={totalPage}
                   limit={5}
                   page={page}
+                  size={String(size)}
+                  setPageSizeUpdate={setPageSizeUpdate}
                   setPageUpdate={setPageUpdateHandler}
                 />
               ) : (

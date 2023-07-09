@@ -5,24 +5,29 @@ import {
   Option,
   ButtonGroup,
 } from "@material-tailwind/react";
-import { IPageData } from "../../../type/common";
-import { useEffect, useMemo, useState } from "react";
+import { IOptions } from "../../../type/common";
+import { useEffect, useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
-import React from "react";
 
 interface IProps {
   setPageUpdate: (page: number) => void;
+  setPageSizeUpdate: (size: number) => void;
   page: number;
   limit: number;
   totalPage: number;
+  size: string;
 }
 
 const SimplePaginationComp = ({
   page,
   limit,
   totalPage,
+  size,
   setPageUpdate,
+  setPageSizeUpdate,
 }: IProps) => {
+  const [totalPageArray, setTotalPageArray] = useState<number[][]>([]);
+  const [currentPageArray, setCurrentPageArray] = useState<number[]>([]);
   const [pageSize] = useState([
     {
       label: "10",
@@ -41,10 +46,6 @@ const SimplePaginationComp = ({
       value: "100",
     },
   ]);
-
-  const [totalPageArray, setTotalPageArray] = useState<number[][]>([]);
-  const [currentPageArray, setCurrentPageArray] = useState<number[]>([]);
-  const [pageCount, setPageCount] = useState(1);
 
   /**
    * 토탈 페이징 배열 만들기
@@ -124,8 +125,9 @@ const SimplePaginationComp = ({
       <div>
         <Select
           label="사이즈"
-          defaultValue={pageSize[0].value}
+          value={String(size)}
           onChange={(event: any) => {
+            setPageSizeUpdate(event);
             console.log(event);
           }}
         >
