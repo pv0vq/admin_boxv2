@@ -1,4 +1,4 @@
-import { ReactNode, memo, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   Typography,
@@ -16,13 +16,11 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  IconButton,
   Spinner,
 } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { IApi, IPageData, ISearchItem } from "../../../type/common";
 import React from "react";
-import useFreeBoardList from "../../../hooks/api/board/freeBoard/useFreeBoardList";
 import { useQuery } from "react-query";
 import { AxiosError } from "axios";
 import fetcher from "../../../api/fetcher";

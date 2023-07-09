@@ -1,11 +1,9 @@
 import {
-  Button,
   IconButton,
   Select,
   Option,
   ButtonGroup,
 } from "@material-tailwind/react";
-import { IOptions } from "../../../type/common";
 import { useEffect, useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 
@@ -53,7 +51,6 @@ const SimplePaginationComp = ({
    *
    */
   useEffect(() => {
-    console.log(sliceArrayByLimit(totalPage, limit));
     setTotalPageArray(sliceArrayByLimit(totalPage, limit));
   }, [totalPage]);
 
@@ -128,7 +125,6 @@ const SimplePaginationComp = ({
           value={String(size)}
           onChange={(event: any) => {
             setPageSizeUpdate(event);
-            console.log(event);
           }}
         >
           {pageSize.map((size, i) => {

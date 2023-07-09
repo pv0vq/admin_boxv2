@@ -47,7 +47,6 @@ function useLogin(
   return useMutation(fetchLogin, {
     ...options,
     onSuccess: ({ data, status, success, message }) => {
-      console.log(data, status, success, message, "로그인 정보");
       if (status === "OK") {
         const { accessToken, refreshToken } = data;
         // 이전 페이지 정보가 있을 경우
