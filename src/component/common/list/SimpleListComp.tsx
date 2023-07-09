@@ -46,7 +46,6 @@ const SimpleListComp = ({
                     className={classes}
                     key={ii}
                     onClick={() => {
-                      console.log(column.id);
                       if (setColum) setColum(row);
                     }}
                   >

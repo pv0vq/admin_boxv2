@@ -137,9 +137,9 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    console.log("params:", params);
-  }, [params]);
+  // useEffect(() => {
+  //   console.log("params:", params);
+  // }, [params]);
 
   if (isLoading) {
     <div className="flex items-end justify-center gap-8">

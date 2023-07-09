@@ -39,7 +39,6 @@ export const getUserDetailInfo = async (id: number) => {
       method,
     },
   }).then(({ data }) => {
-    console.log(data.data);
     return data.data;
   });
 };

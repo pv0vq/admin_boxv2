@@ -7,7 +7,6 @@ const User = () => {
   const [columsId, setColumsId] = useState<number>(0);
 
   const pageHandler = (colum: any) => {
-    console.log("colum:", colum);
     setColumsId(colum.id);
     setPageState("detail");
   };
