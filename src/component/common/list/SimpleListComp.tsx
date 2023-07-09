@@ -6,9 +6,14 @@ interface IProps {
     label: string;
   }[];
   data?: IPageData;
+  setColum?: (colums: any) => void;
 }
 
-const SimpleListComp = ({ columns, data }: IProps): JSX.Element | null => {
+const SimpleListComp = ({
+  columns,
+  data,
+  setColum,
+}: IProps): JSX.Element | null => {
   if (data && data.content.length > 0) {
     return (
       <table className="w-full min-w-max table-auto text-left">
@@ -37,7 +42,14 @@ const SimpleListComp = ({ columns, data }: IProps): JSX.Element | null => {
             return (
               <tr key={index}>
                 {columns.map((column, ii) => (
-                  <td className={classes} key={ii}>
+                  <td
+                    className={classes}
+                    key={ii}
+                    onClick={() => {
+                      console.log(column.id);
+                      if (setColum) setColum(row);
+                    }}
+                  >
                     <Typography
                       variant="small"
                       color="blue-gray"

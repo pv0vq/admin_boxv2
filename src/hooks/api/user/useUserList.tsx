@@ -1,41 +1,61 @@
-// import { AxiosError, AxiosResponse } from "axios";
-// import {
-//   QueryKey,
-//   UseQueryOptions,
-//   UseQueryResult,
-//   useQuery,
-// } from "react-query";
-// import fetcher from "../../../api/fetcher";
-// import API_USER from "../../../api/code/user";
+import { AxiosError, AxiosResponse } from "axios";
+import {
+  QueryKey,
+  UseQueryOptions,
+  UseQueryResult,
+  useQuery,
+} from "react-query";
+import fetcher from "../../../api/fetcher";
+import API_USER from "../../../api/code/user";
 
-// interface IUserInfo {
-//   id: number;
-//   email: string;
-//   name: string;
-//   role: string;
-// }
+interface IUserDetailInfo {
+  id: number;
+  email: string;
+  name: string;
+  role: string;
+  useYn: string;
+  createDate: Date;
+  modifiedDate: Date;
+}
 
-// export interface IUserListParams {
-//   [key: string]: any;
-// }
+export interface IUserListParams {
+  [key: string]: any;
+}
 
-// // export const queryKeys = {
-// //   userInfo: "userInfo",
-// // };
-
-// export const QUERY_KEYS = Object.assign({
-//   // common
-//   USER_LIST: "userInfo",
-// });
-
-// export const getUserList = async () => {
-//   return await fetcher({ api: API_USER.USER_LIST }).then(
-//     ({ data }) => data.data
-//   );
+// export const queryKeys = {
+//   userInfo: "userInfo",
 // };
 
-// export default function useUserList(
-//   options?: UseQueryOptions<any, AxiosError>
-// ): UseQueryResult<any, AxiosError> {
-//   return useQuery(QUERY_KEYS.USER_LIST, () => getUserList(), options);
-// }
+export const QUERY_KEYS = Object.assign({
+  // common
+  USER_LIST: "userDetailInfo",
+});
+
+export const getUserDetailInfo = async (id: number) => {
+  const { url, method } = API_USER.USER_DETAIL_INFO;
+  return await fetcher({
+    api: {
+      url: url + id,
+      method,
+    },
+  }).then(({ data }) => {
+    console.log(data.data);
+    return data.data;
+  });
+};
+
+export default function useUserDetailInfo(
+  id: number,
+  options?: UseQueryOptions<
+    AxiosResponse<IUserDetailInfo>,
+    AxiosError,
+    any,
+    QueryKey[]
+  >
+): UseQueryResult<IUserDetailInfo, AxiosError> {
+  return useQuery(
+    [QUERY_KEYS.USER_LIST, id],
+    () => getUserDetailInfo(id),
+    options
+  );
+}

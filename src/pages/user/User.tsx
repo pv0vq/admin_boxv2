@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserListComp from "../../component/user/UserListComp";
 import UserDetailComp from "../../component/user/UserDetailComp";
 
 const User = () => {
-  const [pageState, setPageState] = useState("list" || "detail");
+  const [pageState, setPageState] = useState<string>("list" || "detail");
+  const [columsId, setColumsId] = useState<number>(0);
+
+  const pageHandler = (colum: any) => {
+    console.log("colum:", colum);
+    setColumsId(colum.id);
+    setPageState("detail");
+  };
 
   if (pageState === "list") {
-    return <UserListComp />;
+    return <UserListComp setColum={pageHandler} />;
   } else {
-    return <UserDetailComp />;
+    return <UserDetailComp columsId={columsId} />;
   }
 };
 

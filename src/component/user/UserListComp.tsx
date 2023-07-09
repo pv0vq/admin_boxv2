@@ -4,7 +4,11 @@ import SimpleListComp from "../common/list/SimpleListComp";
 import API_USER from "../../api/code/user";
 import { ISearchItem, IColumns } from "../../type/common";
 
-const UserList = () => {
+interface IProps {
+  setColum: (setColum: any) => void;
+}
+
+const UserList = ({ setColum }: IProps) => {
   const title = "유저게시판";
   const [columns] = useState<IColumns[]>([
     {
@@ -100,7 +104,7 @@ const UserList = () => {
       title={title}
       api={API_USER.USER_LIST}
     >
-      <SimpleListComp columns={columns} />
+      <SimpleListComp columns={columns} setColum={setColum} />
     </SideSearchComp>
   );
 };

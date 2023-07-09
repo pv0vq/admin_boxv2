@@ -1,5 +1,13 @@
-const UserDetailComp = () => {
-  return <>디테일</>;
+import useUserDetailInfo from "../../hooks/api/user/useUserList";
+
+interface IProps {
+  columsId: number;
+}
+
+const UserDetailComp = ({ columsId }: IProps) => {
+  const { data } = useUserDetailInfo(columsId);
+  console.log("data:", data);
+  return <>나임</>;
 };
 
 export default UserDetailComp;
