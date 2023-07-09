@@ -46,71 +46,78 @@ const SimplePaginationComp = ({
   const [currentPageArray, setCurrentPageArray] = useState<number[]>([]);
   const [pageCount, setPageCount] = useState(1);
 
+  /**
+   * 토탈 페이징 배열 만들기
+   * [[1,2,3,4,5]. [6,7,8,9,10],[11]]
+   *
+   */
   useEffect(() => {
     console.log(sliceArrayByLimit(totalPage, limit));
     setTotalPageArray(sliceArrayByLimit(totalPage, limit));
   }, [totalPage]);
 
   useEffect(() => {
-    console.log(
-      "(page % limit === 1",
-      page % limit,
-      "totalPageArray[Math.floor(page / limit):"
-    );
-
-    const curArr = totalPageArray[Math.floor(page / limit)];
-    if (curArr) {
-      if (page % limit === 1) {
-        setCurrentPageArray(totalPageArray[Math.floor(page / limit)]);
-      } else {
-        setCurrentPageArray(totalPageArray[Math.floor(page / limit) - 1]);
-      }
+    if (page % limit === 0) {
+      setCurrentPageArray(totalPageArray[Math.floor(page / limit) - 1]);
+    } else {
+      setCurrentPageArray(totalPageArray[Math.floor(page / limit)]);
     }
-  }, [totalPageArray]);
+  }, [page, totalPageArray]);
 
+  /**
+   * 토탈 페이징 2차원 배열 만들기
+   *
+   * @param totalPage 11
+   * @param limit 5
+   * @returns
+   */
   const sliceArrayByLimit = (totalPage: number, limit: number) => {
     const arr = [];
     const result = [];
+    /**
+     * 토탈 페이징 1차원 배열
+     */
     for (let i = 1; i <= totalPage; i++) {
       arr.push(i);
     }
 
+    /**
+     * limit 만큼 짜른 2차원 배열 파싱 0, 5, 10
+     */
     for (let i = 0; i < arr.length; i += limit) {
       result.push(arr.slice(i, i + limit));
     }
     return result;
   };
 
+  /**
+   * 클릭 시
+   *
+   * @param index
+   */
   const getItemProps = (index: number) => {
     setPageUpdate(index - 1);
   };
 
+  /**
+   * 다음버튼
+   *
+   * @returns setPageUpdate(page)
+   */
   const next = () => {
-    // if (data.number === pageCount * 10 - 1) {
-    //   setPageCount(pageCount + 1);
-    // }
-    setPageUpdate(page + 1);
+    if (page === totalPage) return;
+    else setPageUpdate(page);
   };
 
+  /**
+   * 이전 버튼
+   *
+   * @returns setPageUpdate(page - 2)
+   */
   const prev = () => {
-    // if (data.number === pageCount - 1) {
-    //   if (pageCount === 1) {
-    //     return;
-    //   } else {
-    //     setPageCount(pageCount - 1);
-    //   }
-    // }
-    setPageUpdate(page - 1);
+    if (page === 1) return;
+    else setPageUpdate(page - 2);
   };
-
-  // const pagingList = () => {
-  //   currentPageArray;
-  //   const result = [];
-  //   for (let i = pageCount * 10 - 9; i <= pageCount * 10; i++) {
-  //     result.push();
-  //   }
-  //   return result;
-  // };
 
   return (
     <div className="flex justify-between">
