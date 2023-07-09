@@ -20,11 +20,11 @@ import {
 } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { IApi, IPageData, ISearchItem } from "../../../type/common";
-import React from "react";
 import { useQuery } from "react-query";
 import { AxiosError } from "axios";
 import fetcher from "../../../api/fetcher";
 import SimplePaginationComp from "../pagination/SimplePaginationComp";
+import React from "react";
 
 interface IProps {
   searchItem: ISearchItem[];
@@ -142,9 +142,11 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
   // }, [params]);
 
   if (isLoading) {
-    <div className="flex items-end justify-center gap-8">
-      <Spinner className="h-64 w-64" />
-    </div>;
+    return (
+      <div className="flex items-end justify-center gap-8">
+        <Spinner className="h-64 w-64" />
+      </div>
+    );
   } else {
     return (
       <div>

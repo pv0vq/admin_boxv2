@@ -1,4 +1,4 @@
-import useUserDetailInfo from "../../hooks/api/user/useUserList";
+import useUserDetailInfo from "../../hooks/api/user/useUserDetailInfo";
 
 interface IProps {
   columsId: number;
