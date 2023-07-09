@@ -57,7 +57,7 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
    *
    */
   const { data, isLoading, refetch } = useQuery<IPageData, AxiosError>(
-    [QUERY_KEYS.SEARCH_PAGE, submit],
+    [QUERY_KEYS.SEARCH_PAGE, submit, api],
     () => getSearchPage(),
     {
       enabled: !!submit,
@@ -137,6 +137,10 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    console.log("params:", params);
+  }, [params]);
+
   if (isLoading) {
     <div className="flex items-end justify-center gap-8">
       <Spinner className="h-64 w-64" />
@@ -186,6 +190,7 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                                 event.target.value
                               )
                             }
+                            value={params[item.value]}
                           />
                         </div>
                       </div>
@@ -202,6 +207,7 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                           <div className="p-2">
                             <Select
                               label={item.label}
+                              value={params[item.value]}
                               onChange={(event: any) => {
                                 paramsChangeHandler(item.value, event);
                               }}
@@ -241,6 +247,11 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                                           <Radio
                                             name={item.value}
                                             id={item.value}
+                                            checked={
+                                              params[item.value] === sub.value
+                                                ? true
+                                                : false
+                                            }
                                             ripple={false}
                                             className="hover:before:opacity-0"
                                             containerProps={{
@@ -296,39 +307,62 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                                             id={sub.value}
                                             ripple={false}
                                             className="hover:before:opacity-0"
+                                            checked={
+                                              Object.keys(params).includes(
+                                                item.value
+                                              ) &&
+                                              params[item.value] !== "" &&
+                                              params[item.value]
+                                                .split(",")
+                                                .includes(sub.value)
+                                            }
                                             containerProps={{
                                               className: "p-1",
                                             }}
                                             onChange={(event) => {
+                                              // param에 값이 있고 빈값이 아닐 경우
                                               if (
                                                 Object.keys(params).includes(
                                                   item.value
-                                                )
+                                                ) &&
+                                                params[item.value] !== ""
                                               ) {
                                                 const checkArr: Array<string> =
-                                                  params[item.value];
+                                                  params[item.value].split(",");
+                                                // param에 기존 값이 있으면 삭제
                                                 if (
                                                   checkArr.includes(sub.value)
                                                 ) {
-                                                  paramsChangeHandler(
-                                                    item.value,
+                                                  const tremArr =
                                                     checkArr.filter(
                                                       (arr: string) =>
                                                         arr !== sub.value
-                                                    )
-                                                  );
-                                                } else {
-                                                  checkArr.push(sub.value);
+                                                    );
                                                   paramsChangeHandler(
                                                     item.value,
-                                                    checkArr
+                                                    tremArr.join(",")
                                                   );
+                                                } else {
+                                                  // 없으면 추가
+                                                  checkArr.push(sub.value);
+                                                  if (checkArr.length === 1) {
+                                                    paramsChangeHandler(
+                                                      item.value,
+                                                      checkArr[0]
+                                                    );
+                                                  } else {
+                                                    paramsChangeHandler(
+                                                      item.value,
+                                                      checkArr.join(",")
+                                                    );
+                                                  }
                                                 }
                                               } else {
+                                                // param에 값이 없으니 추가
                                                 if (event.target.checked) {
                                                   paramsChangeHandler(
                                                     item.value,
-                                                    [sub.value]
+                                                    sub.value
                                                   );
                                                 }
                                               }

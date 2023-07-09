@@ -33,7 +33,7 @@ const UserList = () => {
     },
     {
       id: "modifiedDate",
-      label: "생성일",
+      label: "수정일",
     },
   ]);
 
@@ -75,7 +75,7 @@ const UserList = () => {
     },
     {
       type: "CHECK_BOX",
-      value: "role",
+      value: "checkBox",
       label: "권한",
       optin: [
         {
