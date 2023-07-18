@@ -207,17 +207,6 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                                 )
                               } // 날짜를 선택하였을 때 실행될 함수
                             />
-
-                            {/* <DatePicker
-                              locale={ko} // 언어설정 기본값은 영어
-                              dateFormat="yyyy-MM-dd" // 날짜 형식 설정
-                              closeOnScroll={true} // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
-                              placeholderText="종료일" // placeholder
-                              selected={params.endDate} // value
-                              onChange={(date: Date) =>
-                                paramsChangeHandler("endDate", date)
-                              } // 날짜를 선택하였을 때 실행될 함수
-                            /> */}
                           </div>
                         </div>
                       </div>
@@ -408,21 +397,34 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                           <div color="blue-gray">{item.label}</div>
                         </div>
                         <div className="p-3">
-                          <input
-                            type="checkbox"
-                            id={item.value}
-                            onChange={(event: any) => {
-                              if (event.target.checked) {
-                                paramsChangeHandler(item.value, "Y");
-                              } else {
-                                paramsChangeHandler(item.value, "N");
-                              }
-                            }}
-                            className="form-checkbox"
-                          />{" "}
-                          <label htmlFor={item.value} className="mr-2">
-                            {item.label}
-                          </label>
+                          <div className="relative">
+                            <label className="flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                id={item.value}
+                                onChange={(event: any) => {
+                                  if (event.target.checked) {
+                                    paramsChangeHandler(item.value, "Y");
+                                  } else {
+                                    paramsChangeHandler(item.value, "N");
+                                  }
+                                }}
+                                className="sr-only"
+                              />
+
+                              <div className="block bg-gray-400 w-14 h-8 rounded-full"></div>
+                              <div
+                                className={
+                                  params[item.value] === "Y"
+                                    ? "absolute left-1 top-1 w-6 h-6 rounded-full transition translate-x-full bg-red-400 "
+                                    : "absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"
+                                }
+                              ></div>
+                            </label>
+                          </div>
+                          {/* <label htmlFor={item.value} className="text-gray-700">
+                            {item.value}
+                          </label> */}
                         </div>
                       </div>
                     );
