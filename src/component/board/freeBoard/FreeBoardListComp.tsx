@@ -103,8 +103,13 @@ const FreeBoardListComp = () => {
     },
     {
       type: "DATE_PIKER",
-      value: "useYn",
-      label: "날짜",
+      value: "createDateFrom",
+      label: "시작일",
+    },
+    {
+      type: "DATE_PIKER",
+      value: "createDateTo",
+      label: "종료일",
     },
   ]);
 

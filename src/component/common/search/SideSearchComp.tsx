@@ -4,8 +4,10 @@ import { useQuery } from "react-query";
 import { AxiosError } from "axios";
 import fetcher from "../../../api/fetcher";
 import SimplePaginationComp from "../pagination/SimplePaginationComp";
+import { ko } from "date-fns/esm/locale";
+import DatePicker from "react-datepicker";
 import React from "react";
-import Datepicker from "react-tailwindcss-datepicker";
+import utillFormat from "../../../utill/utillFormat";
 
 interface IProps {
   searchItem: ISearchItem[];
@@ -24,12 +26,7 @@ export const QUERY_KEYS = Object.assign({
 });
 
 const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
-  const [params, setParams] = useState<ISearchParams>({
-    date: {
-      startDate: null,
-      endDate: null,
-    },
-  });
+  const [params, setParams] = useState<ISearchParams>({});
   const [submit, setSubmit] = useState<ISearchParams>({
     page: 0,
     size: 10,
@@ -37,6 +34,7 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
   const [totalPage, setTotalPag] = useState<number>(0);
   const [page, setPage] = useState<number>(0);
   const [size, setSize] = useState(10);
+  const { formatDateToyyyyMMdd, parseDateFromyyyyMMdd } = utillFormat();
 
   /**
    * react query 서치
@@ -184,15 +182,46 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                       </div>
                     );
                   } else if (item.type === "DATE_PIKER") {
-                    <div key={index}>
-                      <Datepicker
-                        value={params[item.value]}
-                        onChange={(event: any) => {
-                          console.log("event:", event);
-                          paramsChangeHandler(item.value, event);
-                        }}
-                      />
-                    </div>;
+                    return (
+                      <div key={index}>
+                        <div className="mb-2 flex items-center gap-4 p-4">
+                          {item.label}
+                        </div>
+                        <div className="p-2">
+                          <div className="bg-white rounded-lg shadow-lg flex">
+                            <DatePicker
+                              locale={ko} // 언어설정 기본값은 영어
+                              dateFormat="yyyy-MM-dd" // 날짜 형식 설정
+                              // minDate={new Date()} // 선택할 수 있는 최소 날짜값 지정
+                              closeOnScroll={true} // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
+                              placeholderText="날짜 선택" // placeholder
+                              selected={
+                                params[item.value]
+                                  ? parseDateFromyyyyMMdd(params[item.value])
+                                  : new Date()
+                              } // value
+                              onChange={(date: Date) =>
+                                paramsChangeHandler(
+                                  item.value,
+                                  formatDateToyyyyMMdd(date)
+                                )
+                              } // 날짜를 선택하였을 때 실행될 함수
+                            />
+
+                            {/* <DatePicker
+                              locale={ko} // 언어설정 기본값은 영어
+                              dateFormat="yyyy-MM-dd" // 날짜 형식 설정
+                              closeOnScroll={true} // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
+                              placeholderText="종료일" // placeholder
+                              selected={params.endDate} // value
+                              onChange={(date: Date) =>
+                                paramsChangeHandler("endDate", date)
+                              } // 날짜를 선택하였을 때 실행될 함수
+                            /> */}
+                          </div>
+                        </div>
+                      </div>
+                    );
                   } else if (item.type === "SELECT_BOX") {
                     if (item.optin && item.optin.length > 0) {
                       return (
@@ -379,17 +408,6 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                           <div color="blue-gray">{item.label}</div>
                         </div>
                         <div className="p-3">
-                          {/* <Switch
-                            id={item.value}
-                            label={item.label}
-                            onChange={(event: any) => {
-                              if (event.target.checked) {
-                                paramsChangeHandler(item.value, "Y");
-                              } else {
-                                paramsChangeHandler(item.value, "N");
-                              }
-                            }}
-                          /> */}
                           <input
                             type="checkbox"
                             id={item.value}
