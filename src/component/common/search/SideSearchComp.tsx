@@ -137,8 +137,8 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
         <div className="flex">
           {searchState ? (
             <form className="p-4 shadow-xl shadow-blue-gray-900/5 rounded-lg">
-              <button color="light-green" type="submit" onClick={onSubimt}>
-                <div className="flex p-3">
+              <button className="w-full" type="submit" onClick={onSubimt}>
+                <div className="flex p-3 bg-violet-400 rounded-lg w-full border">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -402,11 +402,11 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                                 }}
                                 className="sr-only"
                               />
-                              <div className="block bg-gray-400 w-14 h-8 rounded-full"></div>
+                              <div className="block bg-gray-300 w-14 h-8 rounded-full"></div>
                               <div
                                 className={
                                   params[item.value] === "Y"
-                                    ? "absolute left-1 top-1 w-6 h-6 rounded-full transition translate-x-full bg-red-400 "
+                                    ? "absolute left-1 top-1 w-6 h-6 rounded-full transition translate-x-full bg-violet-400 "
                                     : "absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"
                                 }
                               ></div>
