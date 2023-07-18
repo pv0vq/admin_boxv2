@@ -1,4 +1,3 @@
-import { Typography } from "@material-tailwind/react";
 import { IPageData } from "../../../type/common";
 interface IProps {
   columns: {
@@ -14,27 +13,21 @@ const SimpleListComp = ({
   data,
   setColum,
 }: IProps): JSX.Element | null => {
-  if (data && data.content.length > 0) {
-    return (
-      <table className="w-full min-w-max table-auto text-left">
-        <thead>
-          <tr>
-            {columns.map((column, i) => (
-              <th
-                key={i}
-                className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
-              >
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  {column.label}
-                </Typography>
-              </th>
-            ))}
-          </tr>
-        </thead>
+  return (
+    <table className="w-full min-w-max table-auto">
+      <thead>
+        <tr>
+          {columns.map((column, i) => (
+            <th
+              key={i}
+              className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+            >
+              {column.label}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      {data && data.content.length > 0 ? (
         <tbody>
           {data.content.map((row: any, index: number) => {
             const isLast = index === data.content.length - 1;
@@ -49,32 +42,32 @@ const SimpleListComp = ({
                       if (setColum) setColum(row);
                     }}
                   >
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {(() => {
-                        if (
-                          row[column.id] !== null &&
-                          row[column.id] !== undefined &&
-                          row[column.id] !== "undefined"
-                        ) {
-                          return row[column.id];
-                        } else return "";
-                      })()}
-                    </Typography>
+                    {(() => {
+                      if (
+                        row[column.id] !== null &&
+                        row[column.id] !== undefined &&
+                        row[column.id] !== "undefined"
+                      ) {
+                        return row[column.id];
+                      } else return "";
+                    })()}
                   </td>
                 ))}
               </tr>
             );
           })}
         </tbody>
-      </table>
-    );
-  } else {
-    return <div className="text-center">검색한 목록이 없어요!</div>;
-  }
+      ) : (
+        <tbody>
+          <tr>
+            <td colSpan={columns.length} className="text-center">
+              검색한 목록이 없어요!
+            </td>
+          </tr>
+        </tbody>
+      )}
+    </table>
+  );
 };
 
 export default SimpleListComp;

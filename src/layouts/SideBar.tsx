@@ -1,26 +1,4 @@
 import { ReactNode, useState } from "react";
-import {
-  Card,
-  Typography,
-  List,
-  ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
-  Chip,
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-} from "@material-tailwind/react";
-import {
-  PresentationChartBarIcon,
-  ShoppingBagIcon,
-  UserCircleIcon,
-  Cog6ToothIcon,
-  InboxIcon,
-  PowerIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -75,86 +53,71 @@ const SideBar = ({ children }: Props) => {
   };
 
   return (
-    <div className="static flex">
-      <Card className="left-4 top-4 h-[calc(100vh-2rem)]  max-w-[20rem]  p-4  shadow-xl shadow-blue-gray-900/5">
-        <div className="mb-2 p-4">
-          <Typography variant="h5" color="blue-gray">
-            biite
-          </Typography>
-        </div>
-        <List>
+    <div className="flex">
+      <div className="left-0 top-0 h-screen bg-gray-800 w-64 py-4 px-6 text-white">
+        <div className="text-3xl font-bold mb-4">biite</div>
+        <ul className="space-y-2">
           {manuList.map((manu, i) => {
             if (manu.child.length < 1) {
               return (
                 <Link to={manu.path} key={i}>
-                  <ListItem>
-                    <ListItemPrefix>
-                      <Cog6ToothIcon className="h-5 w-5" />
-                    </ListItemPrefix>
-                    {manu.label}
-                  </ListItem>
+                  <li className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+                    <span className="text-[15px] ml-4 text-gray-200 font-bold">
+                      {manu.label}
+                    </span>
+                  </li>
                 </Link>
               );
             } else {
               return (
-                <Accordion
-                  key={i}
-                  open={menuState.includes(manu.id)}
-                  icon={
-                    <ChevronDownIcon
-                      strokeWidth={2.5}
-                      className={`mx-auto h-4 w-4 transition-transform ${
-                        menuState.includes(manu.id) ? "rotate-180" : ""
-                      }`}
-                    />
-                  }
-                >
-                  <ListItem
-                    className="p-0"
-                    selected={menuState.includes(manu.id)}
+                <div key={i}>
+                  <div
+                    className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+                    onClick={() => menuStateHandler(manu)}
                   >
-                    <AccordionHeader
-                      onClick={() => menuStateHandler(manu)}
-                      className="border-b-0 p-3"
-                    >
-                      <ListItemPrefix>
-                        <Cog6ToothIcon className="h-5 w-5" />
-                      </ListItemPrefix>
-                      <Typography
-                        color="blue-gray"
-                        className="mr-auto font-normal"
-                      >
+                    <div className="flex justify-between w-full items-center">
+                      <span className="text-[15px] ml-4 text-gray-200 font-bold">
                         {manu.label}
-                      </Typography>
-                    </AccordionHeader>
-                  </ListItem>
-                  <AccordionBody className="py-1">
-                    <List className="p-0">
-                      {manu.child.map((sub, ii) => {
-                        if (menuState.includes(manu.id)) {
-                          return (
-                            <Link to={sub.path} key={ii}>
-                              <ListItem>
-                                <ListItemPrefix>
-                                  <ChevronRightIcon
-                                    strokeWidth={3}
-                                    className="h-3 w-5"
-                                  />
-                                </ListItemPrefix>
-                                {sub.label}
-                              </ListItem>
-                            </Link>
-                          );
-                        }
-                      })}
-                    </List>
-                  </AccordionBody>
-                </Accordion>
+                      </span>
+                      <svg
+                        className="hs-accordion-active:hidden ml-auto block w-3 h-3 text-white group-hover:text-gray-500 dark:text-gray-400"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div
+                    className="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold"
+                    id="submenu"
+                  >
+                    {manu.child.map((sub, ii) => {
+                      if (menuState.includes(manu.id)) {
+                        return (
+                          <Link to={sub.path} key={ii}>
+                            <h1 className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
+                              {sub.label}
+                            </h1>
+                          </Link>
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
               );
             }
           })}
-        </List>
-      </Card>
+        </ul>
+      </div>
       <div className="w-full p-4">{children}</div>
     </div>
   );

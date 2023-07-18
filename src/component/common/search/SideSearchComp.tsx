@@ -1,30 +1,11 @@
 import { useEffect, useState } from "react";
-import {
-  Card,
-  Typography,
-  List,
-  ListItem,
-  ListItemPrefix,
-  Option,
-  Input,
-  Select,
-  Radio,
-  Checkbox,
-  Switch,
-  Button,
-  Tooltip,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Spinner,
-} from "@material-tailwind/react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { IApi, IPageData, ISearchItem } from "../../../type/common";
 import { useQuery } from "react-query";
 import { AxiosError } from "axios";
 import fetcher from "../../../api/fetcher";
 import SimplePaginationComp from "../pagination/SimplePaginationComp";
 import React from "react";
+import Datepicker from "react-tailwindcss-datepicker";
 
 interface IProps {
   searchItem: ISearchItem[];
@@ -43,7 +24,12 @@ export const QUERY_KEYS = Object.assign({
 });
 
 const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
-  const [params, setParams] = useState<ISearchParams>({});
+  const [params, setParams] = useState<ISearchParams>({
+    date: {
+      startDate: null,
+      endDate: null,
+    },
+  });
   const [submit, setSubmit] = useState<ISearchParams>({
     page: 0,
     size: 10,
@@ -144,7 +130,7 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
   if (isLoading) {
     return (
       <div className="flex items-end justify-center gap-8">
-        <Spinner className="h-64 w-64" />
+        <div className="h-64 w-64">로딩중...</div>
       </div>
     );
   } else {
@@ -152,9 +138,9 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
       <div>
         <div className="flex">
           {searchState ? (
-            <Card className="  p-4 shadow-xl shadow-blue-gray-900/5">
-              <List>
-                <Button color="light-green" size="lg" onClick={onSubimt}>
+            <form className="p-4 shadow-xl shadow-blue-gray-900/5">
+              <div className="bg-white rounded-lg shadow-lg">
+                <button color="light-green" type="submit" onClick={onSubimt}>
                   <div className="flex p-3">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -172,56 +158,70 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                     </svg>
                     <div className="translate-x-1/2">조회하기</div>
                   </div>
-                </Button>
+                </button>
                 {searchItem.map((item: ISearchItem, index: number) => {
                   if (item.type === "TEXT") {
                     return (
                       <div key={index}>
                         <div className="mb-2 flex items-center gap-4 p-4">
-                          <Typography variant="h5" color="blue-gray">
-                            검색
-                          </Typography>
+                          검색
                         </div>
                         <div className="p-2">
-                          <Input
-                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                            label="Search"
-                            onChange={(event: any) =>
-                              paramsChangeHandler(
-                                item.value,
-                                event.target.value
-                              )
-                            }
-                            value={params[item.value]}
-                          />
+                          <div className="bg-white rounded-lg shadow-lg">
+                            <input
+                              type="text"
+                              placeholder="Search"
+                              onChange={(event: any) =>
+                                paramsChangeHandler(
+                                  item.value,
+                                  event.target.value
+                                )
+                              }
+                              value={params[item.value] || ""}
+                            />
+                          </div>
                         </div>
                       </div>
                     );
+                  } else if (item.type === "DATE_PIKER") {
+                    <div key={index}>
+                      <Datepicker
+                        value={params[item.value]}
+                        onChange={(event: any) => {
+                          console.log("event:", event);
+                          paramsChangeHandler(item.value, event);
+                        }}
+                      />
+                    </div>;
                   } else if (item.type === "SELECT_BOX") {
                     if (item.optin && item.optin.length > 0) {
                       return (
                         <div key={index}>
                           <div className="mb-2 flex items-center gap-4 p-4">
-                            <Typography variant="h5" color="blue-gray">
-                              {item.label}
-                            </Typography>
+                            {item.label}
                           </div>
                           <div className="p-2">
-                            <Select
-                              label={item.label}
-                              value={params[item.value]}
-                              onChange={(event: any) => {
-                                paramsChangeHandler(item.value, event);
-                              }}
-                            >
-                              {item.optin.map((sub, ii) => {
-                                return (
-                                  <Option key={ii} value={sub.value}>
-                                    {sub.label}
-                                  </Option>
-                                );
-                              })}
-                            </Select>
+                            <div className="bg-white rounded-lg shadow-lg">
+                              <select
+                                className="form-select"
+                                value={params[item.value]}
+                                placeholder="선택"
+                                onChange={(event: any) => {
+                                  paramsChangeHandler(
+                                    item.value,
+                                    event.target.value
+                                  );
+                                }}
+                              >
+                                {item.optin.map((sub, ii) => {
+                                  return (
+                                    <option key={ii} value={sub.value}>
+                                      {sub.label}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                            </div>
                           </div>
                         </div>
                       );
@@ -231,56 +231,49 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                       return (
                         <div key={index}>
                           <div className="mb-2 flex items-center gap-4 p-4">
-                            <Typography variant="h5" color="blue-gray">
-                              {item.label}
-                            </Typography>
+                            {item.label}
                           </div>
                           <div className="p-2">
-                            <Card>
-                              <List>
-                                {item.optin.map((sub, ii) => {
-                                  return (
-                                    <ListItem className="p-0" key={ii}>
-                                      <label
-                                        htmlFor="vertical-list-react"
-                                        className="flex w-full cursor-pointer items-center px-3 py-2"
-                                      >
-                                        <ListItemPrefix className="mr-3">
-                                          <Radio
-                                            name={item.value}
-                                            id={item.value}
-                                            checked={
-                                              params[item.value] === sub.value
-                                                ? true
-                                                : false
+                            <div className="bg-white rounded-lg shadow-lg">
+                              {item.optin.map((sub, ii) => {
+                                return (
+                                  <div className="p-0" key={ii}>
+                                    <label
+                                      htmlFor="vertical-list-react"
+                                      className="flex w-full cursor-pointer items-center px-3 py-2"
+                                    >
+                                      <div className="mr-3">
+                                        <input
+                                          type="radio"
+                                          name={item.value}
+                                          id={item.value}
+                                          className="form-radio"
+                                          checked={
+                                            params[item.value] === sub.value
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={(event: any) => {
+                                            if (event.target.checked) {
+                                              paramsChangeHandler(
+                                                item.value,
+                                                sub.value
+                                              );
                                             }
-                                            ripple={false}
-                                            className="hover:before:opacity-0"
-                                            containerProps={{
-                                              className: "p-1",
-                                            }}
-                                            onChange={(event) => {
-                                              if (event.target.checked) {
-                                                paramsChangeHandler(
-                                                  item.value,
-                                                  sub.value
-                                                );
-                                              }
-                                            }}
-                                          />
-                                        </ListItemPrefix>
-                                        <Typography
-                                          color="blue-gray"
-                                          className="font-medium"
-                                        >
-                                          {sub.label}
-                                        </Typography>
-                                      </label>
-                                    </ListItem>
-                                  );
-                                })}
-                              </List>
-                            </Card>
+                                          }}
+                                        />
+                                      </div>
+                                      <div
+                                        color="blue-gray"
+                                        className="font-medium"
+                                      >
+                                        {sub.label}
+                                      </div>
+                                    </label>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
                         </div>
                       );
@@ -290,99 +283,91 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                       return (
                         <div key={index}>
                           <div className="mb-2 flex items-center gap-4 p-4">
-                            <Typography variant="h5" color="blue-gray">
-                              {item.label}
-                            </Typography>
+                            <div color="blue-gray">{item.label}</div>
                           </div>
                           <div className="p-2">
-                            <Card>
-                              <List>
-                                {item.optin.map((sub, ii) => {
-                                  return (
-                                    <ListItem className="p-0" key={ii}>
-                                      <label
-                                        htmlFor="vertical-list-react"
-                                        className="flex w-full cursor-pointer items-center px-3 py-2"
-                                      >
-                                        <ListItemPrefix className="mr-3">
-                                          <Checkbox
-                                            id={sub.value}
-                                            ripple={false}
-                                            className="hover:before:opacity-0"
-                                            checked={
+                            <div className="bg-white rounded-lg shadow-lg">
+                              {item.optin.map((sub, ii) => {
+                                return (
+                                  <div className="p-0" key={ii}>
+                                    <label
+                                      htmlFor="vertical-list-react"
+                                      className="flex w-full cursor-pointer items-center px-3 py-2"
+                                    >
+                                      <div className="mr-3">
+                                        <input
+                                          type="checkbox"
+                                          id={sub.value}
+                                          checked={
+                                            Object.keys(params).includes(
+                                              item.value
+                                            ) &&
+                                            params[item.value] !== "" &&
+                                            params[item.value]
+                                              .split(",")
+                                              .includes(sub.value)
+                                          }
+                                          className="form-checkbox"
+                                          onChange={(event: any) => {
+                                            // param에 값이 있고 빈값이 아닐 경우
+                                            if (
                                               Object.keys(params).includes(
                                                 item.value
                                               ) &&
-                                              params[item.value] !== "" &&
-                                              params[item.value]
-                                                .split(",")
-                                                .includes(sub.value)
-                                            }
-                                            containerProps={{
-                                              className: "p-1",
-                                            }}
-                                            onChange={(event) => {
-                                              // param에 값이 있고 빈값이 아닐 경우
+                                              params[item.value] !== ""
+                                            ) {
+                                              const checkArr: Array<string> =
+                                                params[item.value].split(",");
+                                              // param에 기존 값이 있으면 삭제
                                               if (
-                                                Object.keys(params).includes(
-                                                  item.value
-                                                ) &&
-                                                params[item.value] !== ""
+                                                checkArr.includes(sub.value)
                                               ) {
-                                                const checkArr: Array<string> =
-                                                  params[item.value].split(",");
-                                                // param에 기존 값이 있으면 삭제
-                                                if (
-                                                  checkArr.includes(sub.value)
-                                                ) {
-                                                  const tremArr =
-                                                    checkArr.filter(
-                                                      (arr: string) =>
-                                                        arr !== sub.value
-                                                    );
+                                                const tremArr = checkArr.filter(
+                                                  (arr: string) =>
+                                                    arr !== sub.value
+                                                );
+                                                paramsChangeHandler(
+                                                  item.value,
+                                                  tremArr.join(",")
+                                                );
+                                              } else {
+                                                // 없으면 추가
+                                                checkArr.push(sub.value);
+                                                if (checkArr.length === 1) {
                                                   paramsChangeHandler(
                                                     item.value,
-                                                    tremArr.join(",")
+                                                    checkArr[0]
                                                   );
                                                 } else {
-                                                  // 없으면 추가
-                                                  checkArr.push(sub.value);
-                                                  if (checkArr.length === 1) {
-                                                    paramsChangeHandler(
-                                                      item.value,
-                                                      checkArr[0]
-                                                    );
-                                                  } else {
-                                                    paramsChangeHandler(
-                                                      item.value,
-                                                      checkArr.join(",")
-                                                    );
-                                                  }
-                                                }
-                                              } else {
-                                                // param에 값이 없으니 추가
-                                                if (event.target.checked) {
                                                   paramsChangeHandler(
                                                     item.value,
-                                                    sub.value
+                                                    checkArr.join(",")
                                                   );
                                                 }
                                               }
-                                            }}
-                                          />
-                                        </ListItemPrefix>
-                                        <Typography
-                                          color="blue-gray"
-                                          className="font-medium"
-                                        >
-                                          {sub.label}
-                                        </Typography>
-                                      </label>
-                                    </ListItem>
-                                  );
-                                })}
-                              </List>
-                            </Card>
+                                            } else {
+                                              // param에 값이 없으니 추가
+                                              if (event.target.checked) {
+                                                paramsChangeHandler(
+                                                  item.value,
+                                                  sub.value
+                                                );
+                                              }
+                                            }
+                                          }}
+                                        />
+                                      </div>
+                                      <div
+                                        color="blue-gray"
+                                        className="font-medium"
+                                      >
+                                        {sub.label}
+                                      </div>
+                                    </label>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
                         </div>
                       );
@@ -391,12 +376,10 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                     return (
                       <div key={index}>
                         <div className="mb-2 flex items-center gap-4 p-4">
-                          <Typography variant="h5" color="blue-gray">
-                            {item.label}
-                          </Typography>
+                          <div color="blue-gray">{item.label}</div>
                         </div>
                         <div className="p-3">
-                          <Switch
+                          {/* <Switch
                             id={item.value}
                             label={item.label}
                             onChange={(event: any) => {
@@ -406,41 +389,46 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                                 paramsChangeHandler(item.value, "N");
                               }
                             }}
-                          />
+                          /> */}
+                          <input
+                            type="checkbox"
+                            id={item.value}
+                            onChange={(event: any) => {
+                              if (event.target.checked) {
+                                paramsChangeHandler(item.value, "Y");
+                              } else {
+                                paramsChangeHandler(item.value, "N");
+                              }
+                            }}
+                            className="form-checkbox"
+                          />{" "}
+                          <label htmlFor={item.value} className="mr-2">
+                            {item.label}
+                          </label>
                         </div>
                       </div>
                     );
                   }
                 })}
-              </List>
-            </Card>
+              </div>
+            </form>
           ) : (
             <></>
           )}
-          <Card className="h-full w-full">
-            <CardHeader
-              floated={false}
-              shadow={false}
-              className="flex-row rounded-none"
-            >
+          <div className="bg-white rounded-lg shadow-lg">
+            <div className="bg-gray-800 text-white py-2 px-4 rounded-t-lg">
               <div className="grid grid-cols-5 items-center text-blue-gray-900 py-2 p-4 ">
                 <div className="col-span-2">
-                  <Tooltip content="검색창">
-                    <Button onClick={searchStateHandelr}>검색하기</Button>
-                  </Tooltip>
+                  <button onClick={searchStateHandelr}>검색하기</button>
                 </div>
-                <Typography variant="h2" className="col-span-2">
-                  {title}
-                </Typography>
+                <div className="col-span-2">{title}</div>
                 <div className="col-span-1 text-right">
                   <p className="font-bold">총 {data?.totalElements} 건</p>
                 </div>
               </div>
-            </CardHeader>
-            <CardBody className="px-0 ">
-              {React.cloneElement(children, { data })}
-            </CardBody>
-            <CardFooter>
+            </div>
+            <div className="p-4">{React.cloneElement(children, { data })}</div>
+            <div className="bg-gray-100 py-2 px-4 rounded-b-lg">
               {/* 페이징 */}
               {data && data.content.length > 0 ? (
                 <SimplePaginationComp
@@ -454,8 +442,8 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
               ) : (
                 <></>
               )}
-            </CardFooter>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     );

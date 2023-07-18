@@ -53,6 +53,10 @@ const FreeBoardListComp = () => {
       label: "권한",
       optin: [
         {
+          label: "선택",
+          value: "",
+        },
+        {
           label: "사용자",
           value: "USER",
         },
@@ -96,6 +100,11 @@ const FreeBoardListComp = () => {
       type: "SWITCH",
       value: "useYn",
       label: "사용여부",
+    },
+    {
+      type: "DATE_PIKER",
+      value: "useYn",
+      label: "날짜",
     },
   ]);
 

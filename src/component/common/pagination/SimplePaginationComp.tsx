@@ -1,11 +1,4 @@
-import {
-  IconButton,
-  Select,
-  Option,
-  ButtonGroup,
-} from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 
 interface IProps {
   setPageUpdate: (page: number) => void;
@@ -120,50 +113,58 @@ const SimplePaginationComp = ({
   return (
     <div className="flex justify-between">
       <div>
-        <Select
-          label="사이즈"
+        <select
           value={String(size)}
           onChange={(event: any) => {
-            setPageSizeUpdate(event);
+            setPageSizeUpdate(event.target.value);
           }}
         >
           {pageSize.map((size, i) => {
             return (
-              <Option key={size.value} value={size.value}>
+              <option key={size.value} value={size.value}>
                 {size.label}
-              </Option>
+              </option>
             );
           })}
-        </Select>
+        </select>
       </div>
       <div className="flex p-2">
-        <ButtonGroup variant="outlined" color="blue-gray">
-          <IconButton onClick={prev}>
-            <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
-          </IconButton>
+        <div className="inline-flex rounded-md shadow-sm" role="group">
+          <button
+            onClick={prev}
+            type="button"
+            className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100  focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+          >
+            prev
+          </button>
           {currentPageArray ? (
             currentPageArray.map((curPage, i) => {
               return (
-                <IconButton
+                <button
+                  type="button"
                   className={
                     curPage === page
-                      ? "bg-blue-gray-100 text-blue-gray-900"
-                      : ""
+                      ? "px-4 py-2 text-sm font-medium  border-t border-b border-gray-200 hover:bg-gray-100 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white  bg-blue-gray-100 text-blue-gray-900"
+                      : "px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white "
                   }
                   key={i}
                   onClick={() => getItemProps(curPage)}
                 >
                   {curPage}
-                </IconButton>
+                </button>
               );
             })
           ) : (
             <></>
           )}
-          <IconButton onClick={next}>
-            <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-          </IconButton>
-        </ButtonGroup>
+          <button
+            type="button"
+            className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100  focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+            onClick={next}
+          >
+            next
+          </button>
+        </div>
       </div>
     </div>
   );
