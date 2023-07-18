@@ -54,7 +54,7 @@ const SideBar = ({ children }: Props) => {
 
   return (
     <div className="flex">
-      <div className="left-0 top-0 h-screen bg-gray-800 w-64 py-4 px-6 text-white">
+      <div className="left-0 top-0 h-screen bg-violet-500 w-64 py-4 px-6 text-white rounded-lg opacity-80">
         <div className="text-3xl font-bold mb-4">biite</div>
         <ul className="space-y-2">
           {manuList.map((manu, i) => {
