@@ -14,6 +14,7 @@ interface IProps {
   children: any;
   title: string;
   api: IApi;
+  setOpenModal: (state: boolean) => void;
 }
 
 interface ISearchParams {
@@ -25,7 +26,13 @@ export const QUERY_KEYS = Object.assign({
   SEARCH_PAGE: "searchPage",
 });
 
-const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
+const SideSearchComp = ({
+  searchItem,
+  children,
+  title,
+  api,
+  setOpenModal,
+}: IProps) => {
   const [params, setParams] = useState<ISearchParams>({});
   const [submit, setSubmit] = useState<ISearchParams>({
     page: 0,
@@ -127,8 +134,24 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
 
   if (isLoading) {
     return (
-      <div className="flex items-end justify-center gap-8">
-        <div className="h-64 w-64">로딩중...</div>
+      <div role="status">
+        <svg
+          aria-hidden="true"
+          className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+          viewBox="0 0 100 101"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+            fill="currentColor"
+          />
+          <path
+            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+            fill="currentFill"
+          />
+        </svg>
+        <span className="sr-only">Loading...</span>
       </div>
     );
   } else {
@@ -136,36 +159,36 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
       <div>
         <div className="flex">
           {searchState ? (
-            <form className="p-4 shadow-xl shadow-blue-gray-900/5 rounded-lg">
-              <button className="w-full" type="submit" onClick={onSubimt}>
-                <div className="flex p-3 bg-violet-400 rounded-lg w-full border">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                    />
-                  </svg>
-                  <div className="translate-x-1/2">조회하기</div>
-                </div>
-              </button>
-              {searchItem.map((item: ISearchItem, index: number) => {
-                if (item.type === "TEXT") {
-                  return (
-                    <div key={index}>
-                      <div className="mb-2 flex items-center gap-4 p-4">
-                        검색
-                      </div>
-                      <div className="p-3">
+            <div className="p-5 shadow-xl shadow-blue-gray-900/5 rounded-lg mr-4 border border-gray-200">
+              <form>
+                <button className="w-full" type="submit" onClick={onSubimt}>
+                  <div className="flex p-3 bg-violet-400 rounded-lg w-full">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                      />
+                    </svg>
+                    <div className="translate-x-1/2 text-white">조회하기</div>
+                  </div>
+                </button>
+                {searchItem.map((item: ISearchItem, index: number) => {
+                  if (item.type === "TEXT") {
+                    return (
+                      <div key={index}>
+                        <div className="flex items-center gap-4 p-4">검색</div>
+
                         <div className="bg-white rounded-lg shadow-lg">
                           <input
+                            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500"
                             type="text"
                             placeholder="Search"
                             onChange={(event: any) =>
@@ -178,16 +201,14 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                           />
                         </div>
                       </div>
-                    </div>
-                  );
-                } else if (item.type === "DATE_PIKER") {
-                  return (
-                    <div key={index}>
-                      <div className="mb-2 flex items-center gap-4 p-4">
-                        {item.label}
-                      </div>
-                      <div className="p-3">
-                        <div className="bg-white rounded-lg shadow-lg flex">
+                    );
+                  } else if (item.type === "DATE_PIKER") {
+                    return (
+                      <div key={index}>
+                        <div className="items-center gap-4 p-4">
+                          {item.label}
+                        </div>
+                        <div className="block w-full p-4 pl-10  rounded-lg shadow-lg border border-gray-200">
                           <DatePicker
                             locale={ko} // 언어설정 기본값은 영어
                             dateFormat="yyyy-MM-dd" // 날짜 형식 설정
@@ -208,19 +229,17 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                           />
                         </div>
                       </div>
-                    </div>
-                  );
-                } else if (item.type === "SELECT_BOX") {
-                  if (item.optin && item.optin.length > 0) {
-                    return (
-                      <div key={index}>
-                        <div className="mb-2 flex items-center gap-4 p-4">
-                          {item.label}
-                        </div>
-                        <div className="p-2">
+                    );
+                  } else if (item.type === "SELECT_BOX") {
+                    if (item.optin && item.optin.length > 0) {
+                      return (
+                        <div key={index}>
+                          <div className="flex items-center gap-4 p-4">
+                            {item.label}
+                          </div>
                           <div className="bg-white rounded-lg shadow-lg">
                             <select
-                              className="form-select"
+                              className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500"
                               value={params[item.value]}
                               placeholder="선택"
                               onChange={(event: any) => {
@@ -240,18 +259,17 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                             </select>
                           </div>
                         </div>
-                      </div>
-                    );
-                  }
-                } else if (item.type === "RADIO") {
-                  if (item.optin && item.optin.length > 0) {
-                    return (
-                      <div key={index}>
-                        <div className="mb-2 flex items-center gap-4 p-4">
-                          {item.label}
-                        </div>
-                        <div className="p-3">
-                          <div className="bg-white rounded-lg shadow-lg">
+                      );
+                    }
+                  } else if (item.type === "RADIO") {
+                    if (item.optin && item.optin.length > 0) {
+                      return (
+                        <div key={index}>
+                          <div className="flex items-center gap-4 p-4">
+                            {item.label}
+                          </div>
+
+                          <div className="bg-white rounded-lg shadow-lg border border-gray-200">
                             {item.optin.map((sub, ii) => {
                               return (
                                 <div className="p-0" key={ii}>
@@ -288,18 +306,17 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                             })}
                           </div>
                         </div>
-                      </div>
-                    );
-                  }
-                } else if (item.type === "CHECK_BOX") {
-                  if (item.optin && item.optin.length > 0) {
-                    return (
-                      <div key={index}>
-                        <div className="mb-2 flex items-center gap-4 p-4">
-                          <div color="blue-gray">{item.label}</div>
-                        </div>
-                        <div className="p-3">
-                          <div className="bg-white rounded-lg shadow-lg">
+                      );
+                    }
+                  } else if (item.type === "CHECK_BOX") {
+                    if (item.optin && item.optin.length > 0) {
+                      return (
+                        <div key={index}>
+                          <div className="flex items-center gap-4 p-4">
+                            <div color="blue-gray">{item.label}</div>
+                          </div>
+
+                          <div className="bg-white rounded-lg shadow-lg border border-gray-200">
                             {item.optin.map((sub, ii) => {
                               return (
                                 <div className="p-0" key={ii}>
@@ -377,17 +394,16 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                             })}
                           </div>
                         </div>
-                      </div>
-                    );
-                  }
-                } else if (item.type === "SWITCH") {
-                  return (
-                    <div key={index}>
-                      <div className="mb-2 flex items-center gap-4 p-4">
-                        <div color="blue-gray">{item.label}</div>
-                      </div>
-                      <div className="p-3">
-                        <div className="bg-white rounded-lg shadow-lg">
+                      );
+                    }
+                  } else if (item.type === "SWITCH") {
+                    return (
+                      <div key={index}>
+                        <div className="flex items-center gap-4 p-4">
+                          <div color="blue-gray">{item.label}</div>
+                        </div>
+
+                        <div className="bg-white shadow-lg block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500">
                           <div className="relative">
                             <label className="items-center cursor-pointer">
                               <input
@@ -417,11 +433,11 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
                           </label> */}
                         </div>
                       </div>
-                    </div>
-                  );
-                }
-              })}
-            </form>
+                    );
+                  }
+                })}
+              </form>
+            </div>
           ) : (
             <></>
           )}
@@ -429,7 +445,23 @@ const SideSearchComp = ({ searchItem, children, title, api }: IProps) => {
             <div className="bg-violet-500 text-white py-2 px-4 rounded-t-lg opacity-80">
               <div className="grid grid-cols-5 items-center text-blue-gray-900 py-2 p-4 ">
                 <div className="col-span-2">
+                  <button
+                    type="button"
+                    onClick={searchStateHandelr}
+                    className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+                  >
+                    검색하기
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setOpenModal(true)}
+                    className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 "
+                  >
+                    추가하기
+                  </button>
+                  {/* 
                   <button onClick={searchStateHandelr}>검색하기</button>
+                  <button onClick={() => setOpenModal(true)}>추가하기</button> */}
                 </div>
                 <div className="col-span-2">{title}</div>
                 <div className="col-span-1 text-right">

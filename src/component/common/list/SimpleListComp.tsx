@@ -14,7 +14,7 @@ const SimpleListComp = ({
   setColum,
 }: IProps): JSX.Element | null => {
   return (
-    <table className="w-full min-w-max table-auto">
+    <table className="w-full min-w-max table-auto text-left">
       <thead>
         <tr>
           {columns.map((column, i) => (
