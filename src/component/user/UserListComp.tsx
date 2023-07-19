@@ -7,10 +7,10 @@ import DefaultModal from "../common/modal/DefaultModal";
 import UserDetailComp from "./UserDetailComp";
 
 const UserList = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [colum, setColum] = useState<any>({});
 
   const modalTogglehandle = () => {
-    console.log(111);
     setShowModal((prevState) => !prevState);
   };
 
@@ -23,6 +23,11 @@ const UserList = () => {
       modalCloseHandler();
     } else {
     }
+  };
+
+  const showEditModalHandler = (row: any) => {
+    setShowModal(true);
+    setColum(row);
   };
 
   const title = "유저게시판";
@@ -119,7 +124,7 @@ const UserList = () => {
     <div className="relative h-[100vh]">
       {showModal ? (
         <DefaultModal setButtonClick={modalButtonHandler}>
-          <UserDetailComp />
+          <UserDetailComp columsId={colum.id} />
         </DefaultModal>
       ) : (
         <></>
@@ -131,7 +136,7 @@ const UserList = () => {
         api={API_USER.USER_LIST}
         setOpenModal={modalTogglehandle}
       >
-        <SimpleListComp columns={columns} />
+        <SimpleListComp columns={columns} setColum={showEditModalHandler} />
       </SideSearchComp>
     </div>
   );

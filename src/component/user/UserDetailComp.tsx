@@ -16,7 +16,7 @@ import DefaultTextarea from "../common/forms/DefaultTextarea";
 import DefaultRange from "../common/forms/DefaultRange";
 
 interface IProps {
-  columsId?: number;
+  columsId: number;
 }
 
 // yub 유효성 검증
@@ -56,7 +56,7 @@ const schema = yup.object({
 //   }),
 // });
 
-const UserDetailComp = ({ columsId }: IProps) => {
+const UserDetailComp = ({ columsId = 0 }: IProps) => {
   const {
     control,
     handleSubmit,
@@ -66,7 +66,7 @@ const UserDetailComp = ({ columsId }: IProps) => {
     resolver: yupResolver(schema),
   });
 
-  // const { mutate } = useLogin();
+  const { data, isLoading } = useUserDetailInfo(columsId);
 
   const onSubmit = (data: any) => {
     // mutate(data);
@@ -81,12 +81,7 @@ const UserDetailComp = ({ columsId }: IProps) => {
     console.log("data:", data);
   };
 
-  let data = {};
-
   const title = "유저 상세";
-  if (columsId) {
-    data = useUserDetailInfo(columsId);
-  }
 
   const roleOptions: IOptions[] = [
     { label: "선택", value: "" },

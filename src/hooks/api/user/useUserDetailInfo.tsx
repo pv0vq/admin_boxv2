@@ -51,11 +51,12 @@ export default function useUserDetailInfo(
     any,
     QueryKey[]
   >
-): UseQueryResult<IUserDetailInfo, AxiosError> {
-  return useQuery([QUERY_KEYS.USER_LIST, id], () => getUserDetailInfo(id), {
-    // 자동 갱신 비활성화
-    refetchOnWindowFocus: false,
-    // 마운트될 때다 갱신 비활성화
-    refetchOnMount: false,
-  });
+): UseQueryResult<IUserDetailInfo, AxiosError> | undefined {
+  if (id)
+    return useQuery([QUERY_KEYS.USER_LIST, id], () => getUserDetailInfo(id), {
+      // 자동 갱신 비활성화
+      refetchOnWindowFocus: false,
+      // 마운트될 때다 갱신 비활성화
+      refetchOnMount: false,
+    });
 }
