@@ -26,15 +26,23 @@ const schema = yup.object({
   //   .required("아이디를 확인해주세요. ")
   //   .min(4, "4자 이상 입력해주세요!"),
   // password: yup.string().required("패스워드를 입력해주세요"),\
-  text: yup.string().required("텍스트를 확인해주세요. "),
-  select: yup.string().required("셀렉트를 확인해주세요. "),
-  radio: yup.string().required("라디오를 확인해주세요. "),
-  checkbox: yup.array().required("체크박스를 확인해주세요. "),
-  swich: yup.boolean().required("체크박스를 확인해주세요. "),
-  date: yup.string().required("날짜를 확인해주세요. "),
-  file: yup.array().required("파일을 선택해주세요"),
-  textarea: yup.string().required("텍스트에리어를 확인해주세요. "),
-  range: yup.number().required("랭지를 확인해주세요. "),
+  // text: yup.string().required("텍스트를 확인해주세요. "),
+  // select: yup.string().required("셀렉트를 확인해주세요. "),
+  // radio: yup.string().required("라디오를 확인해주세요. "),
+  // checkbox: yup.array().required("체크박스를 확인해주세요. "),
+  // swich: yup.boolean().required("체크박스를 확인해주세요. "),
+  // date: yup.string().required("날짜를 확인해주세요. "),
+  // file: yup.array().required("파일을 선택해주세요"),
+  // textarea: yup.string().required("텍스트에리어를 확인해주세요. "),
+  // range: yup.number().required("랭지를 확인해주세요. "),
+  id: yup.string(),
+  email: yup.string().required("이메일을 확인해주세요. "),
+  name: yup.string().required("이름을 확인해주세요. "),
+  passward: yup.string(),
+  role: yup.string().required("권한을 확인해주세요. "),
+  useYn: yup.boolean().required("사용여부를 확인해주세요. "),
+  createDate: yup.string().required("날짜를 확인해주세요. "),
+  modifiedDate: yup.string().required("날짜를 확인해주세요. "),
 });
 
 // yub 기본 형식
@@ -80,10 +88,10 @@ const UserDetailComp = ({ columsId }: IProps) => {
     data = useUserDetailInfo(columsId);
   }
 
-  const aaaa: IOptions[] = [
-    { label: "1번", value: "1" },
-    { label: "2번", value: "2" },
-    { label: "3번", value: "3" },
+  const roleOptions: IOptions[] = [
+    { label: "선택", value: "" },
+    { label: "회원", value: "USER" },
+    { label: "관리자", value: "ADMIN" },
   ];
 
   useEffect(() => {
@@ -98,7 +106,137 @@ const UserDetailComp = ({ columsId }: IProps) => {
             {title}
           </div>
         </div>
-        <div className="p-10 grid grid-cols-4">
+        <div className="grid gap-6 mb-6 md:grid-cols-2 p-4">
+          <div>
+            <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
+              회원 번호
+            </label>
+            <Controller
+              name="id" // yup 걸린 데이터명
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <DefaultInput
+                  defaultValue={value}
+                  setValue={onChange}
+                  disable={true}
+                />
+              )}
+            />
+            <span>{errors.id && errors.id.message}</span>
+          </div>
+          <div>
+            <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
+              E-mail
+            </label>
+            <Controller
+              name="email" // yup 걸린 데이터명
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <DefaultInput
+                  defaultValue={value}
+                  setValue={(value) => onChange(value)}
+                />
+              )}
+            />
+            <span>{errors.email && errors.email.message}</span>
+          </div>
+          <div>
+            <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
+              Name
+            </label>
+            <Controller
+              name="name" // yup 걸린 데이터명
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <DefaultInput
+                  defaultValue={value}
+                  setValue={(value) => onChange(value)}
+                />
+              )}
+            />
+            <span>{errors.name && errors.name.message}</span>
+          </div>
+          <div>
+            <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
+              비밀번호
+            </label>
+            <Controller
+              name="passward" // yup 걸린 데이터명
+              control={control}
+              defaultValue={"********"}
+              render={({ field: { value, onChange } }) => (
+                <DefaultInput defaultValue={value} setValue={onChange} />
+              )}
+            />
+            <span>{errors.passward && errors.passward.message}</span>
+          </div>
+          <div>
+            <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
+              Role
+            </label>
+            <Controller
+              name="role" // yup 걸린 데이터명
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <DefaultSelect
+                  defaultValue={value}
+                  setValue={onChange}
+                  options={roleOptions}
+                />
+              )}
+            />
+            <span>{errors.role && errors.role.message}</span>
+          </div>
+          <div>
+            <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
+              사용여부
+            </label>
+            <Controller
+              name="useYn" // yup 걸린 데이터명
+              control={control}
+              defaultValue={false}
+              render={({ field: { value, onChange } }) => (
+                <DefaultSwich defaultValue={value} setValue={onChange} />
+              )}
+            />
+            <span>{errors.useYn && errors.useYn.message}</span>
+          </div>
+          <div>
+            <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
+              생성일
+            </label>
+            <Controller
+              name="createDate" // yup 걸린 데이터명
+              control={control}
+              defaultValue="20230719"
+              render={({ field: { value, onChange } }) => (
+                <DefaultDatePicker
+                  defaultValue={value}
+                  setValue={onChange}
+                  disable={true}
+                />
+              )}
+            />
+            <span>{errors.useYn && errors.useYn.message}</span>
+          </div>
+          <div>
+            <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
+              수정일
+            </label>
+            <Controller
+              name="modifiedDate" // yup 걸린 데이터명
+              control={control}
+              defaultValue="20230719"
+              render={({ field: { value, onChange } }) => (
+                <DefaultDatePicker
+                  defaultValue={value}
+                  setValue={onChange}
+                  disable={true}
+                />
+              )}
+            />
+            <span>{errors.useYn && errors.useYn.message}</span>
+          </div>
           {/* <Controller
                 name="text" // yup 걸린 데이터명
                 control={control}

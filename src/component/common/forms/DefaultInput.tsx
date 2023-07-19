@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 
 interface IProps {
-  defaultValue: string;
+  defaultValue?: string;
   setValue: (value: string, event: React.ChangeEvent<HTMLInputElement>) => void;
   disable?: boolean;
   className?: string;
