@@ -16,7 +16,7 @@ import DefaultTextarea from "../common/forms/DefaultTextarea";
 import DefaultRange from "../common/forms/DefaultRange";
 
 interface IProps {
-  columsId: number;
+  columsId?: number;
 }
 
 // yub 유효성 검증
@@ -76,7 +76,7 @@ const UserDetailComp = ({ columsId }: IProps) => {
   let data = {};
 
   const title = "유저 상세";
-  if (true) {
+  if (columsId) {
     data = useUserDetailInfo(columsId);
   }
 
@@ -91,36 +91,15 @@ const UserDetailComp = ({ columsId }: IProps) => {
   }, [errors]);
 
   return (
-    <div className="relative bg-white rounded-lg shadow">
-      <div className="px-6 py-6 lg:px-8">
-        <h3 className="mb-4 text-xl font-medium text-gray-900">
-          유저관리
-          <svg
-            className="w-6 h-6 text-gray-800 dark:text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 8 14"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"
-            />
-          </svg>
-          유저상세
-        </h3>
-        <form>
-          <div className="bg-white rounded-lg shadow-lg w-full h-full">
-            <div className="bg-violet-500 text-white py-2 rounded-t-lg opacity-80">
-              <div className="grid grid-cols-5 items-center text-blue-gray-900 py-2 p-4 ">
-                {title}
-              </div>
-            </div>
-            <div className="p-4 grid grid-cols-4">
-              <Controller
+    <form>
+      <div className="bg-white rounded-lg shadow-lg w-full h-full">
+        <div className="bg-violet-500 text-white py-2 rounded-t-lg opacity-80">
+          <div className="grid grid-cols-5 items-center text-blue-gray-900 py-2 p-4 ">
+            {title}
+          </div>
+        </div>
+        <div className="p-10 grid grid-cols-4">
+          {/* <Controller
                 name="text" // yup 걸린 데이터명
                 control={control}
                 render={({ field: { value, onChange } }) => (
@@ -209,18 +188,10 @@ const UserDetailComp = ({ columsId }: IProps) => {
                   <DefaultRange setValue={onChange} />
                 )}
               />
-              <span>{errors.date && errors.date.message}</span>
-            </div>
-          </div>
-        </form>
-        <div className="mt-4  py-2 px-2 rounded-lg flex justify-end">
-          <button onClick={handleSubmit(onSubmit)} type="submit">
-            수정
-          </button>
-          <button>목록</button>
+              <span>{errors.date && errors.date.message}</span> */}
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

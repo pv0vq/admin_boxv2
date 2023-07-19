@@ -3,12 +3,28 @@ import SideSearchComp from "../common/search/SideSearchComp";
 import SimpleListComp from "../common/list/SimpleListComp";
 import API_USER from "../../api/code/user";
 import { ISearchItem, IColumns } from "../../type/common";
+import DefaultModal from "../common/modal/DefaultModal";
+import UserDetailComp from "./UserDetailComp";
 
-interface IProps {
-  setColum: (setColum: any) => void;
-}
+const UserList = () => {
+  const [showModal, setShowModal] = useState(false);
 
-const UserList = ({ setColum }: IProps) => {
+  const modalTogglehandle = () => {
+    console.log(111);
+    setShowModal((prevState) => !prevState);
+  };
+
+  const modalCloseHandler = () => {
+    setShowModal(false);
+  };
+
+  const modalButtonHandler = (type: string) => {
+    if ("close") {
+      modalCloseHandler();
+    } else {
+    }
+  };
+
   const title = "유저게시판";
   const [columns] = useState<IColumns[]>([
     {
@@ -98,14 +114,26 @@ const UserList = ({ setColum }: IProps) => {
       label: "사용여부",
     },
   ]);
+
   return (
-    <SideSearchComp
-      searchItem={searchItem}
-      title={title}
-      api={API_USER.USER_LIST}
-    >
-      <SimpleListComp columns={columns} setColum={setColum} />
-    </SideSearchComp>
+    <div className="relative h-[100vh]">
+      {showModal ? (
+        <DefaultModal setButtonClick={modalButtonHandler}>
+          <UserDetailComp />
+        </DefaultModal>
+      ) : (
+        <></>
+      )}
+
+      <SideSearchComp
+        searchItem={searchItem}
+        title={title}
+        api={API_USER.USER_LIST}
+        setOpenModal={modalTogglehandle}
+      >
+        <SimpleListComp columns={columns} />
+      </SideSearchComp>
+    </div>
   );
 };
 
