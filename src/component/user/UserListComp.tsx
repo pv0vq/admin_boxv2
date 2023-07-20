@@ -5,10 +5,12 @@ import API_USER from "../../api/code/user";
 import { ISearchItem, IColumns } from "../../type/common";
 import DefaultModal from "../common/modal/DefaultModal";
 import UserDetailComp from "./UserDetailComp";
+import useUserDetailInfo from "../../hooks/api/user/useUserDetailInfo";
 
 const UserList = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [colum, setColum] = useState<any>({});
+  const [columId, setColumId] = useState<any>(0);
+  const { data, isLoading } = useUserDetailInfo(columId || 0);
 
   const modalTogglehandle = () => {
     setShowModal((prevState) => !prevState);
@@ -19,15 +21,23 @@ const UserList = () => {
   };
 
   const modalButtonHandler = (type: string) => {
-    if ("close") {
+    if (type === "close") {
       modalCloseHandler();
-    } else {
+    } else if (type === "create") {
+      setColumId(0);
+      modalTogglehandle();
+    } else if (type === "add") {
+      modalTogglehandle();
+    } else if (type === "detial") {
+      modalTogglehandle();
+    } else if (type === "edit") {
+      modalTogglehandle();
     }
   };
 
   const showEditModalHandler = (row: any) => {
     setShowModal(true);
-    setColum(row);
+    setColumId(row.id);
   };
 
   const title = "유저게시판";
@@ -124,7 +134,10 @@ const UserList = () => {
     <div className="relative h-[100vh]">
       {showModal ? (
         <DefaultModal setButtonClick={modalButtonHandler}>
-          <UserDetailComp columsId={colum.id} />
+          <UserDetailComp
+            columData={data}
+            setButtonClick={modalButtonHandler}
+          />
         </DefaultModal>
       ) : (
         <></>
@@ -134,7 +147,7 @@ const UserList = () => {
         searchItem={searchItem}
         title={title}
         api={API_USER.USER_LIST}
-        setOpenModal={modalTogglehandle}
+        setAddButtonClick={modalButtonHandler}
       >
         <SimpleListComp columns={columns} setColum={showEditModalHandler} />
       </SideSearchComp>

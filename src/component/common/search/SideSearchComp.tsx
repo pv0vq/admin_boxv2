@@ -14,7 +14,7 @@ interface IProps {
   children: any;
   title: string;
   api: IApi;
-  setOpenModal: () => void;
+  setAddButtonClick?: (type: string) => void;
 }
 
 interface ISearchParams {
@@ -31,7 +31,7 @@ const SideSearchComp = ({
   children,
   title,
   api,
-  setOpenModal,
+  setAddButtonClick,
 }: IProps) => {
   const [params, setParams] = useState<ISearchParams>({});
   const [submit, setSubmit] = useState<ISearchParams>({
@@ -452,13 +452,18 @@ const SideSearchComp = ({
                   >
                     검색하기
                   </button>
-                  <button
-                    type="button"
-                    onClick={setOpenModal}
-                    className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 "
-                  >
-                    추가하기
-                  </button>
+                  {setAddButtonClick ? (
+                    <button
+                      type="button"
+                      onClick={() => setAddButtonClick("create")}
+                      className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 "
+                    >
+                      추가하기
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+
                   {/* 
                   <button onClick={searchStateHandelr}>검색하기</button>
                   <button onClick={() => setOpenModal(true)}>추가하기</button> */}

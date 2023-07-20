@@ -15,9 +15,19 @@ const utillFormat = () => {
     return new Date(year, month, day);
   }
 
+  function localDateFormatDateToYYYYMMDD(localDate: string) {
+    const dateObject = new Date(localDate);
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObject.getDate()).padStart(2, "0");
+
+    return `${year}${month}${day}`;
+  }
+
   return {
     formatDateToyyyyMMdd,
     parseDateFromyyyyMMdd,
+    localDateFormatDateToYYYYMMDD,
   };
 };
 

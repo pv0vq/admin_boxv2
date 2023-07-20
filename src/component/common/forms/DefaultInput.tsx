@@ -3,7 +3,10 @@ import { useState } from "react";
 
 interface IProps {
   defaultValue?: string;
-  setValue: (value: string, event: React.ChangeEvent<HTMLInputElement>) => void;
+  setValue?: (
+    value: string,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
   disable?: boolean;
   className?: string;
   placeholder?: string;
@@ -20,7 +23,7 @@ const DefaultInput = ({
 
   const changeParamHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setParam(event.target.value);
-    setValue(event.target.value, event);
+    if (setValue) setValue(event.target.value, event);
   };
 
   return (
