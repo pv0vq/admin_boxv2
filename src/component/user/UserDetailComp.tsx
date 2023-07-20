@@ -262,6 +262,15 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
               <Controller
                 name="modifiedDate" // yup 걸린 데이터명
                 control={control}
+                defaultValue={
+                  data
+                    ? data?.modifiedDate
+                      ? localDateFormatDateToYYYYMMDD(
+                          String(data?.modifiedDate)
+                        )
+                      : undefined
+                    : undefined
+                }
                 render={({ field: { value, onChange } }) => (
                   <DefaultDatePicker
                     defaultValue={value}
