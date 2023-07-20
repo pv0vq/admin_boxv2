@@ -2,53 +2,40 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 
 interface IProps {
-  defaultValue: string;
-  setValue: (
-    value: string,
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => void;
+  buttonTitle: string;
   disable?: boolean;
   className?: string;
   placeholder?: string;
-  rows: number;
+  type: "submit" | "reset" | "button" | undefined;
+  buttonState?: string;
+  onClick?: (buttonState: string) => void;
 }
 
-const DefaultInput = ({
-  defaultValue = "",
-  setValue,
+const DefaultButton = ({
+  buttonTitle = "",
   disable = false,
   className = "",
   placeholder = "",
-  rows = 4,
+  type = "button",
+  buttonState,
+  onClick,
 }: IProps) => {
-  const [param, setParam] = useState<string>(defaultValue);
-
-  const changeParamHandler = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setParam(event.target.value);
-    setValue(event.target.value, event);
-  };
-
-  useEffect(() => {
-    if (defaultValue) setParam(defaultValue);
-  }, [defaultValue]);
-
   return (
-    <textarea
-      rows={rows}
+    <button
+      type={type}
       className={
         className === ""
-          ? "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          ? "mr-2 text-white bg-violet-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           : className
       }
       placeholder={placeholder}
-      onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-        changeParamHandler(event)
-      }
-      value={param}
       disabled={disable}
-    ></textarea>
+      onClick={() => {
+        if (onClick) onClick(buttonState || "close");
+      }}
+    >
+      {buttonTitle}
+    </button>
   );
 };
-export default DefaultInput;
+export default DefaultButton;

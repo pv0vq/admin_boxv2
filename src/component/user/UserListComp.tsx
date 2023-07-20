@@ -10,32 +10,26 @@ import useUserDetailInfo from "../../hooks/api/user/useUserDetailInfo";
 const UserList = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [columId, setColumId] = useState<number>(0);
+  const [modalState, setModalStat] = useState<"add" | "detail" | "edit">("add");
 
+  // 모달 상태 반전
   const modalTogglehandle = () => {
     setShowModal((prevState) => !prevState);
   };
 
-  const modalCloseHandler = () => {
-    setShowModal(false);
-  };
-
   const modalButtonHandler = (type: string) => {
     if (type === "close") {
-      modalCloseHandler();
+      modalTogglehandle();
     } else if (type === "create") {
+      setModalStat("add");
       setColumId(0);
-      modalTogglehandle();
-    } else if (type === "add") {
-      modalTogglehandle();
-    } else if (type === "detial") {
-      modalTogglehandle();
-    } else if (type === "edit") {
       modalTogglehandle();
     }
   };
 
   const showEditModalHandler = (row: any) => {
-    setShowModal(true);
+    setModalStat("detail");
+    modalTogglehandle();
     setColumId(row.id);
   };
 
@@ -134,6 +128,7 @@ const UserList = () => {
       {showModal ? (
         <DefaultModal setButtonClick={modalButtonHandler}>
           <UserDetailComp
+            modalState={modalState}
             columId={columId}
             setButtonClick={modalButtonHandler}
           />

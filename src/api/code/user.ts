@@ -13,6 +13,10 @@ const API_USER: { [key: string]: IApi } = {
     url: "/api/v2/admin/user/add",
     method: "POST",
   },
+  USER_EDIT: {
+    url: "/api/v2/admin/user/edit",
+    method: "PUT",
+  },
 };
 
 export default API_USER;
