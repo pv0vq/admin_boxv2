@@ -468,8 +468,8 @@ const SideSearchComp = ({
                   <button onClick={searchStateHandelr}>검색하기</button>
                   <button onClick={() => setOpenModal(true)}>추가하기</button> */}
                 </div>
-                <div className="col-span-2">{title}</div>
-                <div className="col-span-1 text-right">
+                <div className="col-span-1 text-center">{title}</div>
+                <div className="col-span-2 text-right">
                   <p className="font-bold">총 {data?.totalElements} 건</p>
                 </div>
               </div>

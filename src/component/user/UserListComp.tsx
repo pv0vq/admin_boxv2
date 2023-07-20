@@ -33,7 +33,7 @@ const UserList = () => {
     setColumId(row.id);
   };
 
-  const title = "유저게시판";
+  const title = "유저 관리";
   const [columns] = useState<IColumns[]>([
     {
       id: "id",
