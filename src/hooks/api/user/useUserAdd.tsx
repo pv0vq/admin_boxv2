@@ -30,6 +30,7 @@ function useUserAdd(
     ...options,
     onSuccess: ({ data, status, success, message }) => {
       if (status === "OK") {
+        // 다시 유저 리스트 조회
         queryClient.invalidateQueries("searchPage");
         console.log("data:", data, 1);
         if (data.type === "duplication") {

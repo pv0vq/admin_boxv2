@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IOptions } from "../../../type/common";
 
 interface IProps {
@@ -40,6 +40,11 @@ const DefaultCheckBox = ({
 
     setValue(arr, event);
   };
+
+  useEffect(() => {
+    if (defaultValue) setParam(defaultValue);
+  }, [defaultValue]);
+
   if (options && options.length > 0) {
     return (
       <div className="flex flex-row w-full">

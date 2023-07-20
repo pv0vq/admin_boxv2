@@ -28,7 +28,7 @@ interface IUserDetailInfo {
 }
 
 interface IProps {
-  columData: IUserDetailInfo | undefined;
+  columId: number;
   setButtonClick: (type: string) => void;
 }
 
@@ -69,10 +69,11 @@ const schema = yup.object({
 //   }),
 // });
 
-const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
+const UserDetailComp = ({ columId, setButtonClick }: IProps) => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onBlur",
@@ -86,13 +87,7 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
     { label: "관리자", value: "ADMIN" },
   ];
 
-  // const [columData, setColumData] = useState<IUserDetailInfo>({
-  // id: 0,
-  // email: "",
-  // name: "",
-  // role: "",
-  // useYn: "N",
-  // });
+  const { data, isLoading } = useUserDetailInfo(columId || 0);
   const { localDateFormatDateToYYYYMMDD } = utillFormat();
   const { mutate } = useUserAdd();
 
@@ -109,14 +104,19 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
     console.log("data:", data);
   };
 
-  // useEffect(() => {
-  //   console.log("data:", data);
-  //   if (data) setColumData(data);
-  // }, [data]);
-
-  // useEffect(() => {
-  //   console.log("columData:", columData);
-  // }, [columData]);
+  useEffect(() => {
+    if (data) {
+      const { id, email, name, role, useYn } = data;
+      reset({
+        id,
+        email,
+        name,
+        role,
+        password: !!data ? "*******" : "",
+        useYn: useYn === "Y",
+      });
+    }
+  }, [data]);
 
   useEffect(() => {
     console.log("errors:", errors);
@@ -131,7 +131,7 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
           </div>
         </div>
         <div className="grid gap-6 mb-6 md:grid-cols-2 p-4">
-          {columData ? (
+          {data && data.id ? (
             <div>
               <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
                 회원 번호
@@ -139,7 +139,6 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
               <Controller
                 name="id" // yup 걸린 데이터명
                 control={control}
-                defaultValue={columData.id}
                 render={({ field: { value, onChange } }) => (
                   <DefaultInput defaultValue={String(value)} disable={true} />
                 )}
@@ -157,7 +156,6 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
             <Controller
               name="email" // yup 걸린 데이터명
               control={control}
-              defaultValue={columData ? columData.email : ""}
               render={({ field: { value, onChange } }) => (
                 <DefaultInput defaultValue={value} setValue={onChange} />
               )}
@@ -172,7 +170,6 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
             <Controller
               name="name" // yup 걸린 데이터명
               control={control}
-              defaultValue={columData ? columData.name : ""}
               render={({ field: { value, onChange } }) => (
                 <DefaultInput defaultValue={value} setValue={onChange} />
               )}
@@ -186,12 +183,11 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
             <Controller
               name="password" // yup 걸린 데이터명
               control={control}
-              defaultValue={columData ? "********" : ""}
               render={({ field: { value, onChange } }) => (
                 <DefaultInput
                   defaultValue={value}
                   setValue={onChange}
-                  disable={columData ? true : false}
+                  disable={data ? true : false}
                 />
               )}
             />
@@ -204,7 +200,6 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
             <Controller
               name="role" // yup 걸린 데이터명
               control={control}
-              defaultValue={columData?.role}
               render={({ field: { value, onChange } }) => (
                 <DefaultSelect
                   defaultValue={value}
@@ -222,14 +217,13 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
             <Controller
               name="useYn" // yup 걸린 데이터명
               control={control}
-              defaultValue={columData ? columData.useYn === "Y" : false}
               render={({ field: { value, onChange } }) => (
                 <DefaultSwich defaultValue={value} setValue={onChange} />
               )}
             />
             <span>{errors.useYn && errors.useYn.message}</span>
           </div>
-          {columData ? (
+          {data && data.createDate ? (
             <div>
               <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
                 생성일
@@ -238,11 +232,9 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
                 name="createDate" // yup 걸린 데이터명
                 control={control}
                 defaultValue={
-                  columData
-                    ? columData?.createDate
-                      ? localDateFormatDateToYYYYMMDD(
-                          String(columData?.createDate)
-                        )
+                  data
+                    ? data?.createDate
+                      ? localDateFormatDateToYYYYMMDD(String(data?.createDate))
                       : undefined
                     : undefined
                 }
@@ -259,7 +251,7 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
           ) : (
             <div></div>
           )}
-          {columData ? (
+          {data && data.modifiedDate ? (
             <div>
               <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
                 수정일
@@ -267,7 +259,6 @@ const UserDetailComp = ({ columData, setButtonClick }: IProps) => {
               <Controller
                 name="modifiedDate" // yup 걸린 데이터명
                 control={control}
-                defaultValue=""
                 render={({ field: { value, onChange } }) => (
                   <DefaultDatePicker
                     defaultValue={value}

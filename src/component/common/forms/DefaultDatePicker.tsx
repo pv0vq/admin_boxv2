@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import utillFormat from "../../../utill/utillFormat";
@@ -29,6 +29,10 @@ const DefaultDatePicker = ({
     setParam(date);
     setValue(date);
   };
+
+  useEffect(() => {
+    if (defaultValue) setParam(defaultValue);
+  }, [defaultValue]);
 
   return (
     <DatePicker

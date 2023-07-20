@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 interface IProps {
@@ -29,6 +29,10 @@ const DefaultTextarea = ({
     setParam(event.target.value);
     setValue(event.target.value, event);
   };
+
+  useEffect(() => {
+    if (defaultValue) setParam(defaultValue);
+  }, [defaultValue]);
 
   return (
     <textarea

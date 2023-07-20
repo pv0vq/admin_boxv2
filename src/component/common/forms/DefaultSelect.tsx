@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IOptions } from "../../../type/common";
 
 interface IProps {
@@ -27,6 +27,10 @@ const DefaultSelect = ({
     setParam(event.target.value);
     setValue(event.target.value, event);
   };
+
+  useEffect(() => {
+    if (defaultValue) setParam(defaultValue);
+  }, [defaultValue]);
 
   return (
     <select

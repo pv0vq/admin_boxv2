@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 interface IProps {
@@ -27,6 +27,10 @@ const DefaultSwich = ({
     setParam(event.target.checked);
     setValue(event.target.checked, event);
   };
+
+  useEffect(() => {
+    if (defaultValue) setParam(defaultValue);
+  }, [defaultValue]);
 
   return (
     <label className="relative inline-flex items-center cursor-pointer">

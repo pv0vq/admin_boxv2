@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 interface IProps {
@@ -37,6 +37,10 @@ const DefaultFile = React.forwardRef(
       }
       setValue(files, event);
     };
+
+    useEffect(() => {
+      if (defaultValue) setParam(defaultValue);
+    }, [defaultValue]);
 
     return (
       <input

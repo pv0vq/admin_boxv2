@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 interface IProps {
@@ -19,12 +19,16 @@ const DefaultInput = ({
   className = "",
   placeholder = "",
 }: IProps) => {
-  const [param, setParam] = useState<string>(defaultValue);
+  const [param, setParam] = useState<string>("");
 
   const changeParamHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setParam(event.target.value);
     if (setValue) setValue(event.target.value, event);
   };
+
+  useEffect(() => {
+    if (defaultValue) setParam(defaultValue);
+  }, [defaultValue]);
 
   return (
     <input

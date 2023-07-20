@@ -9,8 +9,7 @@ import useUserDetailInfo from "../../hooks/api/user/useUserDetailInfo";
 
 const UserList = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [columId, setColumId] = useState<any>(0);
-  const { data, isLoading } = useUserDetailInfo(columId || 0);
+  const [columId, setColumId] = useState<number>(0);
 
   const modalTogglehandle = () => {
     setShowModal((prevState) => !prevState);
@@ -135,7 +134,7 @@ const UserList = () => {
       {showModal ? (
         <DefaultModal setButtonClick={modalButtonHandler}>
           <UserDetailComp
-            columData={data}
+            columId={columId}
             setButtonClick={modalButtonHandler}
           />
         </DefaultModal>
