@@ -32,6 +32,9 @@ function useUserEdit(
       if (status === "OK") {
         // 다시 유저 리스트 조회
         queryClient.invalidateQueries("searchPage");
+        // 수정시에는 변경사항도 반영되야하기에
+        queryClient.invalidateQueries("userDetailInfo");
+
         console.log("data:", data, 1);
         if (data.type === "duplication") {
           console.log("data:", data, 2);
