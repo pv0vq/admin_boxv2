@@ -128,6 +128,8 @@ const SideSearchComp = ({
     }
   }, [data]);
 
+  console.log("searchItem:", searchItem);
+
   // useEffect(() => {
   //   console.log("params:", params);
   // }, [params]);
@@ -450,9 +452,7 @@ const SideSearchComp = ({
             <div className="bg-violet-500 text-white py-2 px-4 rounded-t-lg opacity-80">
               <div className="grid grid-cols-5 items-center text-blue-gray-900 py-2 p-4 ">
                 <div className="col-span-2">
-                  {searchItem && searchItem.length < 1 ? (
-                    <></>
-                  ) : (
+                  {searchItem && searchItem.length > 0 ? (
                     <button
                       type="button"
                       onClick={searchStateHandelr}
@@ -460,6 +460,8 @@ const SideSearchComp = ({
                     >
                       검색하기
                     </button>
+                  ) : (
+                    <></>
                   )}
 
                   {setAddButtonClick ? (
