@@ -97,7 +97,7 @@ const SideBar = ({ children }: Props) => {
                     </div>
                   </div>
                   <div
-                    className="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold"
+                    className="text-left text-sm mt-2 w-4/5 mx-10 text-gray-200 font-bold "
                     id="submenu"
                   >
                     {manu.child.map((sub, ii) => {
@@ -105,7 +105,7 @@ const SideBar = ({ children }: Props) => {
                         return (
                           <Link to={sub.path} key={ii}>
                             <h1 className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
-                              {sub.label}
+                              - {sub.label}
                             </h1>
                           </Link>
                         );
