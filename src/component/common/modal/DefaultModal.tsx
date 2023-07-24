@@ -2,14 +2,12 @@ import { ReactNode, useEffect, useState } from "react";
 
 interface IProps {
   state?: string;
-  setButtonClick: (type: string) => void;
+  setButtonClick: (type: "add" | "detail" | "edit" | "close") => void;
   children: ReactNode;
 }
 
 const DefaultModal = ({ setButtonClick, children, state = "add" }: IProps) => {
-  const [modalState, setModalState] = useState<string>(
-    state || "add" || "detail" || "edit"
-  );
+  const [modalState] = useState<string>(state || "add" || "detail" || "edit");
 
   const [modalTitle, setModalTitle] = useState<string>("저장하기");
 

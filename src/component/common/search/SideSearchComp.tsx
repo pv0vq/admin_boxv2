@@ -10,11 +10,11 @@ import React from "react";
 import utillFormat from "../../../utill/utillFormat";
 
 interface IProps {
-  searchItem: ISearchItem[];
+  searchItem?: ISearchItem[];
   children: any;
   title: string;
   api: IApi;
-  setAddButtonClick?: (type: string) => void;
+  setAddButtonClick?: (type: "add" | "detail" | "edit" | "close") => void;
 }
 
 interface ISearchParams {
@@ -180,262 +180,267 @@ const SideSearchComp = ({
                     <div className="translate-x-1/2 text-white">조회하기</div>
                   </div>
                 </button>
-                {searchItem.map((item: ISearchItem, index: number) => {
-                  if (item.type === "TEXT") {
-                    return (
-                      <div key={index}>
-                        <div className="flex items-center gap-4 p-4">검색</div>
-
-                        <div className="bg-white rounded-lg shadow-lg">
-                          <input
-                            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500"
-                            type="text"
-                            placeholder="Search"
-                            onChange={(event: any) =>
-                              paramsChangeHandler(
-                                item.value,
-                                event.target.value
-                              )
-                            }
-                            value={params[item.value] || ""}
-                          />
-                        </div>
-                      </div>
-                    );
-                  } else if (item.type === "DATE_PIKER") {
-                    return (
-                      <div key={index}>
-                        <div className="items-center gap-4 p-4">
-                          {item.label}
-                        </div>
-                        <div className="block w-full p-4 pl-10  rounded-lg shadow-lg border border-gray-200">
-                          <DatePicker
-                            locale={ko} // 언어설정 기본값은 영어
-                            dateFormat="yyyy-MM-dd" // 날짜 형식 설정
-                            // minDate={new Date()} // 선택할 수 있는 최소 날짜값 지정
-                            closeOnScroll={true} // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
-                            placeholderText="날짜 선택" // placeholder
-                            selected={
-                              params[item.value]
-                                ? parseDateFromyyyyMMdd(params[item.value])
-                                : new Date()
-                            } // value
-                            onChange={(date: Date) =>
-                              paramsChangeHandler(
-                                item.value,
-                                formatDateToyyyyMMdd(date)
-                              )
-                            } // 날짜를 선택하였을 때 실행될 함수
-                          />
-                        </div>
-                      </div>
-                    );
-                  } else if (item.type === "SELECT_BOX") {
-                    if (item.optin && item.optin.length > 0) {
+                {searchItem &&
+                  searchItem.map((item: ISearchItem, index: number) => {
+                    if (item.type === "TEXT") {
                       return (
                         <div key={index}>
                           <div className="flex items-center gap-4 p-4">
-                            {item.label}
+                            검색
                           </div>
+
                           <div className="bg-white rounded-lg shadow-lg">
-                            <select
+                            <input
                               className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500"
-                              value={params[item.value]}
-                              placeholder="선택"
-                              onChange={(event: any) => {
+                              type="text"
+                              placeholder="Search"
+                              onChange={(event: any) =>
                                 paramsChangeHandler(
                                   item.value,
                                   event.target.value
-                                );
-                              }}
-                            >
-                              {item.optin.map((sub, ii) => {
-                                return (
-                                  <option key={ii} value={sub.value}>
-                                    {sub.label}
-                                  </option>
-                                );
-                              })}
-                            </select>
+                                )
+                              }
+                              value={params[item.value] || ""}
+                            />
                           </div>
                         </div>
                       );
-                    }
-                  } else if (item.type === "RADIO") {
-                    if (item.optin && item.optin.length > 0) {
+                    } else if (item.type === "DATE_PIKER") {
                       return (
                         <div key={index}>
-                          <div className="flex items-center gap-4 p-4">
+                          <div className="items-center gap-4 p-4">
                             {item.label}
                           </div>
-
-                          <div className="bg-white rounded-lg shadow-lg border border-gray-200">
-                            {item.optin.map((sub, ii) => {
-                              return (
-                                <div className="p-0" key={ii}>
-                                  <label className="items-center cursor-pointer flex w-full px-3 py-2">
-                                    <div className="mr-3">
-                                      <input
-                                        type="radio"
-                                        name={item.value}
-                                        id={item.value}
-                                        checked={
-                                          params[item.value] === sub.value
-                                            ? true
-                                            : false
-                                        }
-                                        onChange={(event: any) => {
-                                          if (event.target.checked) {
-                                            paramsChangeHandler(
-                                              item.value,
-                                              sub.value
-                                            );
-                                          }
-                                        }}
-                                      />
-                                    </div>
-                                    <div
-                                      color="blue-gray"
-                                      className="font-medium"
-                                    >
-                                      {sub.label}
-                                    </div>
-                                  </label>
-                                </div>
-                              );
-                            })}
+                          <div className="block w-full p-4 pl-10  rounded-lg shadow-lg border border-gray-200">
+                            <DatePicker
+                              locale={ko} // 언어설정 기본값은 영어
+                              dateFormat="yyyy-MM-dd" // 날짜 형식 설정
+                              // minDate={new Date()} // 선택할 수 있는 최소 날짜값 지정
+                              closeOnScroll={true} // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
+                              placeholderText="날짜 선택" // placeholder
+                              selected={
+                                params[item.value]
+                                  ? parseDateFromyyyyMMdd(params[item.value])
+                                  : new Date()
+                              } // value
+                              onChange={(date: Date) =>
+                                paramsChangeHandler(
+                                  item.value,
+                                  formatDateToyyyyMMdd(date)
+                                )
+                              } // 날짜를 선택하였을 때 실행될 함수
+                            />
                           </div>
                         </div>
                       );
-                    }
-                  } else if (item.type === "CHECK_BOX") {
-                    if (item.optin && item.optin.length > 0) {
-                      return (
-                        <div key={index}>
-                          <div className="flex items-center gap-4 p-4">
-                            <div color="blue-gray">{item.label}</div>
+                    } else if (item.type === "SELECT_BOX") {
+                      if (item.optin && item.optin.length > 0) {
+                        return (
+                          <div key={index}>
+                            <div className="flex items-center gap-4 p-4">
+                              {item.label}
+                            </div>
+                            <div className="bg-white rounded-lg shadow-lg">
+                              <select
+                                className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500"
+                                value={params[item.value]}
+                                placeholder="선택"
+                                onChange={(event: any) => {
+                                  paramsChangeHandler(
+                                    item.value,
+                                    event.target.value
+                                  );
+                                }}
+                              >
+                                {item.optin.map((sub, ii) => {
+                                  return (
+                                    <option key={ii} value={sub.value}>
+                                      {sub.label}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                            </div>
                           </div>
+                        );
+                      }
+                    } else if (item.type === "RADIO") {
+                      if (item.optin && item.optin.length > 0) {
+                        return (
+                          <div key={index}>
+                            <div className="flex items-center gap-4 p-4">
+                              {item.label}
+                            </div>
 
-                          <div className="bg-white rounded-lg shadow-lg border border-gray-200">
-                            {item.optin.map((sub, ii) => {
-                              return (
-                                <div className="p-0" key={ii}>
-                                  <label className="flex w-full cursor-pointer items-center px-3 py-2">
-                                    <div className="mr-3">
-                                      <input
-                                        type="checkbox"
-                                        id={sub.value}
-                                        checked={
-                                          Object.keys(params).includes(
-                                            item.value
-                                          ) &&
-                                          params[item.value] !== "" &&
-                                          params[item.value]
-                                            .split(",")
-                                            .includes(sub.value)
-                                        }
-                                        className="form-checkbox"
-                                        onChange={(event: any) => {
-                                          // param에 값이 있고 빈값이 아닐 경우
-                                          if (
-                                            Object.keys(params).includes(
-                                              item.value
-                                            ) &&
-                                            params[item.value] !== ""
-                                          ) {
-                                            const checkArr: Array<string> =
-                                              params[item.value].split(",");
-                                            // param에 기존 값이 있으면 삭제
-                                            if (checkArr.includes(sub.value)) {
-                                              const tremArr = checkArr.filter(
-                                                (arr: string) =>
-                                                  arr !== sub.value
-                                              );
-                                              paramsChangeHandler(
-                                                item.value,
-                                                tremArr.join(",")
-                                              );
-                                            } else {
-                                              // 없으면 추가
-                                              checkArr.push(sub.value);
-                                              if (checkArr.length === 1) {
-                                                paramsChangeHandler(
-                                                  item.value,
-                                                  checkArr[0]
-                                                );
-                                              } else {
-                                                paramsChangeHandler(
-                                                  item.value,
-                                                  checkArr.join(",")
-                                                );
-                                              }
-                                            }
-                                          } else {
-                                            // param에 값이 없으니 추가
+                            <div className="bg-white rounded-lg shadow-lg border border-gray-200">
+                              {item.optin.map((sub, ii) => {
+                                return (
+                                  <div className="p-0" key={ii}>
+                                    <label className="items-center cursor-pointer flex w-full px-3 py-2">
+                                      <div className="mr-3">
+                                        <input
+                                          type="radio"
+                                          name={item.value}
+                                          id={item.value}
+                                          checked={
+                                            params[item.value] === sub.value
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={(event: any) => {
                                             if (event.target.checked) {
                                               paramsChangeHandler(
                                                 item.value,
                                                 sub.value
                                               );
                                             }
+                                          }}
+                                        />
+                                      </div>
+                                      <div
+                                        color="blue-gray"
+                                        className="font-medium"
+                                      >
+                                        {sub.label}
+                                      </div>
+                                    </label>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      }
+                    } else if (item.type === "CHECK_BOX") {
+                      if (item.optin && item.optin.length > 0) {
+                        return (
+                          <div key={index}>
+                            <div className="flex items-center gap-4 p-4">
+                              <div color="blue-gray">{item.label}</div>
+                            </div>
+
+                            <div className="bg-white rounded-lg shadow-lg border border-gray-200">
+                              {item.optin.map((sub, ii) => {
+                                return (
+                                  <div className="p-0" key={ii}>
+                                    <label className="flex w-full cursor-pointer items-center px-3 py-2">
+                                      <div className="mr-3">
+                                        <input
+                                          type="checkbox"
+                                          id={sub.value}
+                                          checked={
+                                            Object.keys(params).includes(
+                                              item.value
+                                            ) &&
+                                            params[item.value] !== "" &&
+                                            params[item.value]
+                                              .split(",")
+                                              .includes(sub.value)
                                           }
-                                        }}
-                                      />
-                                    </div>
-                                    <div
-                                      color="blue-gray"
-                                      className="font-medium"
-                                    >
-                                      {sub.label}
-                                    </div>
-                                  </label>
-                                </div>
-                              );
-                            })}
+                                          className="form-checkbox"
+                                          onChange={(event: any) => {
+                                            // param에 값이 있고 빈값이 아닐 경우
+                                            if (
+                                              Object.keys(params).includes(
+                                                item.value
+                                              ) &&
+                                              params[item.value] !== ""
+                                            ) {
+                                              const checkArr: Array<string> =
+                                                params[item.value].split(",");
+                                              // param에 기존 값이 있으면 삭제
+                                              if (
+                                                checkArr.includes(sub.value)
+                                              ) {
+                                                const tremArr = checkArr.filter(
+                                                  (arr: string) =>
+                                                    arr !== sub.value
+                                                );
+                                                paramsChangeHandler(
+                                                  item.value,
+                                                  tremArr.join(",")
+                                                );
+                                              } else {
+                                                // 없으면 추가
+                                                checkArr.push(sub.value);
+                                                if (checkArr.length === 1) {
+                                                  paramsChangeHandler(
+                                                    item.value,
+                                                    checkArr[0]
+                                                  );
+                                                } else {
+                                                  paramsChangeHandler(
+                                                    item.value,
+                                                    checkArr.join(",")
+                                                  );
+                                                }
+                                              }
+                                            } else {
+                                              // param에 값이 없으니 추가
+                                              if (event.target.checked) {
+                                                paramsChangeHandler(
+                                                  item.value,
+                                                  sub.value
+                                                );
+                                              }
+                                            }
+                                          }}
+                                        />
+                                      </div>
+                                      <div
+                                        color="blue-gray"
+                                        className="font-medium"
+                                      >
+                                        {sub.label}
+                                      </div>
+                                    </label>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      }
+                    } else if (item.type === "SWITCH") {
+                      return (
+                        <div key={index}>
+                          <div className="flex items-center gap-4 p-4">
+                            <div color="blue-gray">{item.label}</div>
+                          </div>
+
+                          <div className="bg-white shadow-lg block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500">
+                            <div className="relative">
+                              <label className="items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  id={item.value}
+                                  onChange={(event: any) => {
+                                    if (event.target.checked) {
+                                      paramsChangeHandler(item.value, "Y");
+                                    } else {
+                                      paramsChangeHandler(item.value, "N");
+                                    }
+                                  }}
+                                  className="sr-only"
+                                />
+                                <div className="block bg-gray-300 w-14 h-8 rounded-full"></div>
+                                <div
+                                  className={
+                                    params[item.value] === "Y"
+                                      ? "absolute left-1 top-1 w-6 h-6 rounded-full transition translate-x-full bg-violet-400 "
+                                      : "absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"
+                                  }
+                                ></div>
+                              </label>
+                            </div>
+                            {/* <label htmlFor={item.value} className="text-gray-700">
+                            {item.value}
+                          </label> */}
                           </div>
                         </div>
                       );
                     }
-                  } else if (item.type === "SWITCH") {
-                    return (
-                      <div key={index}>
-                        <div className="flex items-center gap-4 p-4">
-                          <div color="blue-gray">{item.label}</div>
-                        </div>
-
-                        <div className="bg-white shadow-lg block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500">
-                          <div className="relative">
-                            <label className="items-center cursor-pointer">
-                              <input
-                                type="checkbox"
-                                id={item.value}
-                                onChange={(event: any) => {
-                                  if (event.target.checked) {
-                                    paramsChangeHandler(item.value, "Y");
-                                  } else {
-                                    paramsChangeHandler(item.value, "N");
-                                  }
-                                }}
-                                className="sr-only"
-                              />
-                              <div className="block bg-gray-300 w-14 h-8 rounded-full"></div>
-                              <div
-                                className={
-                                  params[item.value] === "Y"
-                                    ? "absolute left-1 top-1 w-6 h-6 rounded-full transition translate-x-full bg-violet-400 "
-                                    : "absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"
-                                }
-                              ></div>
-                            </label>
-                          </div>
-                          {/* <label htmlFor={item.value} className="text-gray-700">
-                            {item.value}
-                          </label> */}
-                        </div>
-                      </div>
-                    );
-                  }
-                })}
+                  })}
               </form>
             </div>
           ) : (
@@ -445,13 +450,18 @@ const SideSearchComp = ({
             <div className="bg-violet-500 text-white py-2 px-4 rounded-t-lg opacity-80">
               <div className="grid grid-cols-5 items-center text-blue-gray-900 py-2 p-4 ">
                 <div className="col-span-2">
-                  <button
-                    type="button"
-                    onClick={searchStateHandelr}
-                    className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
-                  >
-                    검색하기
-                  </button>
+                  {searchItem && searchItem.length < 1 ? (
+                    <></>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={searchStateHandelr}
+                      className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+                    >
+                      검색하기
+                    </button>
+                  )}
+
                   {setAddButtonClick ? (
                     <button
                       type="button"

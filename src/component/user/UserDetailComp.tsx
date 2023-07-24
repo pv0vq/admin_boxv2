@@ -32,7 +32,7 @@ interface IUserDetailInfo {
 interface IProps {
   modalState: "add" | "detail" | "edit" | "close";
   columId: number;
-  setButtonClick: (type: string) => void;
+  setButtonClick: (type: "add" | "detail" | "edit" | "close") => void;
 }
 
 // yub 유효성 검증
@@ -388,7 +388,7 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
               buttonTitle="닫기"
               type="button"
               className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-              onClick={(buttonState: string) => setButtonClick(buttonState)}
+              onClick={() => setButtonClick("close")}
             />
           </>
         ) : state === "detail" ? (
@@ -402,7 +402,7 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
               buttonTitle="닫기"
               type="button"
               className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-              onClick={(buttonState: string) => setButtonClick(buttonState)}
+              onClick={() => setButtonClick("close")}
             />
           </>
         ) : (
@@ -412,7 +412,7 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
               buttonTitle="닫기"
               type="button"
               className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-              onClick={(buttonState: string) => setButtonClick(buttonState)}
+              onClick={() => setButtonClick("close")}
             />
           </>
         )}

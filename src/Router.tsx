@@ -5,6 +5,7 @@ import NotFound from "./layouts/NotFound";
 import User from "./pages/user/User";
 import Login from "./pages/auth/Login";
 import FreeBoard from "./pages/board/freeBoard/FreeBoard";
+import Vendor from "./pages/code/vendor/Vendor";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "freeBoard",
         element: <FreeBoard />,
+      },
+      {
+        path: "vendor",
+        element: <Vendor />,
       },
     ],
     errorElement: (

@@ -8,7 +8,7 @@ interface IProps {
   placeholder?: string;
   type: "submit" | "reset" | "button" | undefined;
   buttonState?: string;
-  onClick?: (buttonState: string) => void;
+  onClick?: (buttonState?: string) => void;
 }
 
 const DefaultButton = ({

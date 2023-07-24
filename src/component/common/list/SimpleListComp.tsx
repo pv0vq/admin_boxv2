@@ -5,7 +5,10 @@ interface IProps {
     label: string;
   }[];
   data?: IPageData;
-  setColumClick?: (type: string, columId: number) => void;
+  setColumClick?: (
+    type: "add" | "detail" | "edit" | "close",
+    columId: number
+  ) => void;
 }
 
 const SimpleListComp = ({
