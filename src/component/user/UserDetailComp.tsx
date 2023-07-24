@@ -30,7 +30,7 @@ interface IUserDetailInfo {
 }
 
 interface IProps {
-  modalState: "add" | "detail" | "edit";
+  modalState: "add" | "detail" | "edit" | "close";
   columId: number;
   setButtonClick: (type: string) => void;
 }
@@ -92,18 +92,21 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
 
   const { data, isLoading } = useUserDetailInfo(columId || 0);
   const { localDateFormatDateToYYYYMMDD } = utillFormat();
-  const [state, setState] = useState<"add" | "edit" | "detail">(modalState);
+  const [state, setState] = useState<"add" | "edit" | "detail" | "close">(
+    modalState
+  );
   const { mutate } = useUserEdit();
   const { mutateAsync } = useUserAdd();
   // const { mutate } = useUserAdd();
   //
   const onSubmit = (data: any) => {
+    // 수정
     if (state === "edit") {
       return mutate(data);
     } else {
+      // 추가
       return mutateAsync(data);
     }
-    console.log(1);
   };
 
   // 디폴트 설정 및 데이터 폼에 set

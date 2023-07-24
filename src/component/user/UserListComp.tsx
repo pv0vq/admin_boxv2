@@ -10,27 +10,30 @@ import useUserDetailInfo from "../../hooks/api/user/useUserDetailInfo";
 const UserList = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [columId, setColumId] = useState<number>(0);
-  const [modalState, setModalStat] = useState<"add" | "detail" | "edit">("add");
+  const [modalState, setModalStat] = useState<
+    "add" | "detail" | "edit" | "close"
+  >("add");
 
   // 모달 상태 반전
   const modalTogglehandle = () => {
     setShowModal((prevState) => !prevState);
   };
 
-  const modalButtonHandler = (type: string) => {
+  /**
+   * 모달 핸들러 (추가, 닫기)
+   *
+   * @param type
+   */
+  const modalButtonHandler = (
+    type: "add" | "detail" | "edit" | "close",
+    id: number = 0
+  ) => {
     if (type === "close") {
-      modalTogglehandle();
-    } else if (type === "create") {
-      setModalStat("add");
-      setColumId(0);
-      modalTogglehandle();
+      return modalTogglehandle();
     }
-  };
-
-  const showEditModalHandler = (row: any) => {
-    setModalStat("detail");
+    setModalStat(type);
+    setColumId(id);
     modalTogglehandle();
-    setColumId(row.id);
   };
 
   const title = "유저 관리";
@@ -143,7 +146,7 @@ const UserList = () => {
         api={API_USER.USER_LIST}
         setAddButtonClick={modalButtonHandler}
       >
-        <SimpleListComp columns={columns} setColum={showEditModalHandler} />
+        <SimpleListComp columns={columns} setColumClick={modalButtonHandler} />
       </SideSearchComp>
     </div>
   );

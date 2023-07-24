@@ -5,13 +5,13 @@ interface IProps {
     label: string;
   }[];
   data?: IPageData;
-  setColum?: (colums: any) => void;
+  setColumClick?: (type: string, columId: number) => void;
 }
 
 const SimpleListComp = ({
   columns,
   data,
-  setColum,
+  setColumClick,
 }: IProps): JSX.Element | null => {
   return (
     <table className="w-full min-w-max table-auto text-left">
@@ -39,7 +39,7 @@ const SimpleListComp = ({
                     className={classes}
                     key={ii}
                     onClick={() => {
-                      if (setColum) setColum(row);
+                      if (setColumClick) setColumClick("detail", row.id);
                     }}
                   >
                     {(() => {
