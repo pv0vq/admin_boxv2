@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { IColumns, ISearchItem } from "../../../type/common";
+import { useEffect, useState } from "react";
+import { IColumns, IOptions, ISearchItem } from "../../../type/common";
 import SideSearchComp from "../../../component/common/search/SideSearchComp";
 import SimpleListComp from "../../../component/common/list/SimpleListComp";
 import API_INSPECTION from "../../../api/code/inspection";
-import React from "react";
 import DefaultModal from "../../../component/common/modal/DefaultModal";
+import { useVendorList } from "../../../hooks/api/vendor/useVendorList";
 
 const Inspection = () => {
   const title = "점검 사항 관리";
@@ -18,6 +18,8 @@ const Inspection = () => {
   const modalTogglehandle = () => {
     setShowModal((prevState) => !prevState);
   };
+
+  const { vendorList } = useVendorList();
 
   /**
    * 모달 핸들러 (추가, 닫기)
@@ -71,6 +73,63 @@ const Inspection = () => {
     },
   ]);
 
+  const [searchItem, setSearchItem] = useState<ISearchItem[]>([]);
+
+  useEffect(() => {
+    console.log(vendorList, "vendorList");
+    if (vendorList) {
+      const vendorOption: IOptions[] = [
+        {
+          label: "선택",
+          value: "",
+        },
+      ];
+      vendorList.forEach((vendor: any) => {
+        vendorOption.push({
+          label: vendor.vendorName,
+          value: vendor.vendorName,
+        });
+      });
+      setSearchItem([
+        {
+          type: "TEXT",
+          value: "searchText",
+          label: "검색",
+        },
+        {
+          type: "SELECT_BOX",
+          value: "vendorName",
+          label: "제조사 이름",
+          optin: vendorOption,
+        },
+        {
+          type: "SELECT_BOX",
+          value: "code",
+          label: "코드",
+          optin: [
+            {
+              label: "선택",
+              value: "",
+            },
+            {
+              label: "사용자",
+              value: "USER",
+            },
+            {
+              label: "관리자",
+              value: "ADMIN",
+            },
+          ],
+        },
+        {
+          type: "SWITCH",
+          value: "useYn",
+          label: "사용여부",
+        },
+      ]);
+    }
+  }, [vendorList]);
+
   return (
     <div className="relative h-[100vh]">
       {showModal ? (
@@ -85,6 +144,7 @@ const Inspection = () => {
         title={title}
         api={API_INSPECTION.INSPECTION_PAGE}
         setAddButtonClick={modalButtonHandler}
+        searchItem={searchItem}
       >
         <SimpleListComp columns={columns} setColumClick={modalButtonHandler} />
       </SideSearchComp>

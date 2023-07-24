@@ -128,10 +128,6 @@ const SideSearchComp = ({
     }
   }, [data]);
 
-  // useEffect(() => {
-  //   console.log("params:", params);
-  // }, [params]);
-
   if (isLoading) {
     return (
       <div role="status">
