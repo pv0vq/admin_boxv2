@@ -128,8 +128,6 @@ const SideSearchComp = ({
     }
   }, [data]);
 
-  console.log("searchItem:", searchItem);
-
   // useEffect(() => {
   //   console.log("params:", params);
   // }, [params]);

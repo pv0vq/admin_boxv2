@@ -3,9 +3,9 @@ import { IColumns, ISearchItem } from "../../../type/common";
 import SideSearchComp from "../../../component/common/search/SideSearchComp";
 import SimpleListComp from "../../../component/common/list/SimpleListComp";
 import DefaultModal from "../../../component/common/modal/DefaultModal";
-import UserDetailComp from "../../../component/user/UserDetailComp";
 import API_VENDOR from "../../../api/code/vendor";
-import VendorModalComp from "../../../component/vendor/vendorModalComp";
+import VendorModalComp from "../../../component/vendor/VendorModalComp";
+import React from "react";
 
 const Vendor = () => {
   const title = "제조사 관리";

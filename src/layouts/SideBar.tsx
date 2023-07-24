@@ -35,7 +35,7 @@ const SideBar = ({ children }: Props) => {
       path: "#",
       child: [
         { id: 8, label: "제조사 관리", path: "/vendor", upperId: 7 },
-        { id: 9, label: "코드 관리", path: "/code", upperId: 7 },
+        { id: 9, label: "코드 관리", path: "/inspection", upperId: 7 },
       ],
     },
   ];

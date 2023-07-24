@@ -6,12 +6,11 @@ import DefaultSwich from "../common/forms/DefaultSwich";
 import DefaultDatePicker from "../common/forms/DefaultDatePicker";
 import { useEffect, useState } from "react";
 import utillFormat from "../../utill/utillFormat";
-import useUserAdd from "../../hooks/api/user/useUserAdd";
 import DefaultButton from "../common/forms/DefaultButton";
-import useUserEdit from "../../hooks/api/user/useUserEdit";
 import { useVendorDetailInfo } from "../../hooks/api/vendor/useVendorDetailInfo";
 import useVendorAdd from "../../hooks/api/vendor/useVendorAdd";
 import useVendorEdit from "../../hooks/api/vendor/useVendorEdit";
+import React from "react";
 
 interface IVendorDetailInfo {
   id: number;

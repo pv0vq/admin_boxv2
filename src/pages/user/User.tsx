@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import UserListComp from "../../component/user/UserListComp";
-import UserDetailComp from "../../component/user/UserDetailComp";
+import React from "react";
 
 const User = () => {
   return <UserListComp />;

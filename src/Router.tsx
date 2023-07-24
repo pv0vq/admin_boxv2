@@ -6,6 +6,7 @@ import User from "./pages/user/User";
 import Login from "./pages/auth/Login";
 import FreeBoard from "./pages/board/freeBoard/FreeBoard";
 import Vendor from "./pages/code/vendor/Vendor";
+import Inspection from "./pages/code/inspection/Inspection";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "vendor",
         element: <Vendor />,
+      },
+      {
+        path: "inspection",
+        element: <Inspection />,
       },
     ],
     errorElement: (

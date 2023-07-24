@@ -5,7 +5,7 @@ import API_USER from "../../api/code/user";
 import { ISearchItem, IColumns } from "../../type/common";
 import DefaultModal from "../common/modal/DefaultModal";
 import UserDetailComp from "./UserDetailComp";
-import useUserDetailInfo from "../../hooks/api/user/useUserDetailInfo";
+import React from "react";
 
 const UserList = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
