@@ -14,6 +14,7 @@ import useInspectionAdd from "../../../hooks/api/inspection/useInspectionAdd";
 import { useVendorList } from "../../../hooks/api/vendor/useVendorList";
 import { IIdOptions, IOptions } from "../../../type/common";
 import DefaultSelect from "../../common/forms/DefaultSelect";
+import DefaultTextarea from "../../common/forms/DefaultTextarea";
 
 interface IProps {
   modalState: "add" | "detail" | "edit" | "close";
@@ -59,6 +60,7 @@ const InspectionModalComp = ({
   const { mutate: add } = useInspectionAdd();
   const { data: vendorList } = useVendorList();
   const [vendorOptions, setVendorOptions] = useState<IIdOptions[]>([]);
+  const [disableState, setDisableState] = useState<boolean>(false);
 
   const onSubmit = (data: any) => {
     // 수정
@@ -119,6 +121,11 @@ const InspectionModalComp = ({
     console.log("errors:", errors);
   }, [errors]);
 
+  useEffect(() => {
+    if (state === "detail") setDisableState(true);
+    else setDisableState(false);
+  }, [state]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white rounded-lg shadow-lg w-full h-full">
@@ -153,7 +160,11 @@ const InspectionModalComp = ({
               name="code" // yup 걸린 데이터명
               control={control}
               render={({ field: { value, onChange } }) => (
-                <DefaultInput defaultValue={value} setValue={onChange} />
+                <DefaultInput
+                  defaultValue={value}
+                  setValue={onChange}
+                  disable={disableState}
+                />
               )}
             />
             <span>{errors.code && errors.code.message}</span>
@@ -170,6 +181,7 @@ const InspectionModalComp = ({
                   defaultValue={value}
                   setValue={(value) => onChange(Number(value))}
                   options={vendorOptions}
+                  disable={disableState}
                 />
               )}
             />
@@ -183,7 +195,11 @@ const InspectionModalComp = ({
               name="checkAction" // yup 걸린 데이터명
               control={control}
               render={({ field: { value, onChange } }) => (
-                <DefaultInput defaultValue={value} setValue={onChange} />
+                <DefaultTextarea
+                  defaultValue={value}
+                  setValue={onChange}
+                  rows={10}
+                />
               )}
             />
             <span>{errors.checkAction && errors.checkAction.message}</span>
@@ -200,6 +216,7 @@ const InspectionModalComp = ({
                   setValue={(value: boolean) => {
                     onChange(value ? "Y" : "N");
                   }}
+                  disable={disableState}
                 />
               )}
             />

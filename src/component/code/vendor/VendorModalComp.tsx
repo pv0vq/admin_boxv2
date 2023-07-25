@@ -52,6 +52,7 @@ const VendorModalComp = ({ columId, setButtonClick, modalState }: IProps) => {
   const [state, setState] = useState<"add" | "edit" | "detail" | "close">(
     modalState
   );
+  const [disableState, setDisableState] = useState<boolean>(false);
   const { mutate: edit } = useVendorEdit();
   const { mutate: add } = useVendorAdd();
 
@@ -80,6 +81,11 @@ const VendorModalComp = ({ columId, setButtonClick, modalState }: IProps) => {
   useEffect(() => {
     console.log("errors:", errors);
   }, [errors]);
+
+  useEffect(() => {
+    if (state === "detail") setDisableState(true);
+    else setDisableState(false);
+  }, [state]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -115,7 +121,11 @@ const VendorModalComp = ({ columId, setButtonClick, modalState }: IProps) => {
               name="vendorName" // yup 걸린 데이터명
               control={control}
               render={({ field: { value, onChange } }) => (
-                <DefaultInput defaultValue={value} setValue={onChange} />
+                <DefaultInput
+                  defaultValue={value}
+                  setValue={onChange}
+                  disable={disableState}
+                />
               )}
             />
             <span>{errors.vendorName && errors.vendorName.message}</span>
@@ -132,6 +142,7 @@ const VendorModalComp = ({ columId, setButtonClick, modalState }: IProps) => {
                   setValue={(value: boolean) => {
                     onChange(value ? "Y" : "N");
                   }}
+                  disable={disableState}
                 />
               )}
             />
