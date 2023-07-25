@@ -16,6 +16,7 @@ import { IIdOptions, IOptions } from "../../../type/common";
 import DefaultSelect from "../../common/forms/DefaultSelect";
 import DefaultTextarea from "../../common/forms/DefaultTextarea";
 import DefaultFile from "../../common/forms/DefaultFile";
+import axios from "axios";
 
 interface IProps {
   modalState: "add" | "detail" | "edit" | "close";
@@ -225,14 +226,19 @@ const InspectionModalComp = ({
             <span>{errors.useYn && errors.useYn.message}</span>
           </div>
           <div>
-            {/* <Controller
+            <Controller
               name="file" // yup 걸린 데이터명
               control={control}
               render={({ field: { value, onChange, ref } }) => (
-                <DefaultFile multiple={true} setValue={onChange} ref={ref} />
+                <DefaultFile
+                  multiple={true}
+                  setValue={onChange}
+                  ref={ref}
+                  type={"inspection"}
+                />
               )}
-            /> */}
-            <input
+            />
+            {/* <input
               type="file"
               accept="image/*"
               onChange={async (e: any) => {
@@ -241,17 +247,27 @@ const InspectionModalComp = ({
 
                 //S3 업로드
                 const formData = new FormData();
-                formData.append(file.name, file);
-                let 업로드결과 = await fetch(
-                  "https://bittebucket.s3.ap-northeast-2.amazonaws.com/notice/bf1ca626-21f2-465d-8eff-6244d7e7ad17test?x-amz-acl=public-read&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230725T081559Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Credential=AKIA3ZP4CLRE5MZ73PFF%2F20230725%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=861d4b0e768373f1df9639f8fa1309e73d3bb5dbe212d6bd47b1f3473949da02",
+                formData.append("Content-Type", file.type);
+                formData.append("file", file);
+                // let 업로드결과 = await fetch(
+                //   "https://bittebucket.s3.ap-northeast-2.amazonaws.com/notice/f9c4de5f-b11e-46a6-9cda-6f0f9fc9cd5dtest?x-amz-acl=public-read&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230725T105122Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1199&X-Amz-Credential=AKIA3ZP4CLRE5MZ73PFF%2F20230725%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=3e28af92a37e308cdd402e92fe1cf2b8e65aba4b5ebc31c19c00091f90b99861",
+                //   {
+                //     method: "PUT",
+                //     body: formData,
+                //   }
+                // );
+                // console.log(업로드결과);
+                const res = await axios.put(
+                  "https://bittebucket.s3.ap-northeast-2.amazonaws.com/notice/test?x-amz-acl=public-read&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230725T114301Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Credential=AKIA3ZP4CLREWBWQWNEX%2F20230725%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=80637bb51c2e7d9b0677f81e3f9e26169e260c9623a3f70531803381ab921802",
+                  formData,
                   {
-                    method: "PUT",
-                    body: formData,
+                    headers: {
+                      Authorization: undefined,
+                    },
                   }
                 );
-                console.log(업로드결과);
               }}
-            />
+            /> */}
             <span>{errors.file && errors.file.message}</span>
           </div>
           {detail && detail.createDate ? (
