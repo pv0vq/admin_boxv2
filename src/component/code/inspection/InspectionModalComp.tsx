@@ -15,6 +15,7 @@ import { useVendorList } from "../../../hooks/api/vendor/useVendorList";
 import { IIdOptions, IOptions } from "../../../type/common";
 import DefaultSelect from "../../common/forms/DefaultSelect";
 import DefaultTextarea from "../../common/forms/DefaultTextarea";
+import DefaultFile from "../../common/forms/DefaultFile";
 
 interface IProps {
   modalState: "add" | "detail" | "edit" | "close";
@@ -33,6 +34,7 @@ const schema = yup.object({
   modifiedDate: yup.string(),
   creatorName: yup.string(),
   creatorEmail: yup.string(),
+  file: yup.array(),
 });
 
 const InspectionModalComp = ({
@@ -221,6 +223,36 @@ const InspectionModalComp = ({
               )}
             />
             <span>{errors.useYn && errors.useYn.message}</span>
+          </div>
+          <div>
+            {/* <Controller
+              name="file" // yup 걸린 데이터명
+              control={control}
+              render={({ field: { value, onChange, ref } }) => (
+                <DefaultFile multiple={true} setValue={onChange} ref={ref} />
+              )}
+            /> */}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={async (e: any) => {
+                let file = e.target.files[0];
+                let filename = encodeURIComponent(file.name);
+
+                //S3 업로드
+                const formData = new FormData();
+                formData.append(file.name, file);
+                let 업로드결과 = await fetch(
+                  "https://bittebucket.s3.ap-northeast-2.amazonaws.com/notice/bf1ca626-21f2-465d-8eff-6244d7e7ad17test?x-amz-acl=public-read&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230725T081559Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Credential=AKIA3ZP4CLRE5MZ73PFF%2F20230725%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=861d4b0e768373f1df9639f8fa1309e73d3bb5dbe212d6bd47b1f3473949da02",
+                  {
+                    method: "PUT",
+                    body: formData,
+                  }
+                );
+                console.log(업로드결과);
+              }}
+            />
+            <span>{errors.file && errors.file.message}</span>
           </div>
           {detail && detail.createDate ? (
             <div>
