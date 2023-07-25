@@ -28,7 +28,7 @@ export const QUERY_KEYS = Object.assign({
  * @param params
  * @returns
  */
-export const getBoardList = async (params?: IBoardListParams) => {
+export const fetchBoardList = async (params?: IBoardListParams) => {
   return await fetcher({
     api: API_BOARD.FREE_BOARD_LIST,
     options: params,
@@ -39,9 +39,13 @@ export default function useFreeBoardList(
   params?: IBoardListParams,
   options?: UseQueryOptions<any, AxiosError>
 ): UseQueryResult<any, AxiosError> {
-  return useQuery([QUERY_KEYS.BOARD_LIST, params], () => getBoardList(params), {
-    enabled: !!params,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-  });
+  return useQuery(
+    [QUERY_KEYS.BOARD_LIST, params],
+    () => fetchBoardList(params),
+    {
+      enabled: !!params,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
 }

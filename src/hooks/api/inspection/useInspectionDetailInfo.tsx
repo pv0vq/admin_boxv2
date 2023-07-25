@@ -1,23 +1,27 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { UseQueryResult, useQuery } from "react-query";
 import fetcher from "../../../api/fetcher";
-import API_VENDOR from "../../../api/code/vendor";
+import API_INSPECTION from "../../../api/code/inspection";
 
-interface IVendorDetailInfo {
+interface IInspectionDetailInfo {
   id: number;
-  vendorName: string;
+  code: string;
+  checkAction: string;
   useYn: string;
+  vendorId: number;
   createDate: Date;
   modifiedDate: Date;
+  creatorName: string;
+  creatorEmail: string;
 }
 
 export const QUERY_KEYS = Object.assign({
   // common
-  VENDOR_DETAIL: "vendorDetailInfo",
+  INSPECTION_DETAIL: "inspectionDetailInfo",
 });
 
-export const getVendorDetailInfo = async (id: number) => {
-  const { url, method } = API_VENDOR.VENDOR_DETAIL_INFO;
+export const fetchInspectionDetailInfo = async (id: number) => {
+  const { url, method } = API_INSPECTION.INSPECTION_DETAIL_INFO;
   if (id)
     return await fetcher({
       api: {
@@ -29,12 +33,12 @@ export const getVendorDetailInfo = async (id: number) => {
     });
 };
 
-export const useVendorDetailInfo = (
+export const useInspectionDetailInfo = (
   id: number
-): UseQueryResult<IVendorDetailInfo, AxiosError> => {
+): UseQueryResult<IInspectionDetailInfo, AxiosError> => {
   return useQuery(
-    [QUERY_KEYS.VENDOR_DETAIL, id],
-    () => getVendorDetailInfo(id),
+    [QUERY_KEYS.INSPECTION_DETAIL, id],
+    () => fetchInspectionDetailInfo(id),
     {
       // 자동 갱신 비활성화
       refetchOnWindowFocus: false,

@@ -90,39 +90,39 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
     { label: "관리자", value: "ADMIN" },
   ];
 
-  const { data, isLoading } = useUserDetailInfo(columId || 0);
+  const { data: detail, isLoading } = useUserDetailInfo(columId || 0);
   const { localDateFormatDateToYYYYMMDD } = utillFormat();
   const [state, setState] = useState<"add" | "edit" | "detail" | "close">(
     modalState
   );
-  const { mutate } = useUserEdit();
-  const { mutateAsync } = useUserAdd();
+  const { mutate: edit } = useUserEdit();
+  const { mutate: add } = useUserAdd();
   // const { mutate } = useUserAdd();
   //
   const onSubmit = (data: any) => {
     // 수정
     if (state === "edit") {
-      return mutate(data);
+      return edit(data);
     } else {
       // 추가
-      return mutateAsync(data);
+      return add(data);
     }
   };
 
   // 디폴트 설정 및 데이터 폼에 set
   useEffect(() => {
-    if (data) {
-      const { id, email, name, role, useYn } = data;
+    if (detail) {
+      const { id, email, name, role, useYn } = detail;
       reset({
         id,
         email,
         name,
         role,
-        password: !!data ? "*******" : "",
+        password: !!detail ? "*******" : "",
         useYn: useYn === "Y",
       });
     }
-  }, [data]);
+  }, [detail]);
 
   useEffect(() => {
     console.log("errors:", errors);
@@ -137,7 +137,7 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
           </div>
         </div>
         <div className="grid gap-6 mb-6 md:grid-cols-2 p-4">
-          {data && data.id ? (
+          {detail && detail.id ? (
             <div>
               <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
                 회원 번호
@@ -193,7 +193,7 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
                 <DefaultInput
                   defaultValue={value}
                   setValue={onChange}
-                  disable={data ? true : false}
+                  disable={detail ? true : false}
                 />
               )}
             />
@@ -209,7 +209,7 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
               render={({ field: { value, onChange } }) => (
                 <DefaultSelect
                   defaultValue={value}
-                  setValue={onChange}
+                  setValue={(value: any) => onChange(value)}
                   options={roleOptions}
                 />
               )}
@@ -229,7 +229,7 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
             />
             <span>{errors.useYn && errors.useYn.message}</span>
           </div>
-          {data && data.createDate ? (
+          {detail && detail.createDate ? (
             <div>
               <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
                 생성일
@@ -238,9 +238,11 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
                 name="createDate" // yup 걸린 데이터명
                 control={control}
                 defaultValue={
-                  data
-                    ? data?.createDate
-                      ? localDateFormatDateToYYYYMMDD(String(data?.createDate))
+                  detail
+                    ? detail?.createDate
+                      ? localDateFormatDateToYYYYMMDD(
+                          String(detail?.createDate)
+                        )
                       : undefined
                     : undefined
                 }
@@ -257,7 +259,7 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
           ) : (
             <div></div>
           )}
-          {data && data.modifiedDate ? (
+          {detail && detail.modifiedDate ? (
             <div>
               <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
                 수정일
@@ -266,10 +268,10 @@ const UserDetailComp = ({ columId, setButtonClick, modalState }: IProps) => {
                 name="modifiedDate" // yup 걸린 데이터명
                 control={control}
                 defaultValue={
-                  data
-                    ? data?.modifiedDate
+                  detail
+                    ? detail?.modifiedDate
                       ? localDateFormatDateToYYYYMMDD(
-                          String(data?.modifiedDate)
+                          String(detail?.modifiedDate)
                         )
                       : undefined
                     : undefined

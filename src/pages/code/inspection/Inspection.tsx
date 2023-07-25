@@ -5,6 +5,7 @@ import SimpleListComp from "../../../component/common/list/SimpleListComp";
 import API_INSPECTION from "../../../api/code/inspection";
 import DefaultModal from "../../../component/common/modal/DefaultModal";
 import { useVendorList } from "../../../hooks/api/vendor/useVendorList";
+import InspectionModalComp from "../../../component/code/inspection/InspectionModalComp";
 
 const Inspection = () => {
   const title = "점검 사항 관리";
@@ -73,10 +74,20 @@ const Inspection = () => {
     },
   ]);
 
-  const [searchItem, setSearchItem] = useState<ISearchItem[]>([]);
+  const [searchItem, setSearchItem] = useState<ISearchItem[]>([
+    {
+      type: "TEXT",
+      value: "searchText",
+      label: "검색",
+    },
+    {
+      type: "SWITCH",
+      value: "useYn",
+      label: "사용여부",
+    },
+  ]);
 
   useEffect(() => {
-    console.log(vendorList, "vendorList");
     if (vendorList) {
       const vendorOption: IOptions[] = [
         {
@@ -90,51 +101,47 @@ const Inspection = () => {
           value: vendor.vendorName,
         });
       });
-      setSearchItem([
-        {
-          type: "TEXT",
-          value: "searchText",
-          label: "검색",
-        },
+      setSearchItem((prevValue) => [
+        ...prevValue,
         {
           type: "SELECT_BOX",
           value: "vendorName",
           label: "제조사 이름",
           optin: vendorOption,
         },
-        {
-          type: "SELECT_BOX",
-          value: "code",
-          label: "코드",
-          optin: [
-            {
-              label: "선택",
-              value: "",
-            },
-            {
-              label: "사용자",
-              value: "USER",
-            },
-            {
-              label: "관리자",
-              value: "ADMIN",
-            },
-          ],
-        },
-        {
-          type: "SWITCH",
-          value: "useYn",
-          label: "사용여부",
-        },
       ]);
     }
+
+    // {
+    //   type: "SELECT_BOX",
+    //   value: "code",
+    //   label: "코드",
+    //   optin: [
+    //     {
+    //       label: "선택",
+    //       value: "",
+    //     },
+    //     {
+    //       label: "사용자",
+    //       value: "USER",
+    //     },
+    //     {
+    //       label: "관리자",
+    //       value: "ADMIN",
+    //     },
+    //   ],
+    // },
   }, [vendorList]);
 
   return (
     <div className="relative h-[100vh]">
       {showModal ? (
         <DefaultModal setButtonClick={modalButtonHandler}>
-          <></>
+          <InspectionModalComp
+            modalState={modalState}
+            columId={columId}
+            setButtonClick={modalButtonHandler}
+          />
         </DefaultModal>
       ) : (
         <></>

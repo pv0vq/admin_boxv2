@@ -20,7 +20,7 @@ export const fetchAddVendor = async (params: IParams) =>
 
 function useVendorAdd(
   options?: UseMutationOptions<AxiosResponse<any>, AxiosError, any>
-): any {
+): UseMutationResult<any, AxiosError, any> {
   const queryClient = useQueryClient();
 
   const mutation: UseMutationResult<any, AxiosError, any> = useMutation(
@@ -46,10 +46,7 @@ function useVendorAdd(
     }
   );
 
-  return {
-    ...mutation,
-    add: mutation.mutate,
-  };
+  return mutation;
 }
 
 export default useVendorAdd;

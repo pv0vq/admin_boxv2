@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { IOptions } from "../../../type/common";
+import { IIdOptions, IOptions } from "../../../type/common";
 
 interface IProps {
-  defaultValue?: string;
+  defaultValue?: string | number;
   setValue: (
-    value: string,
+    value: string | number,
     event: React.ChangeEvent<HTMLSelectElement>
   ) => void;
   disable?: boolean;
   className?: string;
   placeholder?: string;
-  options: IOptions[];
+  options: IOptions[] | IIdOptions[];
 }
 
 const DefaultSelect = ({
@@ -21,7 +21,7 @@ const DefaultSelect = ({
   placeholder = "",
   options,
 }: IProps) => {
-  const [param, setParam] = useState<string>(defaultValue);
+  const [param, setParam] = useState<string | number>(defaultValue);
 
   const changeParamHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setParam(event.target.value);
@@ -46,7 +46,7 @@ const DefaultSelect = ({
       value={param}
       disabled={disable}
     >
-      {options.map((option: IOptions, index: number) => {
+      {options.map((option: IOptions | IIdOptions, index: number) => {
         return (
           <option key={index} value={option.value}>
             {option.label}

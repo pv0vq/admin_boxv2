@@ -82,7 +82,6 @@ const Login = () => {
             <div>
               <label
                 htmlFor="email"
-                ß
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 E-mail

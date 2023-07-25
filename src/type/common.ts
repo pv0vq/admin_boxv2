@@ -9,7 +9,7 @@ export interface IOptions {
 }
 
 export interface IIdOptions {
-  id: number;
+  value: number;
   label: string;
 }
 

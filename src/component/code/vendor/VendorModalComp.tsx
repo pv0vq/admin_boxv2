@@ -1,15 +1,15 @@
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import DefaultInput from "../common/forms/DefaultInput";
-import DefaultSwich from "../common/forms/DefaultSwich";
-import DefaultDatePicker from "../common/forms/DefaultDatePicker";
+import DefaultInput from "../../common/forms/DefaultInput";
+import DefaultSwich from "../../common/forms/DefaultSwich";
+import DefaultDatePicker from "../../common/forms/DefaultDatePicker";
 import { useEffect, useState } from "react";
-import utillFormat from "../../utill/utillFormat";
-import DefaultButton from "../common/forms/DefaultButton";
-import { useVendorDetailInfo } from "../../hooks/api/vendor/useVendorDetailInfo";
-import useVendorAdd from "../../hooks/api/vendor/useVendorAdd";
-import useVendorEdit from "../../hooks/api/vendor/useVendorEdit";
+import utillFormat from "../../../utill/utillFormat";
+import DefaultButton from "../../common/forms/DefaultButton";
+import { useVendorDetailInfo } from "../../../hooks/api/vendor/useVendorDetailInfo";
+import useVendorAdd from "../../../hooks/api/vendor/useVendorAdd";
+import useVendorEdit from "../../../hooks/api/vendor/useVendorEdit";
 import React from "react";
 
 interface IVendorDetailInfo {
@@ -47,13 +47,13 @@ const VendorModalComp = ({ columId, setButtonClick, modalState }: IProps) => {
   });
   const title = "제조사 상세";
 
-  const { detail, isLoading } = useVendorDetailInfo(columId || 0);
+  const { data: detail, isLoading } = useVendorDetailInfo(columId || 0);
   const { localDateFormatDateToYYYYMMDD } = utillFormat();
   const [state, setState] = useState<"add" | "edit" | "detail" | "close">(
     modalState
   );
-  const { edit } = useVendorEdit();
-  const { add } = useVendorAdd();
+  const { mutate: edit } = useVendorEdit();
+  const { mutate: add } = useVendorAdd();
 
   const onSubmit = (data: any) => {
     // 수정

@@ -4,7 +4,7 @@ import SideSearchComp from "../../../component/common/search/SideSearchComp";
 import SimpleListComp from "../../../component/common/list/SimpleListComp";
 import DefaultModal from "../../../component/common/modal/DefaultModal";
 import API_VENDOR from "../../../api/code/vendor";
-import VendorModalComp from "../../../component/vendor/VendorModalComp";
+import VendorModalComp from "../../../component/code/vendor/VendorModalComp";
 import React from "react";
 
 const Vendor = () => {

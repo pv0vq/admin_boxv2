@@ -28,19 +28,14 @@ export const getVendorList = async () => {
   });
 };
 
-export const useVendorList = (): any => {
-  const query: UseQueryResult<IVendorDetailInfo, AxiosError> = useQuery(
-    [QUERY_KEYS.VENDOR_LIST],
-    () => getVendorList(),
-    {
-      // 자동 갱신 비활성화
-      refetchOnWindowFocus: false,
-      // 마운트될 때다 갱신 비활성화
-      refetchOnMount: false,
-    }
-  );
-  return {
-    ...query,
-    vendorList: query.data,
-  };
+export const useVendorList = (): UseQueryResult<
+  IVendorDetailInfo[],
+  AxiosError
+> => {
+  return useQuery([QUERY_KEYS.VENDOR_LIST], () => getVendorList(), {
+    // 자동 갱신 비활성화
+    refetchOnWindowFocus: false,
+    // 마운트될 때다 갱신 비활성화
+    refetchOnMount: false,
+  });
 };

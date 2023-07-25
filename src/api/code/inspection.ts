@@ -17,6 +17,10 @@ const API_INSPECTION: { [key: string]: IApi } = {
     url: "/api/v2/admin/ev/inspection/edit",
     method: "PUT",
   },
+  INSPECTION_CODE_LIST: {
+    url: "/api/v2/admin/ev/inspection/code",
+    method: "PUT",
+  },
 };
 
 export default API_INSPECTION;
