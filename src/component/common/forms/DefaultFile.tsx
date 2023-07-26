@@ -128,7 +128,7 @@ const DefaultFile = React.forwardRef(
           {param && param.length > 0 ? (
             param.map((src: string, index: number) => (
               <div
-                className="bg-gray-400 flex justify-center relative mt-3"
+                className="bg-gray-400 flex justify-center relative mt-3 rounded-lg "
                 key={index}
               >
                 <img className="object-cover h-max" src={src} />
