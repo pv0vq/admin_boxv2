@@ -20,7 +20,7 @@ const Inspection = () => {
     setShowModal((prevState) => !prevState);
   };
 
-  const { vendorList } = useVendorList();
+  const { data: vendorList } = useVendorList();
 
   /**
    * 모달 핸들러 (추가, 닫기)
@@ -81,9 +81,19 @@ const Inspection = () => {
       label: "검색",
     },
     {
-      type: "SWITCH",
+      type: "CHECK_BOX",
       value: "useYn",
       label: "사용여부",
+      optin: [
+        {
+          label: "사용",
+          value: "Y",
+        },
+        {
+          label: "미사용",
+          value: "N",
+        },
+      ],
     },
   ]);
 

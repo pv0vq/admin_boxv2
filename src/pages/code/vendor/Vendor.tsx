@@ -64,6 +64,29 @@ const Vendor = () => {
     },
   ]);
 
+  const [searchItem, setSearchItem] = useState<ISearchItem[]>([
+    {
+      type: "TEXT",
+      value: "vendorName",
+      label: "검색",
+    },
+    {
+      type: "CHECK_BOX",
+      value: "useYn",
+      label: "사용여부",
+      optin: [
+        {
+          label: "사용",
+          value: "Y",
+        },
+        {
+          label: "미사용",
+          value: "N",
+        },
+      ],
+    },
+  ]);
+
   return (
     <div className="relative h-[100vh]">
       {showModal ? (
@@ -82,6 +105,7 @@ const Vendor = () => {
         title={title}
         api={API_VENDOR.VENDOR_PAGE}
         setAddButtonClick={modalButtonHandler}
+        searchItem={searchItem}
       >
         <SimpleListComp columns={columns} setColumClick={modalButtonHandler} />
       </SideSearchComp>

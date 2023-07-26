@@ -89,7 +89,7 @@ const SideSearchComp = ({
    *
    */
   const onSubimt = () => {
-    setSubmit(params);
+    setSubmit({ ...submit, ...params, page: 0 });
   };
 
   /**
@@ -127,6 +127,10 @@ const SideSearchComp = ({
       setTotalPag(data.totalPages);
     }
   }, [data]);
+
+  useEffect(() => {
+    console.log("submit:", submit);
+  }, [submit]);
 
   if (isLoading) {
     return (
@@ -217,7 +221,7 @@ const SideSearchComp = ({
                               selected={
                                 params[item.value]
                                   ? parseDateFromyyyyMMdd(params[item.value])
-                                  : new Date()
+                                  : undefined
                               } // value
                               onChange={(date: Date) =>
                                 paramsChangeHandler(

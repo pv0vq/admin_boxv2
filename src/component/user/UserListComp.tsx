@@ -120,9 +120,19 @@ const UserList = () => {
       ],
     },
     {
-      type: "SWITCH",
+      type: "CHECK_BOX",
       value: "useYn",
       label: "사용여부",
+      optin: [
+        {
+          label: "사용",
+          value: "Y",
+        },
+        {
+          label: "미사용",
+          value: "N",
+        },
+      ],
     },
   ]);
 

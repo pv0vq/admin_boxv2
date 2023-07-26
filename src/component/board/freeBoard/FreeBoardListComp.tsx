@@ -3,9 +3,38 @@ import SimpleListComp from "../../common/list/SimpleListComp";
 import { IColumns, ISearchItem } from "../../../type/common";
 import SideSearchComp from "../../common/search/SideSearchComp";
 import API_BOARD from "../../../api/code/board";
+import CheckListComp from "../../common/list/CheckListComp";
+import DefaultModal from "../../common/modal/DefaultModal";
 
 const FreeBoardListComp = () => {
-  const title = "자유게시판";
+  const title = "자유게시판 관리";
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [columId, setColumId] = useState<number>(0);
+  const [modalState, setModalStat] = useState<
+    "add" | "detail" | "edit" | "close"
+  >("add");
+
+  // 모달 상태 반전
+  const modalTogglehandle = () => {
+    setShowModal((prevState) => !prevState);
+  };
+
+  /**
+   * 모달 핸들러 (추가, 닫기)
+   *
+   * @param type
+   */
+  const modalButtonHandler = (
+    type: "add" | "detail" | "edit" | "close",
+    id: number = 0
+  ) => {
+    if (type === "close") {
+      return modalTogglehandle();
+    }
+    setModalStat(type);
+    setColumId(id);
+    modalTogglehandle();
+  };
   const [columns] = useState<IColumns[]>([
     {
       id: "id",
@@ -48,58 +77,19 @@ const FreeBoardListComp = () => {
       label: "검색",
     },
     {
-      type: "SELECT_BOX",
-      value: "role",
-      label: "권한",
-      optin: [
-        {
-          label: "선택",
-          value: "",
-        },
-        {
-          label: "사용자",
-          value: "USER",
-        },
-        {
-          label: "관리자",
-          value: "ADMIN",
-        },
-      ],
-    },
-    {
-      type: "RADIO",
-      value: "role",
-      label: "권한",
-      optin: [
-        {
-          label: "사용자",
-          value: "USER",
-        },
-        {
-          label: "관리자",
-          value: "ADMIN",
-        },
-      ],
-    },
-    {
       type: "CHECK_BOX",
-      value: "role",
-      label: "권한",
-      optin: [
-        {
-          label: "사용자",
-          value: "USER",
-        },
-        {
-          label: "관리자",
-          value: "ADMIN",
-        },
-      ],
-    },
-    {
-      type: "SWITCH",
       value: "useYn",
       label: "사용여부",
+      optin: [
+        {
+          label: "사용",
+          value: "Y",
+        },
+        {
+          label: "미사용",
+          value: "N",
+        },
+      ],
     },
     {
       type: "DATE_PIKER",
@@ -114,13 +104,28 @@ const FreeBoardListComp = () => {
   ]);
 
   return (
-    <SideSearchComp
-      searchItem={searchItem}
-      title={title}
-      api={API_BOARD.FREE_BOARD_LIST}
-    >
-      <SimpleListComp columns={columns} />
-    </SideSearchComp>
+    <div className="relative h-[100vh]">
+      {showModal ? (
+        <DefaultModal setButtonClick={modalButtonHandler}>
+          {/* <VendorModalComp
+          modalState={modalState}
+          columId={columId}
+          setButtonClick={modalButtonHandler}
+        /> */}
+          <></>
+        </DefaultModal>
+      ) : (
+        <></>
+      )}
+
+      <SideSearchComp
+        searchItem={searchItem}
+        title={title}
+        api={API_BOARD.FREE_BOARD_LIST}
+      >
+        <CheckListComp columns={columns} />
+      </SideSearchComp>
+    </div>
   );
 };
 
