@@ -31,6 +31,7 @@ function useVendorEdit(
         if (status === "OK") {
           // 리스트 조회
           queryClient.invalidateQueries("searchPage");
+          queryClient.invalidateQueries("vendorDetailInfo");
         } else {
           toast.error("제조사 등록 중 오류가 발생하였습니다.", {
             duration: 5000,

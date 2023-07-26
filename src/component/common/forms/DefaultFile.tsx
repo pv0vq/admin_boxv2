@@ -7,7 +7,7 @@ import API_COMMON from "../../../api/code/common";
 
 interface IProps {
   defaultValue?: string;
-  setValue: (value: string[]) => void;
+  setValue: (value: string) => void;
   disable?: boolean;
   className?: string;
   placeholder?: string;
@@ -79,7 +79,10 @@ const DefaultFile = React.forwardRef(
           console.log("res:", res);
           // url 파싱
           const url = new URL(res.url);
-          setParam((prevParam) => [...prevParam, url.origin + url.pathname]);
+          const arrParam = param;
+          arrParam.push(url.origin + url.pathname);
+          setParam(arrParam);
+          setValueHandler(arrParam);
         })
         .catch((error: any) => {
           console.log("error:", error);
@@ -87,8 +90,23 @@ const DefaultFile = React.forwardRef(
     };
 
     const deleteImageHandler = (src: string) => {
-      setParam(param.filter((val) => val !== src));
-      console.log(src);
+      if (!disable) {
+        const arrParam = param.filter((val) => val !== src);
+        setParam(arrParam);
+        console.log(arrParam, "arrParam");
+        setValueHandler(arrParam);
+      }
+    };
+
+    const setValueHandler = (arr: string[]) => {
+      if (arr.length === 1) {
+        return setValue(arr[0]);
+      } else if (arr.length > 1) {
+        const stringArr = arr.join(",");
+        return setValue(stringArr);
+      } else {
+        return setValue("");
+      }
     };
 
     useEffect(() => {
@@ -96,10 +114,6 @@ const DefaultFile = React.forwardRef(
         setParam(defaultValue.split(","));
       }
     }, [defaultValue]);
-
-    useEffect(() => {
-      setValue(param);
-    }, [param, setValue]);
 
     return (
       <div>

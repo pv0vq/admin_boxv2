@@ -7,16 +7,14 @@ import DefaultDatePicker from "../../common/forms/DefaultDatePicker";
 import { useEffect, useState } from "react";
 import utillFormat from "../../../utill/utillFormat";
 import DefaultButton from "../../common/forms/DefaultButton";
-import useVendorAdd from "../../../hooks/api/vendor/useVendorAdd";
-import useVendorEdit from "../../../hooks/api/vendor/useVendorEdit";
 import { useInspectionDetailInfo } from "../../../hooks/api/inspection/useInspectionDetailInfo";
 import useInspectionAdd from "../../../hooks/api/inspection/useInspectionAdd";
 import { useVendorList } from "../../../hooks/api/vendor/useVendorList";
-import { IIdOptions, IOptions } from "../../../type/common";
+import { IIdOptions } from "../../../type/common";
 import DefaultSelect from "../../common/forms/DefaultSelect";
 import DefaultTextarea from "../../common/forms/DefaultTextarea";
 import DefaultFile from "../../common/forms/DefaultFile";
-import axios from "axios";
+import useInspectionEdit from "../../../hooks/api/inspection/useInspectionEdit";
 
 interface IProps {
   modalState: "add" | "detail" | "edit" | "close";
@@ -60,7 +58,7 @@ const InspectionModalComp = ({
   const [state, setState] = useState<"add" | "edit" | "detail" | "close">(
     modalState
   );
-  const { mutate: edit } = useVendorEdit();
+  const { mutate: edit } = useInspectionEdit();
   const { mutate: add } = useInspectionAdd();
   const { data: vendorList } = useVendorList();
   const [vendorOptions, setVendorOptions] = useState<IIdOptions[]>([]);
@@ -203,6 +201,7 @@ const InspectionModalComp = ({
               render={({ field: { value, onChange } }) => (
                 <DefaultTextarea
                   defaultValue={value}
+                  disable={disableState}
                   setValue={onChange}
                   rows={10}
                 />
@@ -236,13 +235,10 @@ const InspectionModalComp = ({
                 <DefaultFile
                   defaultValue={value}
                   multiple={true}
-                  setValue={(val: string[]) => {
-                    if (val.length === 1) {
-                      return onChange(val[0]);
-                    } else if (val.length > 1) {
-                      const stringArr = val.join(",");
-                      return onChange(stringArr);
-                    }
+                  disable={disableState}
+                  setValue={(val: string) => {
+                    console.log("val:", val);
+                    onChange(val);
                   }}
                   ref={ref}
                   type={"inspection"}
