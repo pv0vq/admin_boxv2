@@ -159,7 +159,7 @@ const SideSearchComp = ({
       <div>
         <div className="flex">
           {searchState ? (
-            <div className="p-5 shadow-xl shadow-blue-gray-900/5 rounded-lg mr-4 border border-gray-200">
+            <div className="w-64 p-5 shadow-xl shadow-blue-gray-900/5 rounded-lg mr-4 border border-gray-200">
               <form>
                 <button className="w-full" type="submit" onClick={onSubimt}>
                   <div className="flex p-3 bg-violet-400 rounded-lg w-full">
