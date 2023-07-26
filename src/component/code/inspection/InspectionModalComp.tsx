@@ -35,7 +35,7 @@ const schema = yup.object({
   modifiedDate: yup.string(),
   creatorName: yup.string(),
   creatorEmail: yup.string(),
-  file: yup.array(),
+  imagePath: yup.string(),
 });
 
 const InspectionModalComp = ({
@@ -55,7 +55,8 @@ const InspectionModalComp = ({
   const title = "점검 코드 상세";
 
   const { data: detail, isLoading } = useInspectionDetailInfo(columId || 0);
-  const { localDateFormatDateToYYYYMMDD } = utillFormat();
+  const { localDateFormatDateToYYYYMMDD, imagePathFormateStringArray } =
+    utillFormat();
   const [state, setState] = useState<"add" | "edit" | "detail" | "close">(
     modalState
   );
@@ -84,6 +85,7 @@ const InspectionModalComp = ({
         checkAction,
         useYn,
         vendorId,
+        imagePath,
         createDate,
         modifiedDate,
         creatorName,
@@ -95,6 +97,7 @@ const InspectionModalComp = ({
         checkAction,
         useYn,
         vendorId,
+        imagePath,
         creatorName,
         creatorEmail,
       });
@@ -227,48 +230,27 @@ const InspectionModalComp = ({
           </div>
           <div>
             <Controller
-              name="file" // yup 걸린 데이터명
+              name="imagePath" // yup 걸린 데이터명
               control={control}
               render={({ field: { value, onChange, ref } }) => (
                 <DefaultFile
+                  defaultValue={value}
                   multiple={true}
-                  setValue={onChange}
+                  setValue={(val: string[]) => {
+                    if (val.length === 1) {
+                      return onChange(val[0]);
+                    } else if (val.length > 1) {
+                      const stringArr = val.join(",");
+                      return onChange(stringArr);
+                    }
+                  }}
                   ref={ref}
                   type={"inspection"}
                 />
               )}
             />
-            {/* <input
-              type="file"
-              accept="image/*"
-              onChange={async (e: any) => {
-                let file = e.target.files[0];
-                let filename = encodeURIComponent(file.name);
 
-                //S3 업로드
-                const formData = new FormData();
-                formData.append("Content-Type", file.type);
-                formData.append("file", file);
-                // let 업로드결과 = await fetch(
-                //   "https://bittebucket.s3.ap-northeast-2.amazonaws.com/notice/f9c4de5f-b11e-46a6-9cda-6f0f9fc9cd5dtest?x-amz-acl=public-read&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230725T105122Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1199&X-Amz-Credential=AKIA3ZP4CLRE5MZ73PFF%2F20230725%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=3e28af92a37e308cdd402e92fe1cf2b8e65aba4b5ebc31c19c00091f90b99861",
-                //   {
-                //     method: "PUT",
-                //     body: formData,
-                //   }
-                // );
-                // console.log(업로드결과);
-                const res = await axios.put(
-                  "https://bittebucket.s3.ap-northeast-2.amazonaws.com/notice/test?x-amz-acl=public-read&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230725T114301Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Credential=AKIA3ZP4CLREWBWQWNEX%2F20230725%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=80637bb51c2e7d9b0677f81e3f9e26169e260c9623a3f70531803381ab921802",
-                  formData,
-                  {
-                    headers: {
-                      Authorization: undefined,
-                    },
-                  }
-                );
-              }}
-            /> */}
-            <span>{errors.file && errors.file.message}</span>
+            <span>{errors.imagePath && errors.imagePath.message}</span>
           </div>
           {detail && detail.createDate ? (
             <div>

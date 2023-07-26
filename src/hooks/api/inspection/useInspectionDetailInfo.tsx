@@ -9,6 +9,7 @@ interface IInspectionDetailInfo {
   checkAction: string;
   useYn: string;
   vendorId: number;
+  imagePath: string;
   createDate: Date;
   modifiedDate: Date;
   creatorName: string;

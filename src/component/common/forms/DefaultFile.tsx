@@ -6,8 +6,8 @@ import fetcher from "../../../api/fetcher";
 import API_COMMON from "../../../api/code/common";
 
 interface IProps {
-  defaultValue?: string[];
-  setValue: (value: File[], event: React.ChangeEvent<HTMLInputElement>) => void;
+  defaultValue?: string;
+  setValue: (value: string[]) => void;
   disable?: boolean;
   className?: string;
   placeholder?: string;
@@ -18,7 +18,7 @@ interface IProps {
 const DefaultFile = React.forwardRef(
   (
     {
-      defaultValue = [],
+      defaultValue = "",
       setValue,
       disable = false,
       className = "",
@@ -28,20 +28,13 @@ const DefaultFile = React.forwardRef(
     }: IProps,
     ref: any
   ) => {
-    const [param, setParam] = useState<Array<string>>(defaultValue);
-
+    const [param, setParam] = useState<string[]>([]);
     const changeParamHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const files: File[] = [];
       if (event.target.files) {
         for (let i = 0; i < event.target.files.length; i++) {
           putPreSignUrlHandler(event.target.files[i]);
-          const file = event.target.files.item(i);
-          if (file instanceof File) {
-            files.push(file);
-          }
         }
       }
-      setValue(files, event);
     };
 
     /**
@@ -94,8 +87,14 @@ const DefaultFile = React.forwardRef(
     };
 
     useEffect(() => {
-      console.log("param:", param);
-    }, [param]);
+      if (defaultValue) {
+        setParam(defaultValue.split(","));
+      }
+    }, [defaultValue]);
+
+    useEffect(() => {
+      setValue(param);
+    }, [param, setValue]);
 
     return (
       <>
@@ -116,7 +115,7 @@ const DefaultFile = React.forwardRef(
           ref={ref}
         />
         <div>
-          {param.length > 0 ? (
+          {param && param.length > 0 ? (
             param.map((src: string, index: number) => (
               <img key={index} src={src} />
             ))
