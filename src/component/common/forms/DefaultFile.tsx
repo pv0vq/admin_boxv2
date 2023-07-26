@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import fetcher from "../../../api/fetcher";
 import API_COMMON from "../../../api/code/common";
+import classNames from "classnames";
 
 interface IProps {
   defaultValue?: string;
@@ -118,7 +119,13 @@ const DefaultFile = React.forwardRef(
     return (
       <div>
         <label className="relative inline-flex items-center cursor-pointer">
-          <div className="mr-2 text-white bg-violet-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <div
+            className={classNames(
+              !disable
+                ? "mr-2 text-white bg-violet-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  cursor-pointer"
+                : "mr-2 text-white bg-slate-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            )}
+          >
             파일첨부
           </div>
           <input
