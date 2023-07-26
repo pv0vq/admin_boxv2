@@ -44,11 +44,18 @@ const DefaultFile = React.forwardRef(
       setValue(files, event);
     };
 
+    /**
+     * PreSignUrl get 와 put 요청
+     *
+     * @param file
+     */
     const putPreSignUrlHandler = async (file: File) => {
       const params = {
-        type: type,
+        type: type, // 테이블 명
         fileName: file.name,
       };
+
+      // 서버에 PreSignUrl 발급요청
       await fetcher({
         api: API_COMMON.GET_PRE_SIGNED_URL,
         options: params,
@@ -61,17 +68,25 @@ const DefaultFile = React.forwardRef(
         });
     };
 
+    /**
+     * S3에 put 요청 (S3이미지 저장)
+     *
+     * @param url
+     * @param file
+     */
     const putAwsImageHandler = async (url: string, file: File) => {
-      const formData = new FormData();
-      formData.append("Content-Type", file.type);
-      formData.append(file.name, file);
       await fetch(url, {
         method: "PUT",
-        body: formData,
+        body: file,
+        headers: new Headers({
+          "Content-Type": "image/*",
+        }),
       })
         .then((res: any) => {
           console.log("res:", res);
-          setParam((prevParam) => [...prevParam, res.url + "/" + file.name]);
+          // url 파싱
+          const url = new URL(res.url);
+          setParam((prevParam) => [...prevParam, url.origin + url.pathname]);
         })
         .catch((error: any) => {
           console.log("error:", error);
@@ -91,6 +106,7 @@ const DefaultFile = React.forwardRef(
               : className
           }
           type="file"
+          accept="image/*"
           placeholder={placeholder}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             changeParamHandler(event)
@@ -99,13 +115,15 @@ const DefaultFile = React.forwardRef(
           disabled={disable}
           ref={ref}
         />
-        {param.length > 0 ? (
-          param.map((src: string, index: number) => (
-            <img key={index} src={src} />
-          ))
-        ) : (
-          <></>
-        )}
+        <div>
+          {param.length > 0 ? (
+            param.map((src: string, index: number) => (
+              <img key={index} src={src} />
+            ))
+          ) : (
+            <></>
+          )}
+        </div>
       </>
     );
   }
