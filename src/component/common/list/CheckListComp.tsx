@@ -62,6 +62,7 @@ const CheckListComp = ({
         <tr>
           <th className="p-4 border-b border-blue-gray-100">
             <input
+              className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
               type="checkbox"
               checked={
                 content.length > 0 && content.length === checkColumns.length
@@ -89,6 +90,7 @@ const CheckListComp = ({
               <tr key={index}>
                 <td className={classes}>
                   <input
+                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
                     type="checkbox"
                     checked={isChecked}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
