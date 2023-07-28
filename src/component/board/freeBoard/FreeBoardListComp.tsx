@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import SimpleListComp from "../../common/list/SimpleListComp";
+import { useState } from "react";
 import { IColumns, ISearchItem } from "../../../type/common";
 import SideSearchComp from "../../common/search/SideSearchComp";
 import API_BOARD from "../../../api/code/board";
 import CheckListComp from "../../common/list/CheckListComp";
 import DefaultModal from "../../common/modal/DefaultModal";
+import FreeBoardModalComp from "./FreeBoardModalComp";
 
 const FreeBoardListComp = () => {
   const title = "자유게시판 관리";
@@ -107,11 +107,11 @@ const FreeBoardListComp = () => {
     <div className="relative h-[100vh]">
       {showModal ? (
         <DefaultModal setButtonClick={modalButtonHandler}>
-          {/* <VendorModalComp
-          modalState={modalState}
-          columId={columId}
-          setButtonClick={modalButtonHandler}
-        /> */}
+          <FreeBoardModalComp
+            modalState={modalState}
+            columId={columId}
+            setButtonClick={modalButtonHandler}
+          />
           <></>
         </DefaultModal>
       ) : (
@@ -123,7 +123,7 @@ const FreeBoardListComp = () => {
         title={title}
         api={API_BOARD.FREE_BOARD_LIST}
       >
-        <CheckListComp columns={columns} />
+        <CheckListComp columns={columns} setColumClick={modalButtonHandler} />
       </SideSearchComp>
     </div>
   );

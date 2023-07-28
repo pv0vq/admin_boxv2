@@ -7,14 +7,11 @@ import DefaultDatePicker from "../../common/forms/DefaultDatePicker";
 import { useEffect, useState } from "react";
 import utillFormat from "../../../utill/utillFormat";
 import DefaultButton from "../../common/forms/DefaultButton";
-import { useInspectionDetailInfo } from "../../../hooks/api/inspection/useInspectionDetailInfo";
 import useInspectionAdd from "../../../hooks/api/inspection/useInspectionAdd";
-import { useVendorList } from "../../../hooks/api/vendor/useVendorList";
-import { IIdOptions } from "../../../type/common";
-import DefaultSelect from "../../common/forms/DefaultSelect";
-import DefaultTextarea from "../../common/forms/DefaultTextarea";
-import DefaultFile from "../../common/forms/DefaultFile";
 import useInspectionEdit from "../../../hooks/api/inspection/useInspectionEdit";
+import { useFreeBoardDetailInfo } from "../../../hooks/api/board/freeBoard/useFreeBoardDetailInfo";
+import useCommentList from "../../../hooks/api/board/comment/useCommentList";
+import CommentListComp from "../comment/CommentListComp";
 
 interface IProps {
   modalState: "add" | "detail" | "edit" | "close";
@@ -25,18 +22,16 @@ interface IProps {
 // yub 유효성 검증
 const schema = yup.object({
   id: yup.number(),
-  code: yup.string().required("코드를 확인해주세요."),
-  checkAction: yup.string().required("점검 사항을 확인해주세요."),
+  title: yup.string().required("코드를 확인해주세요."),
+  content: yup.string().required("점검 사항을 확인해주세요."),
   useYn: yup.string().required("사용여부를 확인해주세요."),
-  vendorId: yup.number().required("제조사를 확인해주세요."),
   createDate: yup.string(),
   modifiedDate: yup.string(),
   creatorName: yup.string(),
   creatorEmail: yup.string(),
-  imagePath: yup.string(),
 });
 
-const InspectionModalComp = ({
+const FreeBoardModalComp = ({
   columId,
   setButtonClick,
   modalState,
@@ -50,18 +45,18 @@ const InspectionModalComp = ({
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
-  const title = "점검 코드 상세";
+  const title = "자유게시판 상세";
+  const commenttitle = "댓글 상세";
+  const { data: detail, isLoading } = useFreeBoardDetailInfo(columId || 0);
 
-  const { data: detail, isLoading } = useInspectionDetailInfo(columId || 0);
+  const { mutate: edit } = useInspectionEdit();
+  const { mutate: add } = useInspectionAdd();
+
   const { localDateFormatDateToYYYYMMDD, imagePathFormateStringArray } =
     utillFormat();
   const [state, setState] = useState<"add" | "edit" | "detail" | "close">(
     modalState
   );
-  const { mutate: edit } = useInspectionEdit();
-  const { mutate: add } = useInspectionAdd();
-  const { data: vendorList } = useVendorList();
-  const [vendorOptions, setVendorOptions] = useState<IIdOptions[]>([]);
   const [disableState, setDisableState] = useState<boolean>(false);
 
   const onSubmit = (data: any) => {
@@ -79,11 +74,9 @@ const InspectionModalComp = ({
     if (detail) {
       const {
         id,
-        code,
-        checkAction,
+        title,
+        content,
         useYn,
-        vendorId,
-        imagePath,
         createDate,
         modifiedDate,
         creatorName,
@@ -91,35 +84,15 @@ const InspectionModalComp = ({
       } = detail;
       reset({
         id,
-        code,
-        checkAction,
+        title,
+        content,
         useYn,
-        vendorId,
-        imagePath,
         creatorName,
         creatorEmail,
       });
     }
+    console.log("detail:", detail);
   }, [detail]);
-
-  // 디폴트 설정 및 데이터 폼에 set
-  useEffect(() => {
-    if (vendorList) {
-      const options: IIdOptions[] = [
-        {
-          value: 0,
-          label: "선택",
-        },
-      ];
-      vendorList.forEach((vendor: any) => {
-        options.push({
-          value: vendor.id,
-          label: vendor.vendorName,
-        });
-      });
-      setVendorOptions(options);
-    }
-  }, [vendorList]);
 
   useEffect(() => {
     console.log("errors:", errors);
@@ -142,7 +115,7 @@ const InspectionModalComp = ({
           {detail && detail.id ? (
             <div>
               <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
-                점검 코드 번호
+                게시판 번호
               </label>
               <Controller
                 name="id" // yup 걸린 데이터명
@@ -158,10 +131,10 @@ const InspectionModalComp = ({
           )}
           <div>
             <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
-              코드
+              제목
             </label>
             <Controller
-              name="code" // yup 걸린 데이터명
+              name="title" // yup 걸린 데이터명
               control={control}
               render={({ field: { value, onChange } }) => (
                 <DefaultInput
@@ -171,43 +144,24 @@ const InspectionModalComp = ({
                 />
               )}
             />
-            <span>{errors.code && errors.code.message}</span>
+            <span>{errors.title && errors.title.message}</span>
           </div>
           <div>
             <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
-              제조사
+              게시판 내용
             </label>
             <Controller
-              name="vendorId" // yup 걸린 데이터명
+              name="content" // yup 걸린 데이터명
               control={control}
               render={({ field: { value, onChange } }) => (
-                <DefaultSelect
+                <DefaultInput
                   defaultValue={value}
-                  setValue={(value) => onChange(Number(value))}
-                  options={vendorOptions}
-                  disable={disableState}
-                />
-              )}
-            />
-            <span>{errors.vendorId && errors.vendorId.message}</span>
-          </div>
-          <div className="col-span-2">
-            <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
-              점검사항
-            </label>
-            <Controller
-              name="checkAction" // yup 걸린 데이터명
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <DefaultTextarea
-                  defaultValue={value}
-                  disable={disableState}
                   setValue={onChange}
-                  rows={10}
+                  disable={disableState}
                 />
               )}
             />
-            <span>{errors.checkAction && errors.checkAction.message}</span>
+            <span>{errors.content && errors.content.message}</span>
           </div>
           <div>
             <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
@@ -226,27 +180,6 @@ const InspectionModalComp = ({
               )}
             />
             <span>{errors.useYn && errors.useYn.message}</span>
-          </div>
-          <div>
-            <Controller
-              name="imagePath" // yup 걸린 데이터명
-              control={control}
-              render={({ field: { value, onChange, ref } }) => (
-                <DefaultFile
-                  defaultValue={value}
-                  multiple={true}
-                  disable={disableState}
-                  setValue={(val: string) => {
-                    console.log("val:", val);
-                    onChange(val);
-                  }}
-                  ref={ref}
-                  type={"inspection"}
-                />
-              )}
-            />
-
-            <span>{errors.imagePath && errors.imagePath.message}</span>
           </div>
           {detail && detail.createDate ? (
             <div>
@@ -366,6 +299,15 @@ const InspectionModalComp = ({
           )}
         </div>
       </div>
+      <div className="bg-white rounded-lg shadow-lg w-full h-full">
+        <div className="bg-violet-500 text-white py-2 rounded-t-lg opacity-80">
+          <div className="grid grid-cols-5 items-center text-blue-gray-900 py-2 p-4 ">
+            {commenttitle}
+          </div>
+        </div>
+
+        {detail ? <CommentListComp boardId={detail.id} /> : <></>}
+      </div>
       <div className="flex items-center  space-x-2 rounded-b dark:border-gray-600">
         {state === "add" ? (
           <>
@@ -406,4 +348,4 @@ const InspectionModalComp = ({
     </form>
   );
 };
-export default InspectionModalComp;
+export default FreeBoardModalComp;
