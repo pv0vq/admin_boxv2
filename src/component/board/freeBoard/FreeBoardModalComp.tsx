@@ -7,11 +7,11 @@ import DefaultDatePicker from "../../common/forms/DefaultDatePicker";
 import { useEffect, useState } from "react";
 import utillFormat from "../../../utill/utillFormat";
 import DefaultButton from "../../common/forms/DefaultButton";
-import useInspectionAdd from "../../../hooks/api/inspection/useInspectionAdd";
-import useInspectionEdit from "../../../hooks/api/inspection/useInspectionEdit";
 import { useFreeBoardDetailInfo } from "../../../hooks/api/board/freeBoard/useFreeBoardDetailInfo";
 import CommentListComp from "../comment/CommentListComp";
 import QuillEditer from "../../common/forms/QuillEditer";
+import useFreeBoardAdd from "../../../hooks/api/board/freeBoard/useFreeBoardAdd";
+import useFreeBoardEdit from "../../../hooks/api/board/freeBoard/useFreeBoardEdit";
 
 interface IProps {
   modalState: "add" | "detail" | "edit" | "close";
@@ -49,8 +49,8 @@ const FreeBoardModalComp = ({
   const commenttitle = "댓글 상세";
   const { data: detail, isLoading } = useFreeBoardDetailInfo(columId || 0);
 
-  const { mutate: edit } = useInspectionEdit();
-  const { mutate: add } = useInspectionAdd();
+  const { mutate: edit } = useFreeBoardEdit();
+  const { mutate: add } = useFreeBoardAdd();
 
   const { localDateFormatDateToYYYYMMDD, imagePathFormateStringArray } =
     utillFormat();
@@ -304,8 +304,11 @@ const FreeBoardModalComp = ({
             {commenttitle}
           </div>
         </div>
-
-        {detail ? <CommentListComp boardId={detail.id} /> : <></>}
+        {detail ? (
+          <CommentListComp boardId={detail.id} />
+        ) : (
+          <div className="mb-6  p-4">댓글이 없습니다.</div>
+        )}
       </div>
       <div className="flex items-center  space-x-2 rounded-b dark:border-gray-600">
         {state === "add" || state === "edit" ? (

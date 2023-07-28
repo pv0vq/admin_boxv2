@@ -14,7 +14,6 @@ interface IParams {
   code: string;
   id: number;
   imagePath: string;
-  modifiedDate: "20230726";
   useYn: string;
   vendorId: number;
 }

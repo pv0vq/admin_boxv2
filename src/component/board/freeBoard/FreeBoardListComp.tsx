@@ -122,6 +122,7 @@ const FreeBoardListComp = () => {
         searchItem={searchItem}
         title={title}
         api={API_BOARD.FREE_BOARD_LIST}
+        setAddButtonClick={modalButtonHandler}
       >
         <CheckListComp columns={columns} setColumClick={modalButtonHandler} />
       </SideSearchComp>
