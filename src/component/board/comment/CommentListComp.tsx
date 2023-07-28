@@ -21,9 +21,15 @@ const CommentListComp = ({ boardId }: IProps) => {
   if (isLoading) return <>loding....</>;
   return (
     <div className="mb-6  p-4">
-      {comments.content.map((comment: IComment, index: number) => {
-        return <CommentChildListComp comment={comment} key={index} depth={0} />;
-      })}
+      {comments.content.length > 0 ? (
+        comments.content.map((comment: IComment, index: number) => {
+          return (
+            <CommentChildListComp comment={comment} key={index} depth={0} />
+          );
+        })
+      ) : (
+        <div> 댓글이 없습니다.</div>
+      )}
     </div>
   );
 };

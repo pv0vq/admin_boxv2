@@ -24,7 +24,10 @@ const CommentChildListComp = ({ comment, depth = 0 }: IProp) => {
   return (
     <div className="mb-3 mt-3" style={{ marginLeft: depth * 20 + "px" }}>
       <div className="flex flex-row justify-between  border-b-4">
-        <div className="">{comment.id}</div>
+        <div className="">
+          {depth > 0 ? "-> " : ""}
+          {comment.id}
+        </div>
         <div className="">
           <input
             className=""

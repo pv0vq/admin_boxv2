@@ -21,7 +21,7 @@ export const fetchDeleteComment = async (id: number) =>
   );
 
 function useCommentDelete(
-  options: UseMutationOptions<AxiosResponse<any>, AxiosError, any>
+  options?: UseMutationOptions<AxiosResponse<any>, AxiosError, any>
 ): UseMutationResult<any, AxiosError, any> {
   const queryClient = useQueryClient();
 

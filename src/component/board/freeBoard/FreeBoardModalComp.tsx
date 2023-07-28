@@ -10,8 +10,8 @@ import DefaultButton from "../../common/forms/DefaultButton";
 import useInspectionAdd from "../../../hooks/api/inspection/useInspectionAdd";
 import useInspectionEdit from "../../../hooks/api/inspection/useInspectionEdit";
 import { useFreeBoardDetailInfo } from "../../../hooks/api/board/freeBoard/useFreeBoardDetailInfo";
-import useCommentList from "../../../hooks/api/board/comment/useCommentList";
 import CommentListComp from "../comment/CommentListComp";
+import QuillEditer from "../../common/forms/QuillEditer";
 
 interface IProps {
   modalState: "add" | "detail" | "edit" | "close";
@@ -22,8 +22,8 @@ interface IProps {
 // yub 유효성 검증
 const schema = yup.object({
   id: yup.number(),
-  title: yup.string().required("코드를 확인해주세요."),
-  content: yup.string().required("점검 사항을 확인해주세요."),
+  title: yup.string().required("제목을 확인해주세요."),
+  content: yup.string().required("내용을 확인해주세요."),
   useYn: yup.string().required("사용여부를 확인해주세요."),
   createDate: yup.string(),
   modifiedDate: yup.string(),
@@ -146,7 +146,7 @@ const FreeBoardModalComp = ({
             />
             <span>{errors.title && errors.title.message}</span>
           </div>
-          <div>
+          <div className="col-span-2">
             <label className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
               게시판 내용
             </label>
@@ -154,9 +154,9 @@ const FreeBoardModalComp = ({
               name="content" // yup 걸린 데이터명
               control={control}
               render={({ field: { value, onChange } }) => (
-                <DefaultInput
+                <QuillEditer
                   defaultValue={value}
-                  setValue={onChange}
+                  setValue={(content: string) => onChange(content)}
                   disable={disableState}
                 />
               )}
