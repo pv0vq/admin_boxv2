@@ -30,15 +30,11 @@ const SideBar = ({ children }: Props) => {
     }
   };
 
-  useEffect(() => {
-    console.log("menuState:", menuState);
-  }, [menuState]);
-
   if (!manuList || manuList.length < 1) return <>메뉴가 없습니다.</>;
 
   return (
     <div className="flex">
-      <div className="left-0 top-0 h-screen bg-violet-500 w-64 py-4 px-6 text-white rounded-lg opacity-80">
+      <div className="left-0 top-0 h-screen bg-violet-500 w-96 py-4 px-6 text-white rounded-lg opacity-80">
         <div className="text-3xl font-bold mb-4">biite</div>
         <ul className="space-y-2">
           {manuList.map((manu: IMenu, i) => {
@@ -46,7 +42,7 @@ const SideBar = ({ children }: Props) => {
               return (
                 <Link to={manu.path} key={i}>
                   <li className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                    <span className="text-[15px] ml-4 text-gray-200 font-bold">
+                    <span className="text-lg ml-4 text-gray-200 font-bold">
                       {manu.menuName}
                     </span>
                   </li>
@@ -60,7 +56,7 @@ const SideBar = ({ children }: Props) => {
                     onClick={() => menuStateHandler(manu)}
                   >
                     <div className="flex justify-between w-full items-center">
-                      <span className="text-[15px] ml-4 text-gray-200 font-bold">
+                      <span className="text-lg ml-4 text-gray-200 font-bold">
                         {manu.menuName}
                       </span>
                       <svg
@@ -81,7 +77,7 @@ const SideBar = ({ children }: Props) => {
                     </div>
                   </div>
                   <div
-                    className="text-left text-sm mt-2 w-5/6 mx-10 text-gray-200 font-bold "
+                    className="text-left text-sm mt-2 w-5/6 mx-8 text-gray-200 font-bold"
                     id="submenu"
                   >
                     {menuState.includes(manu.id) ? (

@@ -52,7 +52,7 @@ function useLogin(
         // 이전 페이지 정보가 있을 경우
         const returnUrl = query.returnUrl;
         const redirectURL =
-          returnUrl && returnUrl !== "/" ? returnUrl : "/main";
+          returnUrl && returnUrl !== "/" ? returnUrl : "/dashBoard";
 
         // 엑세스 토큰과 리플레쉬 토큰 쿠키에 저장
         const cookies = new Cookies();

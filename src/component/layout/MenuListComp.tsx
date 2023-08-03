@@ -16,13 +16,13 @@ interface IMenu {
 
 const MenuListComp = ({ setMenuState, childMenuList, menuState }: IProps) => {
   return (
-    <ul className="space-y-2">
+    <ul>
       {childMenuList.map((manu: IMenu, i) => {
         if (manu.children.length < 1) {
           return (
             <Link to={manu.path} key={i}>
-              <li className="p-3 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                <span className="text-[15px] ml-4 text-gray-200 font-bold m">
+              <li className="mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+                <span className="text-lg ml-4 text-gray-200 font-bold">
                   {manu.menuName}
                 </span>
               </li>
@@ -32,11 +32,11 @@ const MenuListComp = ({ setMenuState, childMenuList, menuState }: IProps) => {
           return (
             <div key={i}>
               <div
-                className="p-3 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+                className="mt-3 flex items-center rounded-md duration-300 cursor-pointer hover:bg-blue-600 text-white"
                 onClick={() => setMenuState(manu)}
               >
-                <div className="flex justify-between w-full items-center ">
-                  <span className="text-[15px] ml-4 text-gray-200 font-bold">
+                <div className="flex justify-between w-full items-center">
+                  <span className="text-lg ml-4 text-gray-200 font-bold">
                     {manu.menuName}
                   </span>
                   <svg
@@ -57,7 +57,7 @@ const MenuListComp = ({ setMenuState, childMenuList, menuState }: IProps) => {
                 </div>
               </div>
               <div
-                className="text-left text-sm mt-2 w-5/6 mx-10 text-gray-200 font-bold "
+                className="text-left text-sm mt-2 w-5/6 mx-8 text-gray-200 font-bold "
                 id="submenu"
               >
                 {menuState.includes(manu.id) ? (
