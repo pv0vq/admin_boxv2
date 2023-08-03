@@ -96,7 +96,7 @@ const SideBar = ({ children }: Props) => {
           })}
         </ul>
       </div>
-      <div className="w-full ml-4">{children}</div>
+      <div className="w-full ml-4 mr-4">{children}</div>
     </div>
   );
 };

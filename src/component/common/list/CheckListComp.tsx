@@ -73,7 +73,7 @@ const CheckListComp = ({
           {columns.map((column, i) => (
             <th
               key={i}
-              className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+              className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 max-w-lg text-center"
             >
               {column.label}
             </th>
@@ -84,7 +84,9 @@ const CheckListComp = ({
         <tbody>
           {data.content.map((row: any, index: number) => {
             const isLast = index === data.content.length - 1;
-            const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
+            const classes = isLast
+              ? "p-4"
+              : "p-4 border-b border-blue-gray-50 max-w-lg";
             const isChecked = !!checkColumns.find((item) => item === row);
             return (
               <tr key={index}>
