@@ -3,8 +3,12 @@ import fetcher from "@src/api/fetcher";
 import { AxiosError } from "axios";
 import { UseQueryResult, useQuery } from "react-query";
 
-export interface IBoardListParams {
-  [key: string]: any;
+export interface IMenu {
+  id: number;
+  menuName: string;
+  path: string;
+  parentId: number | null;
+  children: IMenu[];
 }
 
 export const QUERY_KEYS = Object.assign({
@@ -26,7 +30,7 @@ export const fetchMenuList = async () => {
   }).then(({ data }) => data.data);
 };
 
-export default function useMenuList(): UseQueryResult<any, AxiosError> {
+export default function useMenuList(): UseQueryResult<IMenu[], AxiosError> {
   return useQuery([QUERY_KEYS.MENU_LIST], () => fetchMenuList(), {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
