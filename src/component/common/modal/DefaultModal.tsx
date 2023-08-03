@@ -28,7 +28,7 @@ const DefaultModal = ({ setButtonClick, children, state = "add" }: IProps) => {
       <div
         id="defaultModal"
         aria-hidden="true"
-        className="absolute top-1/2 left-1/2 z-50 w-full p-4 overflow-x-hidden overflow-y-auto max-h-full -translate-x-1/2 -translate-y-1/2 "
+        className="absolute top-1/2 left-1/2 z-50 w-full p-4 scrollbar-hide md:scrollbar-default  max-h-full -translate-x-1/2 -translate-y-1/2 "
       >
         <div className="relative w-11/12 max-w-full max-h-full">
           {/* Modal content */}
