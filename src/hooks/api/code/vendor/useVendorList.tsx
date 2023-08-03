@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { UseQueryResult, useQuery } from "react-query";
-import fetcher from "../../../api/fetcher";
-import API_VENDOR from "../../../api/code/vendor";
+import fetcher from "../../../../api/fetcher";
+import API_VENDOR from "../../../../api/code/code/vendor/vendor";
 
 interface IVendorDetailInfo {
   id: number;

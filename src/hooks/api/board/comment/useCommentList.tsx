@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import fetcher from "../../../../api/fetcher";
 import { UseQueryOptions, UseQueryResult, useQuery } from "react-query";
-import API_COMMETN from "../../../../api/code/comment";
+import API_COMMETN from "../../../../api/code/board/comment/comment";
 
 export interface IBoardListParams {
   [key: string]: any;

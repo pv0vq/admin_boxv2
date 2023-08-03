@@ -6,7 +6,7 @@ import {
 } from "react-query";
 import toast from "react-hot-toast";
 import { AxiosError, AxiosResponse } from "axios";
-import API_BOARD from "../../../../api/code/board";
+import API_BOARD from "../../../../api/code/board/freeBoard/board";
 import fetcher from "../../../../api/fetcher";
 
 interface IParams {

@@ -1,4 +1,4 @@
-import { IApi } from "../../type/common";
+import { IApi } from "../../../../type/common";
 
 const API_BOARD: { [key: string]: IApi } = {
   FREE_BOARD_LIST: {

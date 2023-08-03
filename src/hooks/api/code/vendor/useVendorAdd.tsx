@@ -6,8 +6,8 @@ import {
 } from "react-query";
 import toast from "react-hot-toast";
 import { AxiosError, AxiosResponse } from "axios";
-import fetcher from "../../../api/fetcher";
-import API_VENDOR from "../../../api/code/vendor";
+import fetcher from "../../../../api/fetcher";
+import API_VENDOR from "../../../../api/code/code/vendor/vendor";
 
 interface IParams {
   vendorName: string;

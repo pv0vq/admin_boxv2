@@ -7,14 +7,14 @@ import DefaultDatePicker from "../../common/forms/DefaultDatePicker";
 import { useEffect, useState } from "react";
 import utillFormat from "../../../utill/utillFormat";
 import DefaultButton from "../../common/forms/DefaultButton";
-import { useInspectionDetailInfo } from "../../../hooks/api/inspection/useInspectionDetailInfo";
-import useInspectionAdd from "../../../hooks/api/inspection/useInspectionAdd";
-import { useVendorList } from "../../../hooks/api/vendor/useVendorList";
+import { useVendorList } from "../../../hooks/api/code/vendor/useVendorList";
 import { IIdOptions } from "../../../type/common";
 import DefaultSelect from "../../common/forms/DefaultSelect";
 import DefaultTextarea from "../../common/forms/DefaultTextarea";
 import DefaultFile from "../../common/forms/DefaultFile";
-import useInspectionEdit from "../../../hooks/api/inspection/useInspectionEdit";
+import useInspectionEdit from "../../../hooks/api/code/inspection/useInspectionEdit";
+import useInspectionAdd from "../../../hooks/api/code/inspection/useInspectionAdd";
+import { useInspectionDetailInfo } from "../../../hooks/api/code/inspection/useInspectionDetailInfo";
 
 interface IProps {
   modalState: "add" | "detail" | "edit" | "close";

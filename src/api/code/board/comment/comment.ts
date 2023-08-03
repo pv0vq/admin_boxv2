@@ -1,4 +1,4 @@
-import { IApi } from "../../type/common";
+import { IApi } from "../../../../type/common";
 
 const API_COMMETN: { [key: string]: IApi } = {
   COMMETN_LIST: {

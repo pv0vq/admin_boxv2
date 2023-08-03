@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SideSearchComp from "../common/search/SideSearchComp";
 import SimpleListComp from "../common/list/SimpleListComp";
-import API_USER from "../../api/code/user";
+import API_USER from "../../api/code/user/user";
 import { ISearchItem, IColumns } from "../../type/common";
 import DefaultModal from "../common/modal/DefaultModal";
 import UserDetailComp from "./UserDetailComp";

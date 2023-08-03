@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import fetcher from "../../../api/fetcher";
-import API_COMMON from "../../../api/code/common";
+import API_COMMON from "../../../api/code/common/common";
 interface IProps {
   defaultValue?: string;
   type?: string;

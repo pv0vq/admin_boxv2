@@ -6,8 +6,8 @@ import {
 } from "react-query";
 import toast from "react-hot-toast";
 import { AxiosError, AxiosResponse } from "axios";
-import fetcher from "../../../api/fetcher";
-import API_INSPECTION from "../../../api/code/inspection";
+import API_INSPECTION from "../../../../api/code/code/inspection/inspection";
+import fetcher from "@src/api/fetcher";
 
 interface IParams {
   code: string;

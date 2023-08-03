@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import API_BOARD from "../../../../api/code/board";
+import API_BOARD from "../../../../api/code/board/freeBoard/board";
 import fetcher from "../../../../api/fetcher";
 import { UseQueryOptions, UseQueryResult, useQuery } from "react-query";
 

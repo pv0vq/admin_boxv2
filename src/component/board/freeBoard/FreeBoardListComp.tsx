@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IColumns, ISearchItem } from "../../../type/common";
 import SideSearchComp from "../../common/search/SideSearchComp";
-import API_BOARD from "../../../api/code/board";
+import API_BOARD from "../../../api/code/board/freeBoard/board";
 import CheckListComp from "../../common/list/CheckListComp";
 import DefaultModal from "../../common/modal/DefaultModal";
 import FreeBoardModalComp from "./FreeBoardModalComp";

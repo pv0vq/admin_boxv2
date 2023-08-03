@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { UseQueryResult, useQuery } from "react-query";
-import API_BOARD from "../../../../api/code/board";
+import API_BOARD from "../../../../api/code/board/freeBoard/board";
 import fetcher from "../../../../api/fetcher";
 
 interface IBoardDetailInfo {

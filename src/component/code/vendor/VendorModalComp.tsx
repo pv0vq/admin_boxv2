@@ -7,9 +7,9 @@ import DefaultDatePicker from "../../common/forms/DefaultDatePicker";
 import { useEffect, useState } from "react";
 import utillFormat from "../../../utill/utillFormat";
 import DefaultButton from "../../common/forms/DefaultButton";
-import { useVendorDetailInfo } from "../../../hooks/api/vendor/useVendorDetailInfo";
-import useVendorAdd from "../../../hooks/api/vendor/useVendorAdd";
-import useVendorEdit from "../../../hooks/api/vendor/useVendorEdit";
+import { useVendorDetailInfo } from "../../../hooks/api/code/vendor/useVendorDetailInfo";
+import useVendorAdd from "../../../hooks/api/code/vendor/useVendorAdd";
+import useVendorEdit from "../../../hooks/api/code/vendor/useVendorEdit";
 import React from "react";
 
 interface IVendorDetailInfo {

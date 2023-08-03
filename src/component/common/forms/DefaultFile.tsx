@@ -3,7 +3,7 @@ import { error } from "console";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import fetcher from "../../../api/fetcher";
-import API_COMMON from "../../../api/code/common";
+import API_COMMON from "../../../api/code/common/common";
 import classNames from "classnames";
 
 interface IProps {

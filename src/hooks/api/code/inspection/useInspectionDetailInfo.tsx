@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { UseQueryResult, useQuery } from "react-query";
-import fetcher from "../../../api/fetcher";
-import API_INSPECTION from "../../../api/code/inspection";
+import fetcher from "@src/api/fetcher";
+import API_INSPECTION from "@src/api/code/code/inspection/inspection";
 
 interface IInspectionDetailInfo {
   id: number;

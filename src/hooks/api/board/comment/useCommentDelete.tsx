@@ -9,7 +9,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import queryString from "query-string";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import fetcher from "../../../../api/fetcher";
-import API_COMMETN from "../../../../api/code/comment";
+import API_COMMETN from "../../../../api/code/board/comment/comment";
 
 interface IOptions {
   id: number;

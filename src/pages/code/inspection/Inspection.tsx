@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { IColumns, IOptions, ISearchItem } from "../../../type/common";
 import SideSearchComp from "../../../component/common/search/SideSearchComp";
 import SimpleListComp from "../../../component/common/list/SimpleListComp";
-import API_INSPECTION from "../../../api/code/inspection";
+import API_INSPECTION from "../../../api/code/code/inspection/inspection";
 import DefaultModal from "../../../component/common/modal/DefaultModal";
-import { useVendorList } from "../../../hooks/api/vendor/useVendorList";
+import { useVendorList } from "../../../hooks/api/code/vendor/useVendorList";
 import InspectionModalComp from "../../../component/code/inspection/InspectionModalComp";
 
 const Inspection = () => {

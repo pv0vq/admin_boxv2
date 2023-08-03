@@ -10,7 +10,7 @@ import queryString from "query-string";
 import { Cookies } from "react-cookie";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import fetcher from "../../api/fetcher";
-import API_AUTH from "../../api/code/auth";
+import API_AUTH from "../../api/code/auth/auth";
 
 // ** Defaults
 // const defaultProvider: AuthValuesType = {

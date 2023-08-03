@@ -3,7 +3,7 @@ import { IColumns, ISearchItem } from "../../../type/common";
 import SideSearchComp from "../../../component/common/search/SideSearchComp";
 import SimpleListComp from "../../../component/common/list/SimpleListComp";
 import DefaultModal from "../../../component/common/modal/DefaultModal";
-import API_VENDOR from "../../../api/code/vendor";
+import API_VENDOR from "../../../api/code/code/vendor/vendor";
 import VendorModalComp from "../../../component/code/vendor/VendorModalComp";
 import React from "react";
 

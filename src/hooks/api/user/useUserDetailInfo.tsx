@@ -6,7 +6,7 @@ import {
   useQuery,
 } from "react-query";
 import fetcher from "../../../api/fetcher";
-import API_USER from "../../../api/code/user";
+import API_USER from "../../../api/code/user/user";
 
 interface IUserDetailInfo {
   id: number;

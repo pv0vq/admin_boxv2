@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import queryString from "query-string";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import API_USER from "../../../api/code/user";
+import API_USER from "../../../api/code/user/user";
 import fetcher from "../../../api/fetcher";
 
 interface IOptions {
