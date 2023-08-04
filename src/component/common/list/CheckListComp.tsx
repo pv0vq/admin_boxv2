@@ -83,14 +83,10 @@ const CheckListComp = ({
       {data && data.content.length > 0 ? (
         <tbody>
           {data.content.map((row: any, index: number) => {
-            const isLast = index === data.content.length - 1;
-            const classes = isLast
-              ? "p-4"
-              : "p-4 border-b border-blue-gray-50 max-w-lg";
             const isChecked = !!checkColumns.find((item) => item === row);
             return (
               <tr key={index}>
-                <td className={classes}>
+                <td className="p-4 border-b border-blue-gray-50 max-w-lg text-center">
                   <input
                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
                     type="checkbox"
@@ -102,7 +98,7 @@ const CheckListComp = ({
                 </td>
                 {columns.map((column, ii) => (
                   <td
-                    className={classes}
+                    className="p-4 border-b border-blue-gray-50 max-w-lg text-center"
                     key={ii}
                     onClick={() => {
                       if (setColumClick) setColumClick("detail", row.id);

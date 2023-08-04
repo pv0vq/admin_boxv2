@@ -33,15 +33,11 @@ const SimpleListComp = ({
       {data && data.content.length > 0 ? (
         <tbody>
           {data.content.map((row: any, index: number) => {
-            const isLast = index === data.content.length - 1;
-            const classes = isLast
-              ? "p-4"
-              : "p-4 border-b border-blue-gray-50 max-w-lg";
             return (
               <tr key={index}>
                 {columns.map((column, ii) => (
                   <td
-                    className={classes}
+                    className="p-4 border-b border-blue-gray-50 max-w-lg text-center"
                     key={ii}
                     onClick={() => {
                       if (setColumClick) setColumClick("detail", row.id);
