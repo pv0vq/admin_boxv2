@@ -5,6 +5,10 @@ const API_AUTH: { [key: string]: IApi } = {
     url: "/api/v2/login",
     method: "POST",
   },
+  GET_REFRESH_TOKEN: {
+    url: "/api/v2/refresh",
+    method: "GET",
+  },
 };
 
 export default API_AUTH;

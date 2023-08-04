@@ -1,6 +1,7 @@
 import axios, { AxiosRequestHeaders, AxiosResponse, ResponseType } from "axios";
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
+import API_AUTH from "./code/auth/auth";
 
 const axiosInstance = () => {
   return axios.create({
@@ -20,9 +21,9 @@ function AxiosAuthInterceptor<T>(response: AxiosResponse<T>): AxiosResponse {
   if (status === 404) {
     // 404 에러시
     console.log(404, "에러");
-    // throw new NotFoundError()
   } else if (status === 401) {
     // 401 에러시
+    refreshTokenHandler();
     console.log(401, "에러");
     // 리플래쉬 토큰 처리하기
     // throw new AuthError()
@@ -34,10 +35,28 @@ function AxiosAuthInterceptor<T>(response: AxiosResponse<T>): AxiosResponse {
   return response;
 }
 
+/**
+ *
+ *
+ */
+const refreshTokenHandler = async () => {
+  axios
+    .get(apiUrl + API_AUTH.GET_REFRESH_TOKEN.url, {
+      withCredentials: true,
+    })
+    .then(({ data, headers }) => {
+      axios.defaults.headers.common["Authorization"] = headers.authorization;
+    })
+    .catch((err: any) => {
+      console.log("토큰이 만료되었습니다.");
+      window.location.href = "/";
+    });
+};
+
 const fetcher = async function ({
   api,
   options = {},
-  type = "json",
+  // type = "json",
   responseType,
   headers,
 }: {
@@ -46,31 +65,10 @@ const fetcher = async function ({
     method: "GET" | "POST" | "PUT" | "DELETE";
   };
   options?: { [key: string]: any };
-  type?: "json" | "formData";
+  // type?: "json" | "formData";
   responseType?: ResponseType;
   headers?: AxiosRequestHeaders;
 }) {
-  const Authorization = axios.defaults.headers.common["Authorization"];
-  // react-cookie 라이브러리 사용
-  const cookies = new Cookies();
-  const { accessToken, refreshToken } = cookies.getAll();
-  if (!Authorization) {
-    // 토큰이 유실되었다면 재설정
-    if (accessToken) {
-      const cookies = new Cookies();
-      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-      cookies.set("accessToken", accessToken, {
-        path: "/",
-        secure: true,
-        sameSite: "strict",
-      });
-      cookies.set("refreshToken", refreshToken, {
-        path: "/",
-        secure: true,
-        sameSite: "strict",
-      });
-    }
-  }
   const ax = axiosInstance();
   ax.interceptors.response.use(
     function (response) {
@@ -91,21 +89,24 @@ const fetcher = async function ({
           "Access-Control-Allow-Origin": "*",
         },
         responseType: responseType,
+        withCredentials: true,
       });
     } else {
       // formData
-      const formData = new FormData();
-      if (type === "formData") {
-        for (const key in options) {
-          formData.append(key, options[key]);
-        }
-      }
+      // const formData = new FormData();
+      // if (type === "formData") {
+      //   for (const key in options) {
+      //     formData.append(key, options[key]);
+      //   }
+      // }
 
       return await ax.request({
         ...api,
         url: `${apiUrl}${api.url}`,
-        data: type === "json" ? options : formData,
+        // data: type === "json" ? options : formData,
+        data: options,
         headers,
+        withCredentials: true,
       });
     }
   } catch (error: any) {
