@@ -9,7 +9,6 @@ import queryString from "query-string";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import fetcher from "../../api/fetcher";
 import API_AUTH from "../../api/code/auth/auth";
-import { Cookies } from "react-cookie";
 
 // ** Defaults
 // const defaultProvider: AuthValuesType = {
@@ -31,7 +30,7 @@ interface IOptions {
 
 export const fetchLogin = async (params: IOptions) =>
   await fetcher({ api: API_AUTH.LOGIN, options: params }).then(
-    ({ data, config, request, headers, status }) => {
+    ({ data, headers }) => {
       axios.defaults.headers.common["Authorization"] = headers.authorization;
       return data;
     }
@@ -49,6 +48,7 @@ function useLogin(
   return useMutation(fetchLogin, {
     ...options,
     onSuccess: ({ data, status, success, message }) => {
+      localStorage.setItem("isUse", "true");
       return navigate("/dashBoard" as string);
     },
     onError: (error: any) => {

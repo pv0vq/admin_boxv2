@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import useLogin from "../../hooks/api/useLogin";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 /*
   This example requires some changes to your config:
@@ -53,12 +55,24 @@ const Login = () => {
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
-
+  const navigate = useNavigate();
   const { mutate } = useLogin();
 
   const onSubmit = (data: ILongin) => {
     mutate(data);
   };
+
+  const isLoginCheck = () => {
+    const isLogin = localStorage.getItem("isUse");
+    if (isLogin === "true") {
+      console.log("확인");
+      // navigate(-1);
+    }
+  };
+
+  useEffect(() => {
+    isLoginCheck();
+  }, []);
 
   return (
     <>

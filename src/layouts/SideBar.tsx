@@ -1,6 +1,6 @@
 import MenuListComp from "@src/component/layout/MenuListComp";
 import useMenuList from "@src/hooks/api/menu/useMenuList";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -30,7 +30,7 @@ const SideBar = ({ children }: Props) => {
     }
   };
 
-  if (!manuList || manuList.length < 1) return <>메뉴가 없습니다.</>;
+  if (!manuList || manuList.length < 1) return <></>;
 
   return (
     <div className="flex">

@@ -1,7 +1,7 @@
 import axios, { AxiosRequestHeaders, AxiosResponse, ResponseType } from "axios";
-import { useNavigate } from "react-router-dom";
-import { Cookies } from "react-cookie";
 import API_AUTH from "./code/auth/auth";
+
+let axiosRetryState: boolean = false;
 
 const axiosInstance = () => {
   return axios.create({
@@ -15,41 +15,57 @@ const apiUrl = `${import.meta.env.VITE_APP_PROTOCOL}://${
   import.meta.env.VITE_APP_API_URL
 }`;
 
+/**
+ *
+ *
+ * @param response
+ * @returns
+ */
 function AxiosAuthInterceptor<T>(response: AxiosResponse<T>): AxiosResponse {
   const status = response.status;
-
   if (status === 404) {
     // 404 에러시
-    console.log(404, "에러");
   } else if (status === 401) {
     // 401 에러시
-    refreshTokenHandler();
+
+    // 엑세스 토큰 만료
+    // 리프레쉬 토큰 요청
+    if (!axiosRetryState) {
+      axiosRetryState = true;
+      return refreshTokenHandler(response.config);
+    }
+
     console.log(401, "에러");
-    // 리플래쉬 토큰 처리하기
-    // throw new AuthError()
   } else if (status === 0) {
     //backend 서버가 죽었을 때 로그인 페이지로 이동.
     // 여기서 useNavigate 함수를 사용하지 못합니다.
     window.location.href = "/";
   }
+
   return response;
 }
 
 /**
- *
+ * 리프레쉬 토큰 처리
  *
  */
-const refreshTokenHandler = async () => {
+const refreshTokenHandler = (config: any): any => {
   axios
     .get(apiUrl + API_AUTH.GET_REFRESH_TOKEN.url, {
       withCredentials: true,
     })
     .then(({ data, headers }) => {
-      axios.defaults.headers.common["Authorization"] = headers.authorization;
+      axiosRetryState = false;
+      if (data === "OK") {
+        axios.defaults.headers.common["Authorization"] = headers.authorization;
+        // 오류난 api 재호출
+        return axiosInstance().interceptors.response.use(config);
+      }
     })
     .catch((err: any) => {
-      console.log("토큰이 만료되었습니다.");
+      localStorage.removeItem("isUse");
       window.location.href = "/";
+      return Promise.reject(err);
     });
 };
 
@@ -69,6 +85,7 @@ const fetcher = async function ({
   responseType?: ResponseType;
   headers?: AxiosRequestHeaders;
 }) {
+  axiosRetryState = false;
   const ax = axiosInstance();
   ax.interceptors.response.use(
     function (response) {
