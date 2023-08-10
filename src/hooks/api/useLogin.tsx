@@ -31,7 +31,6 @@ interface IOptions {
 export const fetchLogin = async (params: IOptions) =>
   await fetcher({ api: API_AUTH.LOGIN, options: params }).then(
     ({ data, headers }) => {
-      axios.defaults.headers.common["Authorization"] = headers.authorization;
       return data;
     }
   );
@@ -47,10 +46,10 @@ function useLogin(
 
   return useMutation(fetchLogin, {
     ...options,
-    onSuccess: ({ data, status, success, message }) => {
-      if (status === 200) {
-        localStorage.setItem("isUse", "true");
-        return navigate("/dashBoard" as string);
+    onSuccess: ({ path, success }) => {
+      if (success) {
+        localStorage.setItem("isUse", success);
+        return navigate(path as string);
       } else {
         toast.error("로그인 오류가 발생하였습니다.", { duration: 5000 });
       }

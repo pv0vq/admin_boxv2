@@ -27,7 +27,6 @@ function AxiosAuthInterceptor<T>(response: AxiosResponse<T>): AxiosResponse {
     // 404 에러시
   } else if (status === 401) {
     // 401 에러시
-
     // 엑세스 토큰 만료
     // 리프레쉬 토큰 요청
     if (data.code === "EXPIRED_TOKEN" && !axiosRetryState) {
@@ -37,7 +36,7 @@ function AxiosAuthInterceptor<T>(response: AxiosResponse<T>): AxiosResponse {
   } else if (status === 0) {
     //backend 서버가 죽었을 때 로그인 페이지로 이동.
     // 여기서 useNavigate 함수를 사용하지 못합니다.
-    //  window.location.href = "/";
+    window.location.href = "/";
   }
 
   return response;
@@ -55,14 +54,13 @@ const refreshTokenHandler = (config: any): any => {
     .then(({ data, headers }) => {
       axiosRetryState = false;
       if (data === "OK") {
-        axios.defaults.headers.common["Authorization"] = headers.authorization;
         // 오류난 api 재호출
         return axiosInstance().interceptors.response.use(config);
       }
     })
     .catch((err: any) => {
-      localStorage.removeItem("isUse");
-      window.location.href = "/";
+      // localStorage.removeItem("isUse");
+      // window.location.href = "/";
       return Promise.reject(err);
     });
 };

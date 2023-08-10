@@ -2,6 +2,7 @@ import MenuListComp from "@src/component/layout/MenuListComp";
 import useMenuList from "@src/hooks/api/menu/useMenuList";
 import { ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
+import HeadBar from "./HeadBar";
 
 interface Props {
   children: ReactNode;
@@ -96,7 +97,11 @@ const SideBar = ({ children }: Props) => {
           })}
         </ul>
       </div>
-      <div className="w-full ml-4 mr-4">{children}</div>
+
+      <div className="w-full ml-4 mr-4">
+        <HeadBar />
+        {children}
+      </div>
     </div>
   );
 };
