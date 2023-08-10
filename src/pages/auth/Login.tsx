@@ -65,8 +65,7 @@ const Login = () => {
   const isLoginCheck = () => {
     const isLogin = localStorage.getItem("isUse");
     if (isLogin === "true") {
-      console.log("확인");
-      // navigate(-1);
+      navigate(-1);
     }
   };
 

@@ -48,11 +48,14 @@ function useLogin(
   return useMutation(fetchLogin, {
     ...options,
     onSuccess: ({ data, status, success, message }) => {
-      localStorage.setItem("isUse", "true");
-      return navigate("/dashBoard" as string);
+      if (status === 200) {
+        localStorage.setItem("isUse", "true");
+        return navigate("/dashBoard" as string);
+      } else {
+        toast.error("로그인 오류가 발생하였습니다.", { duration: 5000 });
+      }
     },
     onError: (error: any) => {
-      // toast.error(error.response.data.message, {duration: 5000})
       toast.error("로그인 오류가 발생하였습니다.", { duration: 5000 });
     },
     onSettled: (data, error, variables, context) => {},

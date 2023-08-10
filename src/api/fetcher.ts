@@ -22,7 +22,7 @@ const apiUrl = `${import.meta.env.VITE_APP_PROTOCOL}://${
  * @returns
  */
 function AxiosAuthInterceptor<T>(response: AxiosResponse<T>): AxiosResponse {
-  const status = response.status;
+  const { status, data }: any = response;
   if (status === 404) {
     // 404 에러시
   } else if (status === 401) {
@@ -30,16 +30,14 @@ function AxiosAuthInterceptor<T>(response: AxiosResponse<T>): AxiosResponse {
 
     // 엑세스 토큰 만료
     // 리프레쉬 토큰 요청
-    if (!axiosRetryState) {
+    if (data.code === "EXPIRED_TOKEN" && !axiosRetryState) {
       axiosRetryState = true;
       return refreshTokenHandler(response.config);
     }
-
-    console.log(401, "에러");
   } else if (status === 0) {
     //backend 서버가 죽었을 때 로그인 페이지로 이동.
     // 여기서 useNavigate 함수를 사용하지 못합니다.
-    window.location.href = "/";
+    //  window.location.href = "/";
   }
 
   return response;
