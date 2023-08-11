@@ -48,7 +48,7 @@ function useLogin(
     ...options,
     onSuccess: ({ path, success }) => {
       if (success) {
-        localStorage.setItem("isUse", success);
+        localStorage.setItem("isLogin", success);
         return navigate(path as string);
       } else {
         toast.error("로그인 오류가 발생하였습니다.", { duration: 5000 });

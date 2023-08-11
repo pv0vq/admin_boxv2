@@ -63,7 +63,7 @@ const Login = () => {
   };
 
   const isLoginCheck = () => {
-    const isLogin = localStorage.getItem("isUse");
+    const isLogin = localStorage.getItem("isLogin");
     if (isLogin === "true") {
       navigate(-1);
     }

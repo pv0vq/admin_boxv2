@@ -25,17 +25,23 @@ function AxiosAuthInterceptor<T>(response: AxiosResponse<T>): AxiosResponse {
   const { status, data }: any = response;
   if (status === 404) {
     // 404 에러시
+    localStorage.removeItem("isLogin");
   } else if (status === 401) {
     // 401 에러시
-    // 엑세스 토큰 만료
-    // 리프레쉬 토큰 요청
-    if (data.code === "EXPIRED_TOKEN" && !axiosRetryState) {
-      axiosRetryState = true;
-      return refreshTokenHandler(response.config);
+
+    // 토큰 만료 시
+    if (data.code === "EXPIRED_TOKEN") {
+      localStorage.removeItem("isLogin");
+      window.location.href = "/";
     }
+    //   axiosRetryState = true;
+    //   return refreshTokenHandler(response.config);
+    // }
+    // UNAUTHORIZED
   } else if (status === 0) {
     //backend 서버가 죽었을 때 로그인 페이지로 이동.
     // 여기서 useNavigate 함수를 사용하지 못합니다.
+    localStorage.removeItem("isLogin");
     window.location.href = "/";
   }
 
@@ -44,26 +50,27 @@ function AxiosAuthInterceptor<T>(response: AxiosResponse<T>): AxiosResponse {
 
 /**
  * 리프레쉬 토큰 처리
+ * 20230810 서버에서 리프레쉬 처리 추가
  *
  */
-const refreshTokenHandler = (config: any): any => {
-  axios
-    .get(apiUrl + API_AUTH.GET_REFRESH_TOKEN.url, {
-      withCredentials: true,
-    })
-    .then(({ data, headers }) => {
-      axiosRetryState = false;
-      if (data === "OK") {
-        // 오류난 api 재호출
-        return axiosInstance().interceptors.response.use(config);
-      }
-    })
-    .catch((err: any) => {
-      // localStorage.removeItem("isUse");
-      // window.location.href = "/";
-      return Promise.reject(err);
-    });
-};
+// const refreshTokenHandler = (config: any): any => {
+//   axios
+//     .get(apiUrl + API_AUTH.GET_REFRESH_TOKEN.url, {
+//       withCredentials: true,
+//     })
+//     .then(({ data, headers }) => {
+//       axiosRetryState = false;
+//       if (data === "OK") {
+//         // 오류난 api 재호출
+//         return axiosInstance().interceptors.response.use(config);
+//       }
+//     })
+//     .catch((err: any) => {
+//       // localStorage.removeItem("isUse");
+//       // window.location.href = "/";
+//       return Promise.reject(err);
+//     });
+// };
 
 const fetcher = async function ({
   api,
@@ -81,7 +88,6 @@ const fetcher = async function ({
   responseType?: ResponseType;
   headers?: AxiosRequestHeaders;
 }) {
-  axiosRetryState = false;
   const ax = axiosInstance();
   ax.interceptors.response.use(
     function (response) {
