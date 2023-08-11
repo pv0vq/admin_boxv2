@@ -1,7 +1,25 @@
+import API_AUTH from "@src/api/code/auth/auth";
+import fetcher from "@src/api/fetcher";
+import { fetchLogout } from "@src/hooks/api/fetchLogout";
 import { useState } from "react";
 
 const HeadBar = () => {
   const [navbar, setNavbar] = useState(false);
+
+  const logoutHandler = async () => {
+    const { url, method } = API_AUTH.LOGOUT;
+    await fetcher({
+      api: {
+        url: url,
+        method,
+      },
+    }).then(({ data }) => {
+      if (data.code === "ok") {
+        localStorage.removeItem("isLogin");
+        window.location.href = "/";
+      }
+    });
+  };
 
   return (
     <nav className="w-full bg-purple-500 shadow">
@@ -80,8 +98,9 @@ const HeadBar = () => {
               <a
                 href="javascript:void(0)"
                 className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                onClick={logoutHandler}
               >
-                Sign up
+                Log Out
               </a>
             </div>
           </div>
@@ -96,8 +115,9 @@ const HeadBar = () => {
           <a
             href="javascript:void(0)"
             className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+            onClick={logoutHandler}
           >
-            Sign up
+            Log Out
           </a>
         </div>
       </div>

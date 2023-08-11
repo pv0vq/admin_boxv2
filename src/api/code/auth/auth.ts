@@ -5,8 +5,8 @@ const API_AUTH: { [key: string]: IApi } = {
     url: "/api/v2/login",
     method: "POST",
   },
-  GET_REFRESH_TOKEN: {
-    url: "/api/v2/refresh",
+  LOGOUT: {
+    url: "/api/v2/bitteLogout",
     method: "GET",
   },
 };
