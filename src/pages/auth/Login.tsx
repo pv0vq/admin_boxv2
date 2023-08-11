@@ -182,7 +182,7 @@ const Login = () => {
             </blockquote>
           </div>
         </div>
-        <div className="lg:p-8 lg:flex-none grid grid-rows-3 h-full w-auto">
+        <div className="lg:p-8 lg:flex-none grid grid-rows-3 p-10 h-full w-screen lg:w-auto">
           <div></div>
           <div className="max-h-full flex w-full flex-col justify-center space-y-6">
             <div className="lg:hidden ">
