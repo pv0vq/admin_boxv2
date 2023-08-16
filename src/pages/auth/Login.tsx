@@ -65,7 +65,7 @@ const Login = () => {
   const isLoginCheck = () => {
     const isLogin = localStorage.getItem("isLogin");
     if (isLogin === "true") {
-      navigate(-1);
+      navigate("/dashBoard");
     }
   };
 
